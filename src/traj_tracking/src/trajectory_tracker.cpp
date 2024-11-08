@@ -12,11 +12,14 @@ TrajectoryTracker::TrajectoryTracker(int state_size, int input_size,
   H_.resize(qp_state_size_, qp_state_size_);
   g_.resize(qp_state_size_);
 };
+
 bool TrajectoryTracker::init(const DMatrix &Q, const DMatrix &R,
-                             const DMatrix &Ad, const DMatrix &Bd,
-                             const DVector &Kd, const DMatrix &A_equal,
-                             const DMatrix &B_equal, const DVector &K_equal,
-                             const DMatrix &A_inequal, const DMatrix &B_inequal,
+                             const MatrixCaster &dynamic_state_matrix_caster,
+                             const MatrixCaster &dynamic_input_matrix_caster,
+                             const VectorCaster &dynamic_vector_caster,
+                             const DMatrix &A_equal, const DMatrix &B_equal,
+                             const DVector &K_equal, const DMatrix &A_inequal,
+                             const DMatrix &B_inequal,
                              const DVector &K_inequal_lb,
                              const DVector &K_inequal_ub, const DVector &x_lb,
                              const DVector &x_ub, const DVector &u_lb,
@@ -32,9 +35,8 @@ bool TrajectoryTracker::init(const DMatrix &Q, const DMatrix &R,
   if (!setWeightMatrices(Q, R)) {
     return false;
   }
-  if (!setDynamicMatrices(Ad, Bd, Kd)) {
-    return false;
-  }
+  setDynamicParamsCaster(dynamic_state_matrix_caster,
+                         dynamic_input_matrix_caster, dynamic_vector_caster);
   if (!setEqualityConstraints(A_equal, B_equal, K_equal)) {
     return false;
   }
@@ -46,7 +48,46 @@ bool TrajectoryTracker::init(const DMatrix &Q, const DMatrix &R,
     return false;
   }
 
+  // cast everything need
+  CastProblemToQpForm();
   return true;
+}
+
+bool TrajectoryTracker::solve(DVector &solution) {
+  // instantiate the solver
+  OsqpEigen::Solver solver;
+
+  // settings
+  // solver.settings()->setVerbosity(false);
+  solver.settings()->setWarmStart(true);
+
+  // set the initial data of the QP solver
+  solver.data()->setNumberOfVariables(state_size_ * (horizon_ + 1) +
+                                      input_size_ * horizon_);
+  solver.data()->setNumberOfConstraints(M_.rows());
+  if (!solver.data()->setHessianMatrix(
+          static_cast<Eigen::SparseMatrix<double>>(H_.sparseView())))
+    return 1;
+  if (!solver.data()->setGradient(g_))
+    return 1;
+  if (!solver.data()->setLinearConstraintsMatrix(
+          static_cast<Eigen::SparseMatrix<double>>(M_.sparseView())))
+    return 1;
+  if (!solver.data()->setLowerBound(lb_))
+    return 1;
+  if (!solver.data()->setUpperBound(ub_))
+    return 1;
+
+  // instantiate the solver
+  if (!solver.initSolver())
+    return 1;
+}
+
+void TrajectoryTracker::CastProblemToQpForm() {
+  calcOsqpHession();
+  calcOsqpGradient();
+  calcOsqpConstraintMatrix();
+  calcOsqpConstraintBound();
 }
 void TrajectoryTracker::calcOsqpHession() {
   // weights for state variables
@@ -89,13 +130,17 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
   M_.block(0, 0, state_size_, state_size_).setIdentity();
   // dynamic
   for (size_t i = 0; i < horizon_; ++i) {
+    auto &refer_state = refer_state_seq_.at(i);
+    auto &refer_input = refer_input_seq_.at(i);
     M_.block(nums_of_initial_state + i * state_size_, i * state_size_,
-             state_size_, state_size_) = Ad_;
+             state_size_, state_size_) =
+        DynamicStateMatrixCaster(interval_, refer_state, refer_input);
     M_.block(nums_of_initial_state + i * state_size_, (i + 1) * state_size_,
              state_size_, state_size_) =
         -Eigen::MatrixXd::Identity(state_size_, state_size_);
     M_.block(nums_of_initial_state + i * state_size_,
-             (horizon_ + i + 1) * state_size_, state_size_, input_size_) = Bd_;
+             (horizon_ + i + 1) * state_size_, state_size_, input_size_) =
+        DynamicInputMatrixCaster(interval_, refer_state, refer_input);
   }
   // equality cons
   if (nums_of_equality_cons != 0) {
@@ -164,8 +209,12 @@ void TrajectoryTracker::calcOsqpConstraintBound() {
   ub_.segment(0, state_size_) = init_state_;
   // dynamic cons
   for (size_t i = 0; i < horizon_; ++i) {
-    lb_.segment(nums_of_initial_state + i * state_size_, state_size_) = Kd_;
-    ub_.segment(nums_of_initial_state + i * state_size_, state_size_) = Kd_;
+    auto &refer_state = refer_state_seq_.at(i);
+    auto &refer_input = refer_input_seq_.at(i);
+    lb_.segment(nums_of_initial_state + i * state_size_, state_size_) =
+        -DynamicVectorCaster(interval_, refer_state, refer_input);
+    ub_.segment(nums_of_initial_state + i * state_size_, state_size_) =
+        -DynamicVectorCaster(interval_, refer_state, refer_input);
   }
   // equality cons
   if (nums_of_equality_cons != 0) {
@@ -214,5 +263,4 @@ void TrajectoryTracker::calcOsqpConstraintBound() {
   cons_bd_.col(0) = lb_;
   cons_bd_.col(1) = ub_;
 }
-
 }; // namespace willand_ackermann
