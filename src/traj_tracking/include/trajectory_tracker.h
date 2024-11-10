@@ -1,6 +1,7 @@
 #pragma once
 #include "Eigen/Dense"
 #include "OsqpEigen/OsqpEigen.h"
+#include <Eigen/src/SparseCore/SparseMatrix.h>
 #include <cmath>
 #include <functional>
 #include <limits>
@@ -11,6 +12,7 @@
 namespace willand_ackermann {
 class TrajectoryTracker {
   typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> DMatrix;
+  typedef Eigen::SparseMatrix<double> SparseMatrix;
   typedef Eigen::VectorXd DVector;
   typedef Eigen::Vector2d Point2d;
   typedef Eigen::Vector2d Vector2d;
@@ -45,11 +47,11 @@ private:
   DVector u_ub_;
   // parameters of qp
   int qp_state_size_;
-  DMatrix H_;
+  SparseMatrix H_;
   DVector g_;
-  DMatrix M_; // constraint matrices
+  SparseMatrix M_; // constraint matrices
   DVector lb_, ub_;
-  DMatrix cons_bd_;
+  // DMatrix cons_bd_;
   // std::vector<DMatrix> Ad_seq_;
   // std::vector<DMatrix> Bd_seq_;
   // std::vector<DMatrix> Kd_seq_;
