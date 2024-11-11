@@ -26,10 +26,16 @@ include_directories(
 
 message(STATUS "catkin_INCLUDE_DIRS: ${catkin_INCLUDE_DIRS}")
 
-add_executable(${PROJECT_NAME}_osqp
-  src/traj_tracking_osqp.cpp
+# add_executable(${PROJECT_NAME}_osqp
+#   src/traj_tracking_osqp.cpp
+# )
+# target_link_libraries(traj_tracking_osqp
+#   OsqpEigen::OsqpEigen
+# )
+add_executable(${PROJECT_NAME}
+  src/example.cpp
+  src/trajectory_tracker.cpp
 )
-
-target_link_libraries(traj_tracking_osqp
+target_link_libraries(${PROJECT_NAME}
   OsqpEigen::OsqpEigen
 )

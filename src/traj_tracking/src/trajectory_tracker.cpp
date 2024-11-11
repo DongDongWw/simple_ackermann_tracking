@@ -37,17 +37,9 @@ bool TrajectoryTracker::init(const DMatrix &Q, const DMatrix &R,
   }
   setDynamicParamsCaster(dynamic_state_matrix_caster,
                          dynamic_input_matrix_caster, dynamic_vector_caster);
-  if (!setEqualityConstraints(A_equal, B_equal, K_equal)) {
-    return false;
-  }
-  if (!setInequalityConstraints(A_inequal, B_inequal, K_inequal_lb,
-                                K_inequal_ub)) {
-    return false;
-  }
-  if (!setBoundBoxConstraints(x_lb, x_ub, u_lb, u_ub)) {
-    return false;
-  }
-
+  setEqualityConstraints(A_equal, B_equal, K_equal);
+  setInequalityConstraints(A_inequal, B_inequal, K_inequal_lb, K_inequal_ub);
+  setBoundBoxConstraints(x_lb, x_ub, u_lb, u_ub);
   // cast everything need
   CastProblemToQpForm();
   return true;
@@ -85,6 +77,12 @@ bool TrajectoryTracker::solve(DVector &solution) {
   if (!solver.initSolver()) {
     return false;
   }
+  if (solver.solveProblem() != OsqpEigen::ErrorExitFlag::NoError) {
+    std::cout << "Osqp solver inner error" << std::endl;
+    return false;
+  }
+  // get the controller input
+  solution = solver.getSolution();
 
   return true;
 }

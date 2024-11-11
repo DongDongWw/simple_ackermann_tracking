@@ -5,12 +5,15 @@
 #include <cmath>
 #include <functional>
 #include <limits>
+#include <memory>
 #include <vector>
 
 #define kEps 2.22507e-308
 
 namespace willand_ackermann {
 class TrajectoryTracker {
+public:
+  typedef std::unique_ptr<TrajectoryTracker> UniquePtr;
   typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> DMatrix;
   typedef Eigen::SparseMatrix<double> SparseMatrix;
   typedef Eigen::VectorXd DVector;
@@ -94,58 +97,58 @@ private:
     DynamicVectorCaster = dynamic_vector_caster;
   }
 
-  inline bool setEqualityConstraints(const DMatrix &A, const DMatrix &B,
+  inline void setEqualityConstraints(const DMatrix &A, const DMatrix &B,
                                      const DVector &K) {
-    if (A.rows() == 0 || A.cols() == 0 || B.rows() == 0 || B.cols() == 0 ||
-        K.rows() == 0) {
-      std::cout << "Invalid equality constraints matrix or vector" << std::endl;
-      return false;
-    }
-    if (A.rows() != B.rows() || A.cols() != state_size_ ||
-        B.cols() != input_size_ || K.rows() != A.rows()) {
-      std::cout << "Invalid size of equality constraints matrix or vector"
-                << std::endl;
-      return false;
-    }
+    // if (A.rows() == 0 || A.cols() == 0 || B.rows() == 0 || B.cols() == 0 ||
+    //     K.rows() == 0) {
+    //   std::cout << "Empty equality constraints matrix or vector" <<
+    //   std::endl; return false;
+    // }
+    // if (A.rows() != B.rows() || A.cols() != state_size_ ||
+    //     B.cols() != input_size_ || K.rows() != A.rows()) {
+    //   std::cout << "Invalid size of equality constraints matrix or vector"
+    //             << std::endl;
+    //   return false;
+    // }
     A_equal_ = A;
     B_equal_ = B;
     K_equal_ = K;
-    return true;
+    // return true;
   }
 
-  inline bool setInequalityConstraints(const DMatrix &A, const DMatrix &B,
+  inline void setInequalityConstraints(const DMatrix &A, const DMatrix &B,
                                        const DVector &lb, const DVector &ub) {
-    if (A.rows() == 0 || A.cols() == 0 || B.rows() == 0 || B.cols() == 0 ||
-        lb.rows() == 0 || ub.rows() == 0) {
-      std::cout << "Invalid inequality constraints matrix or vector"
-                << std::endl;
-      return false;
-    }
-    if (A.rows() != B.rows() || A.rows() != lb.rows() ||
-        A.rows() != ub.rows() || A.cols() != state_size_ ||
-        B.cols() != input_size_) {
-      std::cout << "Invalid size of inequality constraints matrix or vector"
-                << std::endl;
-      return false;
-    }
+    // if (A.rows() == 0 || A.cols() == 0 || B.rows() == 0 || B.cols() == 0 ||
+    //     lb.rows() == 0 || ub.rows() == 0) {
+    //   std::cout << "Invalid inequality constraints matrix or vector"
+    //             << std::endl;
+    //   return false;
+    // }
+    // if (A.rows() != B.rows() || A.rows() != lb.rows() ||
+    //     A.rows() != ub.rows() || A.cols() != state_size_ ||
+    //     B.cols() != input_size_) {
+    //   std::cout << "Invalid size of inequality constraints matrix or vector"
+    //             << std::endl;
+    //   return false;
+    // }
     A_inequal_ = A;
     B_inequal_ = B;
     K_inequal_lb_ = lb;
     K_inequal_ub_ = ub;
-    return true;
+    // return true;
   }
-  inline bool setBoundBoxConstraints(const DVector &x_lb, const DVector &x_ub,
+  inline void setBoundBoxConstraints(const DVector &x_lb, const DVector &x_ub,
                                      const DVector &u_lb, const DVector &u_ub) {
-    if (x_lb.size() != state_size_ || x_ub.size() != state_size_ ||
-        u_lb.size() != input_size_ || u_ub.size() != input_size_) {
-      std::cout << "Invalid size of bounding box vector" << std::endl;
-      return false;
-    }
+    // if (x_lb.size() != state_size_ || x_ub.size() != state_size_ ||
+    //     u_lb.size() != input_size_ || u_ub.size() != input_size_) {
+    //   std::cout << "Invalid size of bounding box vector" << std::endl;
+    //   return false;
+    // }
     x_lb_ = x_lb;
     x_ub_ = x_ub;
     u_lb_ = u_lb;
     u_ub_ = u_ub;
-    return true;
+    // return true;
   }
 
   inline bool setReferenceTrajectory(const Trajectory2D &refer_traj) {
@@ -153,8 +156,8 @@ private:
       std::cout << "Invalid reference trajectory" << std::endl;
       return false;
     }
-    // given a 2-d trajectory, calculate the reference states and inputs
 
+    // given a 2-d trajectory, calculate the reference states and inputs
     // calculate reference states: (x, y, theta and velocity)
     refer_state_seq_.clear();
     refer_state_seq_.reserve(horizon_ + 1);

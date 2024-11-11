@@ -4,8 +4,8 @@
 ### 1.1 控制变量 & 状态变量
 $$
 \begin{align*}
-& \mathbf{x} = (x, y, v, \theta) \\
-& \mathbf{u} = (a, \omega)
+& \mathbf{x} = (x, y, \theta, v) \\
+& \mathbf{u} = (\omega, a)
 \end{align*}
 $$
 ### 1.2 MPC范式
@@ -15,11 +15,11 @@ $$
   - 不等式约束：速度范围，加速度范围，左右前轮转角范围
 $$
 \begin{align*}
-& \mathbf{J} = (x_N-x_{r,N})^TP_N(x_N-x_{r,N}) + \sum_{i=0}^{N-1}{\{(x_i-x_{r,i})^TP_i(x_i-x_{r,i})+u_i^TQ_iu_i\}} \\
+& \mathbf{J} = (x_N-x_{r,N})^TQ_N(x_N-x_{r,N}) + \sum_{i=0}^{N-1}{\{(x_i-x_{r,i})^TQ_i(x_i-x_{r,i})+u_i^TR_iu_i\}} \\
 & \begin{align*}
     \mathrm{s.t.} &\\
     &\begin{align}
-        & \qquad \begin{bmatrix} \dot{x} \\ \dot{y} \\ \dot{v} \\ \dot{\theta} \end{bmatrix} = \begin{bmatrix} v\cos{\theta} \\ v\sin{\theta} \\ a \\ \omega \end{bmatrix} \hspace{4cm} \\
+        & \qquad \begin{bmatrix} \dot{x} \\ \dot{y} \\ \dot{\theta} \\ \dot{v} \end{bmatrix} = \begin{bmatrix} v\cos{\theta} \\ v\sin{\theta} \\ \omega \\ a\end{bmatrix} \hspace{4cm} \\
         & \qquad \tan{\varphi_l} = \frac{2\omega l}{2v-b\omega} \\
         & \qquad \tan{\varphi_r} = \frac{2\omega l}{2v+b\omega} \\
         & \qquad l_{left} \le \tan{\varphi_l} \le u_{left} \\
@@ -40,15 +40,15 @@ $$
  \Delta{t}(f(x_{r,k}, u_{r,k}) - \frac{\partial{f}}{\partial{x}}^Tx_{r,k}-\frac{\partial{f}}{\partial{u}}^Tu_{r,k}) \\
 & \frac{\partial{f}}{\partial{x}} =
 \begin{bmatrix}
-1 & 0 & 0 & 0 \\
-0 & 1 & 0 & 0 \\
--\Delta{t}v_{r,k}\sin{\theta_{r,k}} & \Delta{t}v_{r,k}\cos{\theta_{r,k}} & 1 & 0 \\
-\Delta{t}\cos{\theta_{t,k}} & \Delta{t}\sin{\theta_{t,k}} & 0 & 1
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0 \\
+-v_{r,k}\sin{\theta_{r,k}} & v_{r,k}\cos{\theta_{r,k}} & 0 & 0 \\
+\cos{\theta_{t,k}} & \sin{\theta_{t,k}} & 0 & 0
 \end{bmatrix} \\
 & \frac{\partial{f}}{\partial{u}} =
 \begin{bmatrix}
-0 & 0 & \Delta{t} & 0 \\
-0 & 0 & 0 & \Delta{t}
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
 \end{bmatrix}
 \end{align*}
 $$
@@ -56,16 +56,16 @@ $$
 $$
 \begin{align*}
 \begin{bmatrix}
-0 & 0 & 0 & 2l_{left} \\
-0 & 0 & 0 & -2u_{left} \\
-0 & 0 & 0 & 2l_{right} \\
-0 & 0 & 0 & -2u_{right} \\
+0 & 0 & 0 & -2\tan{\varphi} \\
+0 & 0 & 0 & -2\tan{\varphi} \\
+0 & 0 & 0 & -2\tan{\varphi} \\
+0 & 0 & 0 & -2\tan{\varphi} \\
 \end{bmatrix} \mathrm{x_k} +
 \begin{bmatrix}
--(2l_{left}+bl_{left}) & 0 \\
-(2u_{left}+bu_{left}) & 0 \\
--(2l_{right}-bl_{right}) & 0 \\
-(2u_{right}-bu_{right}) & 0 \\
+-(2l-b\tan{\varphi}) & 0 \\
+(2l+b\tan{\varphi}) & 0 \\
+-(2l+b\tan{\varphi}) & 0 \\
+(2l-b\tan{\varphi}) & 0 \\
 \end{bmatrix}\mathrm{u_k} \le 0
 \end{align*}
 $$
