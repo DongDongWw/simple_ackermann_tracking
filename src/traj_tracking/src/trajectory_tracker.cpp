@@ -347,7 +347,7 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   }
 
   // given a 2-d trajectory, calculate the reference states and inputs
-  // calculate reference states: (x, y, theta and velocity)
+  // calculate reference states: (x, y, theta)
   refer_state_seq_.clear();
   refer_state_seq_.reserve(param_.horizon_ + 1);
   refer_state_seq_.resize(param_.horizon_ + 1);
@@ -361,25 +361,27 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     refer_state(2) = delta_x > 0 ? refer_state(2)
                                  : delta_y > 0 ? refer_state(2) + M_PI
                                                : refer_state(2) - M_PI;
-    refer_state(3) =
-        std::sqrt(delta_x * delta_x + delta_y * delta_y) / param_.interval_;
   }
   auto &refer_state = refer_state_seq_.back();
   refer_state.resize(param_.state_size_);
   refer_state.segment(0, 2) = refer_traj.back();
-  refer_state.segment(2, 2) =
-      refer_state_seq_.at(param_.horizon_ - 1).segment(2, 2);
+  refer_state(2) = refer_state_seq_.at(param_.horizon_ - 1)(2);
 
-  // calculate approximate inputs: omega and accelaration
+  // calculate approximate inputs: v and omega
   refer_input_seq_.clear();
   refer_input_seq_.reserve(param_.horizon_);
   refer_input_seq_.resize(param_.horizon_);
+  for (size_t i = 0; i < param_.horizon_; ++i) {
+    auto &refer_input = refer_input_seq_.at(i);
+    double delta_x = refer_traj.at(i + 1)(0) - refer_traj.at(i)(0);
+    double delta_y = refer_traj.at(i + 1)(1) - refer_traj.at(i)(1);
+    double v =
+        std::sqrt(delta_x * delta_x + delta_y * delta_y) / param_.interval_;
+    refer_input.resize(param_.input_size_);
+    refer_input(0) = v;
+  }
   for (size_t i = 1; i < param_.horizon_; ++i) {
     auto &refer_input = refer_input_seq_.at(i);
-    double acc = (refer_state_seq_.at(i + 1)(3) - refer_state_seq_.at(i)(3)) /
-                 param_.interval_;
-    refer_input.resize(param_.input_size_);
-    refer_input(1) = acc;
     // calculate curvature by three points, assume moving along a circle path
     // in a short distance
     Point2d A = refer_state_seq_.at(i - 1).segment<2>(0);
@@ -389,11 +391,11 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     double angle_included =
         std::acos(ab.dot(ac) / (ab.norm() * ac.norm() + kEps));
     double radius = std::abs(bc.norm() / 2 / std::sin(angle_included));
-    double omega = refer_state_seq_.at(i)(3) / radius;
-    refer_input(0) = omega;
+    double omega = refer_input_seq_.at(i)(0) / radius;
+    refer_input(1) = omega;
   }
   // the first input vector is not yet be calculated
-  refer_input_seq_.front() = refer_input_seq_.at(1);
+  refer_input_seq_.front()(1) = refer_input_seq_.at(1)(1);
   return true;
 }
 void TrajectoryTracker::addUserCustomizedConstraints(

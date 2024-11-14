@@ -14,10 +14,10 @@
 using namespace willand_ackermann;
 
 int main() {
-  const int horizon = 20;                                   // duration = 4 secs
+  const int horizon = 40;                                   // duration = 8 secs
   const double interval = 0.2;                              // unit, sec
-  const int state_size = 4;                                 // (x, y, theta, v)
-  const int input_size = 2;                                 // (omega, acc)
+  const int state_size = 3;                                 // (x, y, theta)
+  const int input_size = 2;                                 // (v, omega)
   constexpr double speed_limit = 2.0;                       // unit, m
   constexpr double acc_limit = 2.0;                         // unit, m
   constexpr double front_wheel_angle_limit = M_PI / 4;      // unit, rad
@@ -47,28 +47,26 @@ int main() {
 
   Q.resize(state_size, state_size);
   R.resize(input_size, input_size);
-  Q << 10, 0, 0, 0, 0, 10, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1;
+  Q << 10, 0, 0, 0, 10, 0, 0, 0, 10;
   R << 1, 0, 0, 1;
   std::cout << Q << std::endl;
   std::cout << R << std::endl;
   A_inequal.resize(4, state_size);
   B_inequal.resize(4, input_size);
-  A_inequal << 0, 0, 0, -2 * std::tan(front_wheel_angle_limit), 0, 0, 0,
-      -2 * std::tan(front_wheel_angle_limit), 0, 0, 0,
-      -2 * std::tan(front_wheel_angle_limit), 0, 0, 0,
-      -2 * std::tan(front_wheel_angle_limit);
-  B_inequal << -(2 * dist_front_to_rear -
-                 track_width * std::tan(front_wheel_angle_limit)),
-      0,
+  A_inequal.setZero();
+  B_inequal << -2 * std::tan(front_wheel_angle_limit),
+      -(2 * dist_front_to_rear -
+        track_width * std::tan(front_wheel_angle_limit)),
+      -2 * std::tan(front_wheel_angle_limit),
       (2 * dist_front_to_rear +
        track_width * std::tan(front_wheel_angle_limit)),
-      0,
+      -2 * std::tan(front_wheel_angle_limit),
       -(2 * dist_front_to_rear +
         track_width * std::tan(front_wheel_angle_limit)),
-      0,
+      -2 * std::tan(front_wheel_angle_limit),
       (2 * dist_front_to_rear -
-       track_width * std::tan(front_wheel_angle_limit)),
-      0;
+       track_width * std::tan(front_wheel_angle_limit));
+
   K_inequal_lb.resize(4);
   K_inequal_lb.setConstant(-std::numeric_limits<double>::infinity());
   K_inequal_ub.resize(4);
@@ -77,16 +75,16 @@ int main() {
   x_lb.resize(state_size);
   x_ub.resize(state_size);
   x_lb << -std::numeric_limits<double>::infinity(),
-      -std::numeric_limits<double>::infinity(), -M_PI, -speed_limit;
+      -std::numeric_limits<double>::infinity(), -M_PI;
   x_ub << +std::numeric_limits<double>::infinity(),
-      +std::numeric_limits<double>::infinity(), +M_PI, speed_limit;
+      +std::numeric_limits<double>::infinity(), +M_PI;
   u_lb.resize(input_size);
   u_ub.resize(input_size);
-  u_lb << -std::numeric_limits<double>::infinity(), -acc_limit;
-  u_ub << std::numeric_limits<double>::infinity(), acc_limit;
+  u_lb << -speed_limit, -std::numeric_limits<double>::infinity();
+  u_ub << speed_limit, std::numeric_limits<double>::infinity();
 
   init_state.resize(state_size);
-  init_state << 5, 0, M_PI_2, 0;
+  init_state << 0.0, 0.0, 0.0;
   // funciton mapping parameters to discrete linear matrix
   auto dynamic_state_matrix_caster =
       [](const TrackerParam &param, const TrajectoryTracker::DVector &x_refer,
@@ -95,11 +93,10 @@ int main() {
     int state_size = param.state_size_;
     int input_size = param.input_size_;
     double interval = param.interval_;
-    double theta = x_refer(2), v = x_refer(3);
+    double theta = x_refer(2), v = u_refer(0);
     TrajectoryTracker::DMatrix partial_x;
     partial_x.resize(state_size, state_size);
-    partial_x << 0, 0, 0, 0, 0, 0, 0, 0, -v * std::sin(theta),
-        v * std::cos(theta), 0, 0, std::cos(theta), std::sin(theta), 0, 0;
+    partial_x << 0, 0, 0, 0, 0, 0, -v * std::sin(theta), v * std::cos(theta), 0;
     return Eigen::MatrixXd::Identity(state_size, state_size) +
            interval * partial_x.transpose();
   };
@@ -111,9 +108,10 @@ int main() {
     int state_size = param.state_size_;
     int input_size = param.input_size_;
     double interval = param.interval_;
+    double theta = x_refer(2), v = u_refer(0);
     TrajectoryTracker::DMatrix partial_u;
     partial_u.resize(input_size, state_size);
-    partial_u << 0, 0, 1, 0, 0, 0, 0, 1;
+    partial_u << std::cos(theta), std::sin(theta), 0, 0, 0, 1;
     return interval * partial_u.transpose();
   };
 
@@ -124,16 +122,13 @@ int main() {
     int state_size = param.state_size_;
     int input_size = param.input_size_;
     double interval = param.interval_;
-    double theta = x_refer(2), v = x_refer(3), omege = u_refer(0),
-           acc = u_refer(1);
+    double theta = x_refer(2), v = u_refer(0), omega = u_refer(1);
     TrajectoryTracker::DVector x_dot(state_size);
     TrajectoryTracker::DMatrix partial_x(state_size, state_size);
     TrajectoryTracker::DMatrix partial_u(input_size, state_size);
-
-    x_dot << v * std::cos(theta), v * std::sin(theta), omege, acc;
-    partial_x << 0, 0, 0, 0, 0, 0, 0, 0, -v * std::sin(theta),
-        v * std::cos(theta), 0, 0, std::cos(theta), std::sin(theta), 0, 0;
-    partial_u << 0, 0, 1, 0, 0, 0, 0, 1;
+    x_dot << v * std::cos(theta), v * std::sin(theta), omega;
+    partial_x << 0, 0, 0, 0, 0, 0, -v * std::sin(theta), v * std::cos(theta), 0;
+    partial_u << std::cos(theta), std::sin(theta), 0, 0, 0, 1;
     return interval * (x_dot - partial_x.transpose() * x_refer -
                        partial_u.transpose() * u_refer);
   };
@@ -153,8 +148,8 @@ int main() {
     for (size_t i = 0; i < horizon - 1; ++i) {
       TrajectoryTracker::DVector left_cons(qp_state_size);
       left_cons.setZero();
-      double v_0 = x_refer.at(i)(3), v_1 = x_refer.at(i + 1)(3),
-             omega_0 = u_refer.at(i)(0), omega_1 = u_refer.at(i + 1)(0);
+      double v_0 = u_refer.at(i)(0), v_1 = u_refer.at(i + 1)(0),
+             omega_0 = u_refer.at(i)(1), omega_1 = u_refer.at(i + 1)(1);
       double g_0 = (2 * dist_front_to_rear * omega_0) /
                    (2 * v_0 - track_width * omega_0),
              g_1 = (2 * dist_front_to_rear * omega_1) /
@@ -163,9 +158,9 @@ int main() {
                              std::pow(2 * v_0 - track_width * omega_0, 2),
              partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
                              std::pow(2 * v_1 - track_width * omega_1, 2),
-             partial_g_omege_0 = (4 * dist_front_to_rear * v_0) /
+             partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
                                  std::pow(2 * v_0 - track_width * omega_0, 2),
-             partial_g_omege_1 = (4 * dist_front_to_rear * v_1) /
+             partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
                                  std::pow(2 * v_1 - track_width * omega_1, 2);
       double partial_h_v_0 =
                  (std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
@@ -173,25 +168,26 @@ int main() {
              partial_h_v_1 =
                  (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_0 =
-                 (std::pow(g_1, 2) * partial_g_omege_0 + partial_g_omege_0) /
+             partial_h_omega_0 =
+                 (std::pow(g_1, 2) * partial_g_omega_0 + partial_g_omega_0) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_1 =
-                 (std::pow(g_0, 2) * partial_g_omege_1 + partial_g_omege_1) /
+             partial_h_omega_1 =
+                 (std::pow(g_0, 2) * partial_g_omega_1 + partial_g_omega_1) /
                  std::pow(1 + g_1 * g_0, 2);
-      left_cons(i * state_size + 3) = partial_h_v_0;
-      left_cons((i + 1) * state_size + 3) = partial_h_v_1;
-      left_cons((horizon + 1) * state_size + i * input_size + 0) =
-          partial_g_omege_0;
-      left_cons((horizon + 1) * state_size + (i + 1) * input_size + 0) =
-          partial_g_omege_1;
+      left_cons((horizon + 1) * state_size + i * input_size) = partial_h_v_0;
+      left_cons((horizon + 1) * state_size + (i + 1) * input_size) =
+          partial_h_v_0;
+      left_cons((horizon + 1) * state_size + i * input_size + 1) =
+          partial_h_omega_0;
+      left_cons((horizon + 1) * state_size + (i + 1) * input_size + 1) =
+          partial_h_omega_0;
       P.row(2 * i) = left_cons.transpose();
     }
     for (size_t i = 0; i < horizon - 1; ++i) {
       TrajectoryTracker::DVector right_cons(qp_state_size);
       right_cons.setZero();
-      double v_0 = x_refer.at(i)(3), v_1 = x_refer.at(i + 1)(3),
-             omega_0 = u_refer.at(i)(0), omega_1 = u_refer.at(i + 1)(0);
+      double v_0 = u_refer.at(i)(0), v_1 = u_refer.at(i + 1)(0),
+             omega_0 = u_refer.at(i)(1), omega_1 = u_refer.at(i + 1)(1);
       double g_0 = (2 * dist_front_to_rear * omega_0) /
                    (2 * v_0 + track_width * omega_0),
              g_1 = (2 * dist_front_to_rear * omega_1) /
@@ -200,9 +196,9 @@ int main() {
                              std::pow(2 * v_0 + track_width * omega_0, 2),
              partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
                              std::pow(2 * v_1 + track_width * omega_1, 2),
-             partial_g_omege_0 = (4 * dist_front_to_rear * v_0) /
+             partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
                                  std::pow(2 * v_0 + track_width * omega_0, 2),
-             partial_g_omege_1 = (4 * dist_front_to_rear * v_1) /
+             partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
                                  std::pow(2 * v_1 + track_width * omega_1, 2);
       double partial_h_v_0 =
                  (std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
@@ -210,18 +206,19 @@ int main() {
              partial_h_v_1 =
                  (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_0 =
-                 (std::pow(g_1, 2) * partial_g_omege_0 + partial_g_omege_0) /
+             partial_h_omega_0 =
+                 (std::pow(g_1, 2) * partial_g_omega_0 + partial_g_omega_0) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_1 =
-                 (std::pow(g_0, 2) * partial_g_omege_1 + partial_g_omege_1) /
+             partial_h_omega_1 =
+                 (std::pow(g_0, 2) * partial_g_omega_1 + partial_g_omega_1) /
                  std::pow(1 + g_1 * g_0, 2);
-      right_cons(i * state_size + 3) = partial_h_v_0;
-      right_cons((i + 1) * state_size + 3) = partial_h_v_1;
-      right_cons((horizon + 1) * state_size + i * input_size + 0) =
-          partial_g_omege_0;
-      right_cons((horizon + 1) * state_size + (i + 1) * input_size + 0) =
-          partial_g_omege_1;
+      right_cons((horizon + 1) * state_size + i * input_size) = partial_h_v_0;
+      right_cons((horizon + 1) * state_size + (i + 1) * input_size) =
+          partial_h_v_0;
+      right_cons((horizon + 1) * state_size + i * input_size + 1) =
+          partial_h_omega_0;
+      right_cons((horizon + 1) * state_size + (i + 1) * input_size + 1) =
+          partial_h_omega_0;
       P.row(2 * i + 1) = right_cons.transpose();
     }
     return P;
@@ -239,8 +236,8 @@ int main() {
         front_wheel_angle_rate_limit = param.front_wheel_angle_rate_limit_,
         qp_state_size = state_size * (horizon + 1) + input_size * horizon;
     for (size_t i = 0; i < horizon - 1; ++i) {
-      double v_0 = x_refer.at(i)(3), v_1 = x_refer.at(i + 1)(3),
-             omega_0 = u_refer.at(i)(0), omega_1 = u_refer.at(i + 1)(0);
+      double v_0 = u_refer.at(i)(0), v_1 = u_refer.at(i + 1)(0),
+             omega_0 = u_refer.at(i)(1), omega_1 = u_refer.at(i + 1)(1);
       double g_0 = (2 * dist_front_to_rear * omega_0) /
                    (2 * v_0 - track_width * omega_0),
              g_1 = (2 * dist_front_to_rear * omega_1) /
@@ -249,9 +246,9 @@ int main() {
                              std::pow(2 * v_0 - track_width * omega_0, 2),
              partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
                              std::pow(2 * v_1 - track_width * omega_1, 2),
-             partial_g_omege_0 = (4 * dist_front_to_rear * v_0) /
+             partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
                                  std::pow(2 * v_0 - track_width * omega_0, 2),
-             partial_g_omege_1 = (4 * dist_front_to_rear * v_1) /
+             partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
                                  std::pow(2 * v_1 - track_width * omega_1, 2);
       double partial_h_v_0 =
                  (std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
@@ -259,21 +256,21 @@ int main() {
              partial_h_v_1 =
                  (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_0 =
-                 (std::pow(g_1, 2) * partial_g_omege_0 + partial_g_omege_0) /
+             partial_h_omega_0 =
+                 (std::pow(g_1, 2) * partial_g_omega_0 + partial_g_omega_0) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_1 =
-                 (std::pow(g_0, 2) * partial_g_omege_1 + partial_g_omege_1) /
+             partial_h_omega_1 =
+                 (std::pow(g_0, 2) * partial_g_omega_1 + partial_g_omega_1) /
                  std::pow(1 + g_1 * g_0, 2);
       double k = (g_1 - g_0) / (1 + g_1 * g_0) - partial_h_v_0 * v_0 -
-                 partial_h_v_1 * v_1 - partial_h_omege_0 * omega_0 -
-                 partial_h_omege_1 * omega_1;
+                 partial_h_v_1 * v_1 - partial_h_omega_0 * omega_0 -
+                 partial_h_omega_1 * omega_1;
       bound(2 * i, 0) = -std::tan(interval * front_wheel_angle_rate_limit) - k;
       bound(2 * i, 1) = std::tan(interval * front_wheel_angle_rate_limit) - k;
     }
     for (size_t i = 0; i < horizon - 1; ++i) {
-      double v_0 = x_refer.at(i)(3), v_1 = x_refer.at(i + 1)(3),
-             omega_0 = u_refer.at(i)(0), omega_1 = u_refer.at(i + 1)(0);
+      double v_0 = u_refer.at(i)(0), v_1 = u_refer.at(i + 1)(0),
+             omega_0 = u_refer.at(i)(1), omega_1 = u_refer.at(i + 1)(1);
       double g_0 = (2 * dist_front_to_rear * omega_0) /
                    (2 * v_0 + track_width * omega_0),
              g_1 = (2 * dist_front_to_rear * omega_1) /
@@ -282,9 +279,9 @@ int main() {
                              std::pow(2 * v_0 + track_width * omega_0, 2),
              partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
                              std::pow(2 * v_1 + track_width * omega_1, 2),
-             partial_g_omege_0 = (4 * dist_front_to_rear * v_0) /
+             partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
                                  std::pow(2 * v_0 + track_width * omega_0, 2),
-             partial_g_omege_1 = (4 * dist_front_to_rear * v_1) /
+             partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
                                  std::pow(2 * v_1 + track_width * omega_1, 2);
       double partial_h_v_0 =
                  (std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
@@ -292,19 +289,49 @@ int main() {
              partial_h_v_1 =
                  (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_0 =
-                 (std::pow(g_1, 2) * partial_g_omege_0 + partial_g_omege_0) /
+             partial_h_omega_0 =
+                 (std::pow(g_1, 2) * partial_g_omega_0 + partial_g_omega_0) /
                  std::pow(1 + g_1 * g_0, 2),
-             partial_h_omege_1 =
-                 (std::pow(g_0, 2) * partial_g_omege_1 + partial_g_omege_1) /
+             partial_h_omega_1 =
+                 (std::pow(g_0, 2) * partial_g_omega_1 + partial_g_omega_1) /
                  std::pow(1 + g_1 * g_0, 2);
       double k = (g_1 - g_0) / (1 + g_1 * g_0) - partial_h_v_0 * v_0 -
-                 partial_h_v_1 * v_1 - partial_h_omege_0 * omega_0 -
-                 partial_h_omege_1 * omega_1;
+                 partial_h_v_1 * v_1 - partial_h_omega_0 * omega_0 -
+                 partial_h_omega_1 * omega_1;
       bound(2 * i + 1, 0) =
           -std::tan(interval * front_wheel_angle_rate_limit) - k;
       bound(2 * i + 1, 1) =
           std::tan(interval * front_wheel_angle_rate_limit) - k;
+    }
+    return bound;
+  };
+  auto accelerate_cons_matrix_caster =
+      [](const TrackerParam &param,
+         const TrajectoryTracker::TrajectoryXD &x_refer,
+         const TrajectoryTracker::TrajectoryXD &u_refer)
+      -> TrajectoryTracker::DMatrix {
+    TrajectoryTracker::DMatrix P;
+    int state_size = param.state_size_, input_size = param.input_size_,
+        qp_state_size = state_size * (horizon + 1) + input_size * horizon;
+    P.resize(horizon - 1, qp_state_size);
+    P.setZero();
+    for (size_t i = 0; i < horizon - 1; ++i) {
+      P(i, (horizon + 1) * state_size + i * input_size) = -1;
+      P(i, (horizon + 1) * state_size + (i + 1) * input_size) = 1;
+    }
+    return P;
+  };
+  auto accelerate_cons_bound_caster =
+      [](const TrackerParam &param,
+         const TrajectoryTracker::TrajectoryXD &x_refer,
+         const TrajectoryTracker::TrajectoryXD &u_refer)
+      -> TrajectoryTracker::DMatrix {
+    TrajectoryTracker::DMatrix bound;
+    bound.resize(horizon - 1, 2);
+    bound.setZero();
+    for (size_t i = 0; i < horizon - 1; ++i) {
+      bound(i, 0) = -param.acc_limit_ * param.interval_;
+      bound(i, 1) = param.acc_limit_ * param.interval_;
     }
     return bound;
   };
@@ -318,7 +345,6 @@ int main() {
     double x = radius * std::cos(angle), y = radius * std::sin(angle);
     auto &refer_state = refer_traj.at(i);
     refer_state << x, y;
-    // refer_state << 5, 5;
   }
 
   TrajectoryTracker::UniquePtr traj_tracker =
@@ -330,6 +356,8 @@ int main() {
                      init_state, refer_traj);
   traj_tracker->addUserCustomizedConstraints(steer_rate_cons_matrix_caster,
                                              steer_rate_cons_bound_caster);
+  traj_tracker->addUserCustomizedConstraints(accelerate_cons_matrix_caster,
+                                             accelerate_cons_bound_caster);
   TrajectoryTracker::DVector solution;
   traj_tracker->solve(solution);
 
@@ -344,7 +372,7 @@ int main() {
               << ", planning state = " << x.transpose().format(CleanFmt)
               << ", error = " << dist << std::endl;
   }
-  traj_tracker->printRefereceStateSeq();
+  // traj_tracker->printRefereceStateSeq();
   // traj_tracker->printRefereceInputSeq();
   // traj_tracker->printOsqpMatrices();
 }
