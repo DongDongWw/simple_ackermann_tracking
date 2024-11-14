@@ -327,8 +327,9 @@ int main() {
                      dynamic_input_matrix_caster, dynamic_vector_caster,
                      A_equal, B_equal, K_equal, A_inequal, B_inequal,
                      K_inequal_lb, K_inequal_ub, x_lb, x_ub, u_lb, u_ub,
-                     steer_rate_cons_matrix_caster,
-                     steer_rate_cons_bound_caster, init_state, refer_traj);
+                     init_state, refer_traj);
+  traj_tracker->addUserCustomizedConstraints(steer_rate_cons_matrix_caster,
+                                             steer_rate_cons_bound_caster);
   TrajectoryTracker::DVector solution;
   traj_tracker->solve(solution);
 
