@@ -75,9 +75,11 @@ int main() {
   x_lb.resize(state_size);
   x_ub.resize(state_size);
   x_lb << -std::numeric_limits<double>::infinity(),
-      -std::numeric_limits<double>::infinity(), -M_PI;
+      -std::numeric_limits<double>::infinity(),
+      -std::numeric_limits<double>::infinity();
   x_ub << +std::numeric_limits<double>::infinity(),
-      +std::numeric_limits<double>::infinity(), +M_PI;
+      +std::numeric_limits<double>::infinity(),
+      +std::numeric_limits<double>::infinity();
   u_lb.resize(input_size);
   u_ub.resize(input_size);
   u_lb << -speed_limit, -std::numeric_limits<double>::infinity();
@@ -372,7 +374,7 @@ int main() {
               << ", planning state = " << x.transpose().format(CleanFmt)
               << ", error = " << dist << std::endl;
   }
-  // traj_tracker->printRefereceStateSeq();
-  // traj_tracker->printRefereceInputSeq();
+//   traj_tracker->printRefereceStateSeq();
+//   traj_tracker->printRefereceInputSeq();
   // traj_tracker->printOsqpMatrices();
 }
