@@ -47,8 +47,8 @@ int main() {
 
   Q.resize(state_size, state_size);
   R.resize(input_size, input_size);
-  Q << 10, 0, 0, 0, 10, 0, 0, 0, 10;
-  R << 1, 0, 0, 1;
+  Q << 100, 0, 0, 0, 100, 0, 0, 0, 1;
+  R << 0.1, 0, 0, 0.1;
   std::cout << Q << std::endl;
   std::cout << R << std::endl;
   A_inequal.resize(4, state_size);
@@ -374,7 +374,7 @@ int main() {
               << ", planning state = " << x.transpose().format(CleanFmt)
               << ", error = " << dist << std::endl;
   }
-//   traj_tracker->printRefereceStateSeq();
-//   traj_tracker->printRefereceInputSeq();
+  // traj_tracker->printRefereceStateSeq();
+  // traj_tracker->printRefereceInputSeq();
   // traj_tracker->printOsqpMatrices();
 }

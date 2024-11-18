@@ -393,11 +393,16 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     Point2d B = refer_state_seq_.at(i).segment<2>(0);
     Point2d C = refer_state_seq_.at(i + 1).segment<2>(0);
     Vector2d ab = B - A, ac = C - A, bc = C - B;
-    double angle_included =
-        std::acos(ab.dot(ac) / (ab.norm() * ac.norm() + kEps));
-    double radius = std::abs(bc.norm() / 2 / std::sin(angle_included));
-    double omega = refer_input_seq_.at(i)(0) / radius;
-    refer_input(1) = omega;
+    if (ab.norm() > 1e-6 && ac.norm() > 1e-6) {
+      double angle_included =
+          std::acos(ab.dot(ac) / (ab.norm() * ac.norm() + kEps));
+      double radius =
+          std::abs(bc.norm() / (2 * std::sin(angle_included) + kEps));
+      double omega = refer_input_seq_.at(i)(0) / radius;
+      refer_input(1) = omega;
+    } else {
+      refer_input(1) = 0.0;
+    }
   }
   // the first input vector is not yet be calculated
   refer_input_seq_.front()(1) = refer_input_seq_.at(1)(1);
