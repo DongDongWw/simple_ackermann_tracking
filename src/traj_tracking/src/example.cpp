@@ -20,8 +20,8 @@ int main() {
   const int input_size = 2;                                 // (v, omega)
   constexpr double speed_limit = 2.0;                       // unit, m / s
   constexpr double acc_limit = 2.0;                         // unit, m / s^2
-  constexpr double front_wheel_angle_limit = M_PI / 2;      // unit, rad
-  constexpr double front_wheel_angle_rate_limit = M_PI / 2; // unit, rad per sec
+  constexpr double front_wheel_angle_limit = M_PI / 3;      // unit, rad
+  constexpr double front_wheel_angle_rate_limit = M_PI / 4; // unit, rad per sec
   constexpr double track_width = 0.5;                       // unit, m
   constexpr double dist_front_to_rear = 0.8;                // unit, m
   TrackerParam param(horizon, interval, state_size, input_size, speed_limit,
@@ -41,7 +41,7 @@ int main() {
   }
   // initial state
   TrajectoryTracker::DVector init_state(state_size);
-  init_state << 5.0, 0.0, 0.0;
+  init_state << 5.0, 0.0, M_PI / 2;
   // initialize trajectory tracker
   TrajectoryTracker::UniquePtr traj_tracker =
       std::make_unique<TrajectoryTracker>(param);

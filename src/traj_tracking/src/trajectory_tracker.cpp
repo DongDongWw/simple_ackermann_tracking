@@ -49,11 +49,11 @@ bool TrajectoryTracker::init(const DVector &init_state,
     return false;
   }
   setWeightMatrices();
-  // setGeneralEqualityConstraints();
-  // setGeneralInequalityConstraints();
-  // setGeneralBoundBoxConstraints();
-  // setAccelerateConstraints();
-  // setSteerRateConstraints();
+  setGeneralEqualityConstraints();
+  setGeneralInequalityConstraints();
+  setGeneralBoundBoxConstraints();
+  setAccelerateConstraints();
+  setSteerRateConstraints();
 
   // cast everything need
   CastProblemToQpForm();
@@ -157,21 +157,10 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
                           nums_of_state_bounding_box +
                           nums_of_input_bounding_box + nums_of_steer_rate_cons +
                           nums_of_accelerate_cons;
-  std::cout << "nums of initial state: " << nums_of_initial_state << ", "
-            << "nums of dynamic: " << nums_of_dynamic << ", "
-            << "nums of equality cons: " << nums_of_equality_cons << ", "
-            << "nums of inequality cons: " << nums_of_inequality_cons << ", "
-            << "nums of state bounding box: " << nums_of_state_bounding_box
-            << ", "
-            << "nums of input bounding box: " << nums_of_input_bounding_box
-            << ", "
-            << "nums of steer rate cons: " << nums_of_steer_rate_cons << ", "
-            << "nums of accelerate cons: " << nums_of_accelerate_cons << ", "
-            << "nums of all constraints: " << nums_of_cons_rows << "."
-            << std::endl;
-  // pre-allocate
-  DMatrix M;
-  M.resize(nums_of_cons_rows, qp_state_size_);
+  //! Note: all the elements in the matrix should be set to zero directly,
+  //! otherwise, the matrix will be filled with random values !!!!!!!!
+  DMatrix M = DMatrix::Zero(nums_of_cons_rows, qp_state_size_);
+  // M.resize(nums_of_cons_rows, qp_state_size_);
 
   // initial state cons
   M.block(0, 0, param_.state_size_, param_.state_size_).setIdentity();
@@ -295,31 +284,18 @@ void TrajectoryTracker::calcOsqpConstraintBound() {
                           nums_of_state_bounding_box +
                           nums_of_input_bounding_box + nums_of_steer_rate_cons +
                           nums_of_accelerate_cons;
-  std::cout << "nums of initial state: " << nums_of_initial_state << ", "
-            << "nums of dynamic: " << nums_of_dynamic << ", "
-            << "nums of equality cons: " << nums_of_equality_cons << ", "
-            << "nums of inequality cons: " << nums_of_inequality_cons << ", "
-            << "nums of state bounding box: " << nums_of_state_bounding_box
-            << ", "
-            << "nums of input bounding box: " << nums_of_input_bounding_box
-            << ", "
-            << "nums of steer rate cons: " << nums_of_steer_rate_cons << ", "
-            << "nums of accelerate cons: " << nums_of_accelerate_cons << ", "
-            << "nums of all constraints: " << nums_of_cons_rows << "."
-            << std::endl;
   lb_.resize(nums_of_cons_rows);
   ub_.resize(nums_of_cons_rows);
 
   // initial state cons
   lb_.segment(0, param_.state_size_) = init_state_;
   ub_.segment(0, param_.state_size_) = init_state_;
+  // std::cout << "initial state: " << init_state_ << std::endl;
   // dynamic cons
   if (nums_of_dynamic != 0) {
     for (size_t i = 0; i < param_.horizon_; ++i) {
       auto &refer_state = refer_state_seq_.at(i);
       auto &refer_input = refer_input_seq_.at(i);
-      // DVector inf_vec = DVector::Constant(
-      //     param_.state_size_, std::numeric_limits<double>::infinity());
       lb_.segment(nums_of_initial_state + i * param_.state_size_,
                   param_.state_size_) =
           -dynamicVectorCaster(refer_state, refer_input);
@@ -469,8 +445,7 @@ TrajectoryTracker::dynamicStateMatrixCaster(const DVector &x_refer,
   int input_size = param_.input_size_;
   double interval = param_.interval_;
   double theta = x_refer(2), v = u_refer(0);
-  DMatrix partial_x;
-  partial_x.resize(state_size, state_size);
+  DMatrix partial_x(state_size, state_size);
   partial_x << 0, 0, 0, 0, 0, 0, -v * std::sin(theta), v * std::cos(theta), 0;
   return DMatrix::Identity(state_size, state_size) +
          interval * partial_x.transpose();
@@ -482,8 +457,7 @@ TrajectoryTracker::dynamicInputMatrixCaster(const DVector &x_refer,
   int input_size = param_.input_size_;
   double interval = param_.interval_;
   double theta = x_refer(2), v = u_refer(0);
-  DMatrix partial_u;
-  partial_u.resize(input_size, state_size);
+  DMatrix partial_u(input_size, state_size);
   partial_u << std::cos(theta), std::sin(theta), 0, 0, 0, 1;
   return interval * partial_u.transpose();
 }
@@ -505,16 +479,14 @@ TrajectoryTracker::dynamicVectorCaster(const DVector &x_refer,
 }
 TrajectoryTracker::DMatrix
 TrajectoryTracker::steerRateConstraintsMatrixCaster() {
-  TrajectoryTracker::DMatrix P;
+  DMatrix P = DMatrix::Zero(2 * (param_.horizon_ - 1), qp_state_size_);
   int wheel_num = 2, state_size = param_.state_size_,
       input_size = param_.input_size_, horizon = param_.horizon_,
       interval = param_.interval_, track_width = param_.track_width_,
       dist_front_to_rear = param_.dist_front_to_rear_,
       qp_state_size = state_size * (horizon + 1) + input_size * horizon;
-  P.resize(2 * (horizon - 1), qp_state_size);
   for (size_t i = 0; i < horizon - 1; ++i) {
-    TrajectoryTracker::DVector left_cons(qp_state_size);
-    left_cons.setZero();
+    DVector left_cons = DVector::Zero(qp_state_size);
     double v_0 = refer_input_seq_.at(i)(0), v_1 = refer_input_seq_.at(i + 1)(0),
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
@@ -550,8 +522,7 @@ TrajectoryTracker::steerRateConstraintsMatrixCaster() {
     P.row(2 * i) = left_cons.transpose();
   }
   for (size_t i = 0; i < horizon - 1; ++i) {
-    TrajectoryTracker::DVector right_cons(qp_state_size);
-    right_cons.setZero();
+    DVector right_cons = DVector::Zero(qp_state_size);
     double v_0 = refer_input_seq_.at(i)(0), v_1 = refer_input_seq_.at(i + 1)(0),
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
@@ -596,8 +567,7 @@ TrajectoryTracker::steerRateConstraintsBoundCaster() {
       track_width = param_.track_width_,
       dist_front_to_rear = param_.dist_front_to_rear_,
       qp_state_size = state_size * (horizon + 1) + input_size * horizon;
-  TrajectoryTracker::DMatrix bound;
-  bound.resize(2 * (horizon - 1), 2);
+  DMatrix bound = DMatrix::Zero(2 * (horizon - 1), 2);
   for (size_t i = 0; i < horizon - 1; ++i) {
     double v_0 = refer_input_seq_.at(i)(0), v_1 = refer_input_seq_.at(i + 1)(0),
            omega_0 = refer_input_seq_.at(i)(1),
@@ -667,12 +637,11 @@ TrajectoryTracker::steerRateConstraintsBoundCaster() {
 }
 TrajectoryTracker::DMatrix
 TrajectoryTracker::accelerateConstraintsMatrixCaster() {
-  TrajectoryTracker::DMatrix P;
+  DMatrix P =
+      DMatrix::Zero(param_.horizon_ - 1, qp_state_size_);
   int state_size = param_.state_size_, input_size = param_.input_size_,
       horizon = param_.horizon_,
       qp_state_size = state_size * (horizon + 1) + input_size * horizon;
-  P.resize(horizon - 1, qp_state_size);
-  P.setZero();
   for (size_t i = 0; i < horizon - 1; ++i) {
     P(i, (horizon + 1) * state_size + i * input_size) = -1;
     P(i, (horizon + 1) * state_size + (i + 1) * input_size) = 1;
@@ -683,9 +652,7 @@ TrajectoryTracker::DMatrix
 TrajectoryTracker::accelerateConstraintsBoundCaster() {
   int horizon = param_.horizon_, acc_limit = param_.acc_limit_,
       interval = param_.interval_;
-  TrajectoryTracker::DMatrix bound;
-  bound.resize(horizon - 1, 2);
-  bound.setZero();
+  DMatrix bound = DMatrix::Zero(horizon - 1, 2);
   for (size_t i = 0; i < horizon - 1; ++i) {
     bound(i, 0) = -acc_limit * interval;
     bound(i, 1) = acc_limit * interval;

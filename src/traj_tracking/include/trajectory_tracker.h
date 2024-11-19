@@ -132,9 +132,8 @@ private:
   void setGeneralEqualityConstraints() {}
 
   void setGeneralInequalityConstraints() {
-    A_inequal_.resize(4, param_.state_size_);
-    B_inequal_.resize(4, param_.input_size_);
-    A_inequal_.setZero();
+    A_inequal_ = DMatrix::Zero(4, param_.state_size_);
+    B_inequal_ = DMatrix::Zero(4, param_.input_size_);
     B_inequal_ << -2 * std::tan(param_.front_wheel_angle_limit_),
         -(2 * param_.dist_front_to_rear_ -
           param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
@@ -154,16 +153,16 @@ private:
     K_inequal_ub_.setZero();
   }
   void setGeneralBoundBoxConstraints() {
-    x_lb_.resize(param_.state_size_);
-    x_ub_.resize(param_.state_size_);
+    x_lb_ = DVector::Zero(param_.state_size_);
+    x_ub_ = DVector::Zero(param_.state_size_);
     x_lb_ << -std::numeric_limits<double>::infinity(),
         -std::numeric_limits<double>::infinity(),
         -std::numeric_limits<double>::infinity();
     x_ub_ << +std::numeric_limits<double>::infinity(),
         +std::numeric_limits<double>::infinity(),
         +std::numeric_limits<double>::infinity();
-    u_lb_.resize(param_.input_size_);
-    u_ub_.resize(param_.input_size_);
+    u_lb_ = DVector::Zero(param_.input_size_);
+    u_ub_ = DVector::Zero(param_.input_size_);
     u_lb_ << -param_.speed_limit_, -std::numeric_limits<double>::infinity();
     u_ub_ << param_.speed_limit_, std::numeric_limits<double>::infinity();
   }
