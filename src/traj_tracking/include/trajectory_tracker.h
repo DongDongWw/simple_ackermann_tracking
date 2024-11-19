@@ -79,9 +79,12 @@ private:
   DVector x_ub_;
   DVector u_lb_;
   DVector u_ub_;
-  DMatrix P_customize_;
-  DVector lb_customize_;
-  DVector ub_customize_;
+  DMatrix A_steer_rate_;
+  DVector lb_steer_rate_;
+  DVector ub_steer_rate_;
+  DMatrix A_accelerate_;
+  DVector lb_accelerate_;
+  DVector ub_accelerate_;
   // parameters of qp
   int qp_state_size_;
   SparseMatrix H_;
@@ -104,7 +107,7 @@ private:
   void calcOsqpGradient();
   void calcOsqpConstraintMatrix();
   void calcOsqpConstraintBound();
-  inline bool setInitialState(const DVector &init_state) {
+  bool setInitialState(const DVector &init_state) {
     if (init_state.rows() != param_.state_size_) {
       std::cout << "Invalid initial state" << std::endl;
       return false;
@@ -112,72 +115,77 @@ private:
     init_state_ = init_state;
     return true;
   }
-  inline bool setWeightMatrices(const DMatrix &Q, const DMatrix &R) {
-    if (Q.rows() != param_.state_size_ || Q.cols() != param_.state_size_ ||
-        R.rows() != param_.input_size_ || R.cols() != param_.input_size_) {
-      std::cout << "Invalid weight matrix" << std::endl;
-      return false;
-    }
-    Q_ = Q;
-    R_ = R;
-    return true;
-  }
-  inline void
-  setDynamicParamsCaster(const MatrixCaster &dynamic_state_matrix_caster,
-                         const MatrixCaster &dynamic_input_matrix_caster,
-                         const VectorCaster &dynamic_vector_caster) {
-    DynamicStateMatrixCaster = dynamic_state_matrix_caster;
-    DynamicInputMatrixCaster = dynamic_input_matrix_caster;
-    DynamicVectorCaster = dynamic_vector_caster;
-  }
-
-  inline void setGeneralEqualityConstraints(const DMatrix &A, const DMatrix &B,
-                                            const DVector &K) {
-    A_equal_ = A;
-    B_equal_ = B;
-    K_equal_ = K;
-    // return true;
-  }
-
-  inline void setGeneralInequalityConstraints(const DMatrix &A,
-                                              const DMatrix &B,
-                                              const DVector &lb,
-                                              const DVector &ub) {
-    A_inequal_ = A;
-    B_inequal_ = B;
-    K_inequal_lb_ = lb;
-    K_inequal_ub_ = ub;
-    // return true;
-  }
-  inline void setGeneralBoundBoxConstraints(const DVector &x_lb,
-                                            const DVector &x_ub,
-                                            const DVector &u_lb,
-                                            const DVector &u_ub) {
-    x_lb_ = x_lb;
-    x_ub_ = x_ub;
-    u_lb_ = u_lb;
-    u_ub_ = u_ub;
-  }
   bool setReferenceTrajectory(const Trajectory2D &refer_traj);
+  void setWeightMatrices() {
+    Q_.resize(param_.state_size_, param_.state_size_);
+    R_.resize(param_.input_size_, param_.input_size_);
+    Q_ << 100.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 0.0, 1.0;
+    R_ << 1.0, 0.0, 0.0, 1.0;
+  }
+  DMatrix dynamicStateMatrixCaster(const DVector &state, const DVector &input);
+  DMatrix dynamicInputMatrixCaster(const DVector &state, const DVector &input);
+  DVector dynamicVectorCaster(const DVector &state, const DVector &input);
+  DMatrix steerRateConstraintsMatrixCaster();
+  DMatrix steerRateConstraintsBoundCaster();
+  DMatrix accelerateConstraintsMatrixCaster();
+  DMatrix accelerateConstraintsBoundCaster();
+  void setGeneralEqualityConstraints() {}
+
+  void setGeneralInequalityConstraints() {
+    A_inequal_.resize(4, param_.state_size_);
+    B_inequal_.resize(4, param_.input_size_);
+    A_inequal_.setZero();
+    B_inequal_ << -2 * std::tan(param_.front_wheel_angle_limit_),
+        -(2 * param_.dist_front_to_rear_ -
+          param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
+        -2 * std::tan(param_.front_wheel_angle_limit_),
+        (2 * param_.dist_front_to_rear_ +
+         param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
+        -2 * std::tan(param_.front_wheel_angle_limit_),
+        -(2 * param_.dist_front_to_rear_ +
+          param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
+        -2 * std::tan(param_.front_wheel_angle_limit_),
+        (2 * param_.dist_front_to_rear_ -
+         param_.track_width_ * std::tan(param_.front_wheel_angle_limit_));
+
+    K_inequal_lb_.resize(4);
+    K_inequal_lb_.setConstant(-std::numeric_limits<double>::infinity());
+    K_inequal_ub_.resize(4);
+    K_inequal_ub_.setZero();
+  }
+  void setGeneralBoundBoxConstraints() {
+    x_lb_.resize(param_.state_size_);
+    x_ub_.resize(param_.state_size_);
+    x_lb_ << -std::numeric_limits<double>::infinity(),
+        -std::numeric_limits<double>::infinity(),
+        -std::numeric_limits<double>::infinity();
+    x_ub_ << +std::numeric_limits<double>::infinity(),
+        +std::numeric_limits<double>::infinity(),
+        +std::numeric_limits<double>::infinity();
+    u_lb_.resize(param_.input_size_);
+    u_ub_.resize(param_.input_size_);
+    u_lb_ << -param_.speed_limit_, -std::numeric_limits<double>::infinity();
+    u_ub_ << param_.speed_limit_, std::numeric_limits<double>::infinity();
+  }
+  void setSteerRateConstraints() {
+    A_steer_rate_ = steerRateConstraintsMatrixCaster();
+    DMatrix b = steerRateConstraintsBoundCaster();
+    lb_steer_rate_ = b.col(0);
+    ub_steer_rate_ = b.col(1);
+  }
+  void setAccelerateConstraints() {
+    A_accelerate_ = accelerateConstraintsMatrixCaster();
+    DMatrix b = accelerateConstraintsBoundCaster();
+    lb_accelerate_ = b.col(0);
+    ub_accelerate_ = b.col(1);
+  }
   void CastProblemToQpForm();
 
 public:
   TrajectoryTracker(const TrackerParam &param);
 
-  bool init(const DMatrix &Q, const DMatrix &R,
-            const MatrixCaster &dynamic_state_matrix_caster,
-            const MatrixCaster &dynamic_input_matrix_caster,
-            const VectorCaster &dynamic_vector_caster, const DMatrix &A_equal,
-            const DMatrix &B_equal, const DVector &K_equal,
-            const DMatrix &A_inequal, const DMatrix &B_inequal,
-            const DVector &K_inequal_lb, const DVector &K_inequal_ub,
-            const DVector &x_lb, const DVector &x_ub, const DVector &u_lb,
-            const DVector &u_ub, const DVector &init_state,
-            const Trajectory2D &reference_traj);
+  bool init(const DVector &init_state, const Trajectory2D &reference_traj);
   bool solve(DVector &solution);
-  void
-  addUserCustomizedConstraints(const UserCustomizeMatrixCaster &matrix_caster,
-                               const UserCustomizeBoundCaster &bound_caster);
   void printRefereceStateSeq();
   void printRefereceInputSeq();
 };

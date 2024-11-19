@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="traj_tracking" type="traj_tracking_gazebo" name="traj_tracking_node" output="screen" />
+	<!-- <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find traj_tracking)/config/display.rviz" /> -->
+</launch>
