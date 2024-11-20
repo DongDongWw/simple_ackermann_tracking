@@ -11,12 +11,12 @@ class QuinticCurveGenerator {
 public:
   typedef Eigen::Vector2d Point2D;
 
-  QuinticCurveGenerator(const Point2D &start, const Point2D &end)
-      : start_(start), end_(end) {
+  std::vector<Point2D> getGlobalPath(const Point2D &start, const Point2D &end,
+                                     double interval) {
+    start_ = start;
+    end_ = end;
     generateRandomCoefficients();
-  }
-
-  std::vector<Point2D> generateGlobalPath(double interval) {
+    points_ = std::vector<Point2D>();
     double t = 0.0;
     while (std::abs(t - 1.0) > 1e-6) {
       points_.push_back(getPoint(t));
@@ -27,8 +27,10 @@ public:
     return points_;
   }
 
-  std::vector<Point2D> generateReferenceTrajectory(const Point2D &p) {
-    double min_dist = std::numeric_limits<double>::max(), min_dist_idx = -1;
+  std::vector<Point2D> generateReferenceTrajectory(const Point2D &p,
+                                                   int number_of_points) {
+    double min_dist = std::numeric_limits<double>::max();
+    int min_dist_idx = 0;
     for (size_t i = 0; i < points_.size(); ++i) {
       double dist = (points_.at(i) - p).norm();
       if (dist < min_dist) {
@@ -36,8 +38,11 @@ public:
         min_dist_idx = i;
       }
     }
-    std::vector<Point2D> ref_traj(points_.begin() + min_dist_idx,
-                                  points_.end());
+    std::vector<Point2D> ref_traj(number_of_points, points_.back());
+    for (size_t i = min_dist_idx;
+         i < min_dist_idx + number_of_points && i < points_.size(); ++i) {
+      ref_traj.at(i - min_dist_idx) = points_.at(i);
+    }
     return ref_traj;
   }
 
@@ -54,7 +59,11 @@ private:
 
     for (int dim = 0; dim < 2; ++dim) {
       coefficients_(0, dim) = start_(dim);
-      coefficients_(1, dim) = dis(gen);
+      if (dim == 0) {
+        coefficients_(1, dim) = std::abs(dis(gen));
+      } else {
+        coefficients_(1, dim) = 0;
+      }
       coefficients_(2, dim) = dis(gen);
       coefficients_(3, dim) = dis(gen);
       coefficients_(4, dim) = dis(gen);

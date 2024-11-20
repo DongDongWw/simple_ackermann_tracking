@@ -17,18 +17,6 @@ TrackerParam::TrackerParam(int horizon, double interval, int state_size,
 
 TrajectoryTracker::TrajectoryTracker(const TrackerParam &param)
     : param_(param) {
-  std::cout << "horizon = " << param_.horizon_
-            << ", interval = " << param_.interval_
-            << ", state_size = " << param_.state_size_
-            << ", input_size = " << param_.input_size_
-            << ", speed_limit = " << param_.speed_limit_
-            << ", acc_limit = " << param_.acc_limit_
-            << ", front_wheel_angle_limit = " << param_.front_wheel_angle_limit_
-            << ", front_wheel_angle_rate_limit = "
-            << param_.front_wheel_angle_rate_limit_
-            << ", track_width = " << param_.track_width_
-            << ", dist_front_to_rear = " << param_.dist_front_to_rear_
-            << std::endl;
   // all states and inputs are stacked into a large vector
   qp_state_size_ = param_.state_size_ * (param_.horizon_ + 1) +
                    param_.input_size_ * param_.horizon_;
@@ -65,7 +53,7 @@ bool TrajectoryTracker::solve(DVector &solution) {
   OsqpEigen::Solver solver;
 
   // settings
-  // solver.settings()->setVerbosity(false);
+  solver.settings()->setVerbosity(false);
   solver.settings()->setWarmStart(true);
 
   // set the initial data of the QP solver
@@ -112,8 +100,7 @@ void TrajectoryTracker::CastProblemToQpForm() {
 
 void TrajectoryTracker::calcOsqpHession() {
   // weights for state variables
-  DMatrix H;
-  H.resize(qp_state_size_, qp_state_size_);
+  DMatrix H = DMatrix::Zero(qp_state_size_, qp_state_size_);
   for (size_t i = 0; i <= param_.horizon_; ++i) {
     H.block(i * param_.state_size_, i * param_.state_size_, param_.state_size_,
             param_.state_size_) = Q_;
@@ -290,7 +277,6 @@ void TrajectoryTracker::calcOsqpConstraintBound() {
   // initial state cons
   lb_.segment(0, param_.state_size_) = init_state_;
   ub_.segment(0, param_.state_size_) = init_state_;
-  // std::cout << "initial state: " << init_state_ << std::endl;
   // dynamic cons
   if (nums_of_dynamic != 0) {
     for (size_t i = 0; i < param_.horizon_; ++i) {
@@ -375,7 +361,6 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   // given a 2-d trajectory, calculate the reference states and inputs
   // calculate reference states: (x, y, theta)
   refer_state_seq_.clear();
-  refer_state_seq_.reserve(param_.horizon_ + 1);
   refer_state_seq_.resize(param_.horizon_ + 1);
   for (size_t i = 0; i < param_.horizon_; ++i) {
     auto &refer_state = refer_state_seq_.at(i);
@@ -400,7 +385,6 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
 
   // calculate approximate inputs: v and omega
   refer_input_seq_.clear();
-  refer_input_seq_.reserve(param_.horizon_);
   refer_input_seq_.resize(param_.horizon_);
   for (size_t i = 0; i < param_.horizon_; ++i) {
     auto &refer_input = refer_input_seq_.at(i);
@@ -419,12 +403,12 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     Point2d B = refer_state_seq_.at(i).segment<2>(0);
     Point2d C = refer_state_seq_.at(i + 1).segment<2>(0);
     Vector2d ab = B - A, ac = C - A, bc = C - B;
-    if (ab.norm() > 1e-6 && ac.norm() > 1e-6) {
+    if (ab.norm() > 1e-6 && bc.norm() > 1e-6) {
       double angle_included =
           std::acos(ab.dot(ac) / (ab.norm() * ac.norm() + kEps));
       double radius =
           std::abs(bc.norm() / (2 * std::sin(angle_included) + kEps));
-      double omega = refer_input_seq_.at(i)(0) / radius;
+      double omega = refer_input_seq_.at(i)(0) / (radius + kEps);
       // determine the sign of omega
       if (ab(0) * ac(1) - ab(1) * ac(0) < 0) {
         omega = -omega;
@@ -491,17 +475,19 @@ TrajectoryTracker::steerRateConstraintsMatrixCaster() {
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
     double g_0 = (2 * dist_front_to_rear * omega_0) /
-                 (2 * v_0 - track_width * omega_0),
+                 (2 * v_0 - track_width * omega_0 + kEps),
            g_1 = (2 * dist_front_to_rear * omega_1) /
-                 (2 * v_1 - track_width * omega_1);
+                 (2 * v_1 - track_width * omega_1 + kEps);
     double partial_g_v_0 = -(4 * dist_front_to_rear * omega_0) /
-                           std::pow(2 * v_0 - track_width * omega_0, 2),
+                           std::pow(2 * v_0 - track_width * omega_0 + kEps, 2),
            partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
-                           std::pow(2 * v_1 - track_width * omega_1, 2),
-           partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
-                               std::pow(2 * v_0 - track_width * omega_0, 2),
-           partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
-                               std::pow(2 * v_1 - track_width * omega_1, 2);
+                           std::pow(2 * v_1 - track_width * omega_1 + kEps, 2),
+           partial_g_omega_0 =
+               (4 * dist_front_to_rear * v_0) /
+               std::pow(2 * v_0 - track_width * omega_0 + kEps, 2),
+           partial_g_omega_1 =
+               (4 * dist_front_to_rear * v_1) /
+               std::pow(2 * v_1 - track_width * omega_1 + kEps, 2);
     double partial_h_v_0 = -(std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
                            std::pow(1 + g_1 * g_0, 2),
            partial_h_v_1 = (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
@@ -527,17 +513,19 @@ TrajectoryTracker::steerRateConstraintsMatrixCaster() {
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
     double g_0 = (2 * dist_front_to_rear * omega_0) /
-                 (2 * v_0 + track_width * omega_0),
+                 (2 * v_0 + track_width * omega_0 + kEps),
            g_1 = (2 * dist_front_to_rear * omega_1) /
-                 (2 * v_1 + track_width * omega_1);
+                 (2 * v_1 + track_width * omega_1 + kEps);
     double partial_g_v_0 = -(4 * dist_front_to_rear * omega_0) /
-                           std::pow(2 * v_0 + track_width * omega_0, 2),
+                           std::pow(2 * v_0 + track_width * omega_0 + kEps, 2),
            partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
-                           std::pow(2 * v_1 + track_width * omega_1, 2),
-           partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
-                               std::pow(2 * v_0 + track_width * omega_0, 2),
-           partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
-                               std::pow(2 * v_1 + track_width * omega_1, 2);
+                           std::pow(2 * v_1 + track_width * omega_1 + kEps, 2),
+           partial_g_omega_0 =
+               (4 * dist_front_to_rear * v_0) /
+               std::pow(2 * v_0 + track_width * omega_0 + kEps, 2),
+           partial_g_omega_1 =
+               (4 * dist_front_to_rear * v_1) /
+               std::pow(2 * v_1 + track_width * omega_1 + kEps, 2);
     double partial_h_v_0 = -(std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
                            std::pow(1 + g_1 * g_0, 2),
            partial_h_v_1 = (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
@@ -573,17 +561,19 @@ TrajectoryTracker::steerRateConstraintsBoundCaster() {
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
     double g_0 = (2 * dist_front_to_rear * omega_0) /
-                 (2 * v_0 - track_width * omega_0),
+                 (2 * v_0 - track_width * omega_0 + kEps),
            g_1 = (2 * dist_front_to_rear * omega_1) /
-                 (2 * v_1 - track_width * omega_1);
+                 (2 * v_1 - track_width * omega_1 + kEps);
     double partial_g_v_0 = -(4 * dist_front_to_rear * omega_0) /
-                           std::pow(2 * v_0 - track_width * omega_0, 2),
+                           std::pow(2 * v_0 - track_width * omega_0 + kEps, 2),
            partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
-                           std::pow(2 * v_1 - track_width * omega_1, 2),
-           partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
-                               std::pow(2 * v_0 - track_width * omega_0, 2),
-           partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
-                               std::pow(2 * v_1 - track_width * omega_1, 2);
+                           std::pow(2 * v_1 - track_width * omega_1 + kEps, 2),
+           partial_g_omega_0 =
+               (4 * dist_front_to_rear * v_0) /
+               std::pow(2 * v_0 - track_width * omega_0 + kEps, 2),
+           partial_g_omega_1 =
+               (4 * dist_front_to_rear * v_1) /
+               std::pow(2 * v_1 - track_width * omega_1 + kEps, 2);
     double partial_h_v_0 = -(std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
                            std::pow(1 + g_1 * g_0, 2),
            partial_h_v_1 = (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
@@ -605,17 +595,19 @@ TrajectoryTracker::steerRateConstraintsBoundCaster() {
            omega_0 = refer_input_seq_.at(i)(1),
            omega_1 = refer_input_seq_.at(i + 1)(1);
     double g_0 = (2 * dist_front_to_rear * omega_0) /
-                 (2 * v_0 + track_width * omega_0),
+                 (2 * v_0 + track_width * omega_0 + kEps),
            g_1 = (2 * dist_front_to_rear * omega_1) /
-                 (2 * v_1 + track_width * omega_1);
+                 (2 * v_1 + track_width * omega_1 + kEps);
     double partial_g_v_0 = -(4 * dist_front_to_rear * omega_0) /
-                           std::pow(2 * v_0 + track_width * omega_0, 2),
+                           std::pow(2 * v_0 + track_width * omega_0 + kEps, 2),
            partial_g_v_1 = -(4 * dist_front_to_rear * omega_1) /
-                           std::pow(2 * v_1 + track_width * omega_1, 2),
-           partial_g_omega_0 = (4 * dist_front_to_rear * v_0) /
-                               std::pow(2 * v_0 + track_width * omega_0, 2),
-           partial_g_omega_1 = (4 * dist_front_to_rear * v_1) /
-                               std::pow(2 * v_1 + track_width * omega_1, 2);
+                           std::pow(2 * v_1 + track_width * omega_1 + kEps, 2),
+           partial_g_omega_0 =
+               (4 * dist_front_to_rear * v_0) /
+               std::pow(2 * v_0 + track_width * omega_0 + kEps, 2),
+           partial_g_omega_1 =
+               (4 * dist_front_to_rear * v_1) /
+               std::pow(2 * v_1 + track_width * omega_1 + kEps, 2);
     double partial_h_v_0 = -(std::pow(g_1, 2) * partial_g_v_0 + partial_g_v_0) /
                            std::pow(1 + g_1 * g_0, 2),
            partial_h_v_1 = (std::pow(g_0, 2) * partial_g_v_1 + partial_g_v_1) /
@@ -637,8 +629,7 @@ TrajectoryTracker::steerRateConstraintsBoundCaster() {
 }
 TrajectoryTracker::DMatrix
 TrajectoryTracker::accelerateConstraintsMatrixCaster() {
-  DMatrix P =
-      DMatrix::Zero(param_.horizon_ - 1, qp_state_size_);
+  DMatrix P = DMatrix::Zero(param_.horizon_ - 1, qp_state_size_);
   int state_size = param_.state_size_, input_size = param_.input_size_,
       horizon = param_.horizon_,
       qp_state_size = state_size * (horizon + 1) + input_size * horizon;

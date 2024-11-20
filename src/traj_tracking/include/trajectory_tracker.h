@@ -11,7 +11,7 @@
 #include <memory>
 #include <vector>
 
-#define kEps 2.22507e-308
+#define kEps 1.0e-6
 namespace willand_ackermann {
 struct TrackerParam {
   // mpc parameters
@@ -132,6 +132,13 @@ private:
   void setGeneralEqualityConstraints() {}
 
   void setGeneralInequalityConstraints() {
+    // if angle limit larger than PI/2, then the constraints are not need
+    if (param_.front_wheel_angle_limit_ - M_PI / 2 > -kEps ||
+        param_.front_wheel_angle_limit_ + M_PI / 2 < kEps) {
+      std::cout << "Front wheel angle limit too large, constraints abandoned"
+                << std::endl;
+      return;
+    }
     A_inequal_ = DMatrix::Zero(4, param_.state_size_);
     B_inequal_ = DMatrix::Zero(4, param_.input_size_);
     B_inequal_ << -2 * std::tan(param_.front_wheel_angle_limit_),

@@ -20,7 +20,7 @@ int main() {
   const int input_size = 2;                                 // (v, omega)
   constexpr double speed_limit = 2.0;                       // unit, m / s
   constexpr double acc_limit = 2.0;                         // unit, m / s^2
-  constexpr double front_wheel_angle_limit = M_PI / 3;      // unit, rad
+  constexpr double front_wheel_angle_limit = M_PI / 2;      // unit, rad
   constexpr double front_wheel_angle_rate_limit = M_PI / 4; // unit, rad per sec
   constexpr double track_width = 0.5;                       // unit, m
   constexpr double dist_front_to_rear = 0.8;                // unit, m
@@ -37,29 +37,31 @@ int main() {
     double angle = omega_speed * i * interval;
     double x = radius * std::cos(angle), y = radius * std::sin(angle);
     auto &refer_state = refer_traj.at(i);
-    refer_state << x, y;
+    refer_state << 1.0, 1.0;
   }
   // initial state
   TrajectoryTracker::DVector init_state(state_size);
-  init_state << 5.0, 0.0, M_PI / 2;
+  init_state << 0.0, 0.0, 0.0;
   // initialize trajectory tracker
   TrajectoryTracker::UniquePtr traj_tracker =
       std::make_unique<TrajectoryTracker>(param);
   traj_tracker->init(init_state, refer_traj);
 
   TrajectoryTracker::DVector solution;
-  traj_tracker->solve(solution);
-
-  Eigen::IOFormat CleanFmt(4, Eigen::DontAlignCols, ", ", "", "(", ")");
-  for (size_t i = 0; i <= horizon; ++i) {
-    Eigen::Vector2d x = solution.segment(i * (state_size), 2);
-    double dist = (refer_traj.at(i) - x).norm();
-    std::cout << std::fixed << std::setprecision(2) << std::setw(4)
-              << std::showpos << "time stamp = " << i * interval
-              << ", reference state = "
-              << refer_traj.at(i).transpose().format(CleanFmt)
-              << ", planning state = " << x.transpose().format(CleanFmt)
-              << ", error = " << dist << std::endl;
+  if (traj_tracker->solve(solution)) {
+    Eigen::IOFormat CleanFmt(4, Eigen::DontAlignCols, ", ", "", "(", ")");
+    for (size_t i = 0; i <= horizon; ++i) {
+      Eigen::Vector2d x = solution.segment(i * (state_size), 2);
+      double dist = (refer_traj.at(i) - x).norm();
+      std::cout << std::fixed << std::setprecision(2) << std::setw(4)
+                << std::showpos << "time stamp = " << i * interval
+                << ", reference state = "
+                << refer_traj.at(i).transpose().format(CleanFmt)
+                << ", planning state = " << x.transpose().format(CleanFmt)
+                << ", error = " << dist << std::endl;
+    }
+  } else {
+    std::cout << "Failed to solve the problem." << std::endl;
   }
   traj_tracker->printRefereceStateSeq();
   traj_tracker->printRefereceInputSeq();
