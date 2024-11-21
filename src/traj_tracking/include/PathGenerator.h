@@ -7,28 +7,22 @@
 
 namespace willand_ackermann {
 
-class QuinticCurveGenerator {
+class PathGenerator {
 public:
   typedef Eigen::Vector2d Point2D;
-
+  PathGenerator() = default;
+  PathGenerator(double interval) : interval_(interval) {}
   std::vector<Point2D> getGlobalPath(const Point2D &start, const Point2D &end,
-                                     double interval) {
-    start_ = start;
-    end_ = end;
-    generateRandomCoefficients();
-    points_ = std::vector<Point2D>();
-    double t = 0.0;
-    while (std::abs(t - 1.0) > 1e-6) {
-      points_.push_back(getPoint(t));
-      double next_t = findParameterForArcLength(interval, t);
-      t = next_t;
-    }
-    points_.push_back(getPoint(t));
+                                     double theta) {
+    points_ = getQuadraticCurve(start, end, theta, interval_);
     return points_;
   }
 
   std::vector<Point2D> generateReferenceTrajectory(const Point2D &p,
                                                    int number_of_points) {
+    if (points_.empty()) {
+      return std::vector<Point2D>();
+    }
     double min_dist = std::numeric_limits<double>::max();
     int min_dist_idx = 0;
     for (size_t i = 0; i < points_.size(); ++i) {
@@ -49,39 +43,61 @@ public:
 private:
   Point2D start_;
   Point2D end_;
+  double interval_;
   std::vector<Point2D> points_;
-  Eigen::Matrix<double, 6, 2> coefficients_;
-
-  void generateRandomCoefficients() {
+  Eigen::Matrix<double, 3, 2> coefficients_;
+  std::vector<Point2D> getQuadraticCurve(const Point2D &start,
+                                         const Point2D &end, double theta,
+                                         double interval) {
+    start_ = start;
+    end_ = end;
+    generateCoefficients(theta);
+    points_ = std::vector<Point2D>();
+    double t = 0.0;
+    while (std::abs(t - 1.0) > 1e-6) {
+      points_.push_back(getPoint(t));
+      double next_t = findParameterForArcLength(interval, t);
+      t = next_t;
+    }
+    points_.push_back(getPoint(t));
+    return points_;
+  }
+  void generateCoefficients(double theta) {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(-10.0, 10.0);
+    std::uniform_real_distribution<> dis(0.0, 10.0);
 
-    for (int dim = 0; dim < 2; ++dim) {
-      coefficients_(0, dim) = start_(dim);
-      if (dim == 0) {
-        coefficients_(1, dim) = std::abs(dis(gen));
+    coefficients_(0, 0) = start_(0);
+    coefficients_(0, 1) = start_(1);
+    if (std::abs(theta - M_PI / 2) < 1e-6) {
+      coefficients_(1, 0) = 0;
+      coefficients_(1, 1) = dis(gen);
+    } else if (std::abs(theta + M_PI / 2) < 1e-6) {
+      coefficients_(1, 0) = 0;
+      coefficients_(1, 1) = -dis(gen);
+    } else {
+      double slope = std::tan(theta);
+      if (theta > -M_PI / 2 && theta < M_PI / 2) {
+        coefficients_(1, 0) = dis(gen);
+        coefficients_(1, 1) = slope * coefficients_(1, 0);
       } else {
-        coefficients_(1, dim) = 0;
+        coefficients_(1, 0) = -dis(gen);
+        coefficients_(1, 1) = slope * coefficients_(1, 0);
       }
-      coefficients_(2, dim) = dis(gen);
-      coefficients_(3, dim) = dis(gen);
-      coefficients_(4, dim) = dis(gen);
-      coefficients_(5, dim) = end_(dim) - coefficients_(0, dim) -
-                              coefficients_(1, dim) - coefficients_(2, dim) -
-                              coefficients_(3, dim) - coefficients_(4, dim);
     }
+    coefficients_(2, 0) = end_(0) - coefficients_(0, 0) - coefficients_(1, 0);
+    coefficients_(2, 1) = end_(1) - coefficients_(0, 1) - coefficients_(1, 1);
   }
 
   Point2D getPoint(double t) const {
-    Eigen::VectorXd powers(6);
-    powers << 1, t, t * t, t * t * t, t * t * t * t, t * t * t * t * t;
+    Eigen::VectorXd powers(3);
+    powers << 1, t, t * t;
     return coefficients_.transpose() * powers;
   }
 
   Point2D getDerivative(double t) const {
-    Eigen::VectorXd powers(6);
-    powers << 0, 1, 2 * t, 3 * t * t, 4 * t * t * t, 5 * t * t * t * t;
+    Eigen::VectorXd powers(3);
+    powers << 0, 1, 2 * t;
     return coefficients_.transpose() * powers;
   }
 
