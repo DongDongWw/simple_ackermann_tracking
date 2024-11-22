@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package willand_ackermann;
+
+message State {
+    double x = 1;
+    double y = 2;
+    double theta = 3;
+    double v = 4;
+    double omega = 5;
+    double kappa = 6;
+}
+
+message ControlSignal {
+    double v = 1;
+    double omega = 2;
+    double kappa = 3;
+}
+
+message TrackingData {
+    repeated double timestamp = 1;
+    repeated State reference_states = 2;
+    repeated State actual_states = 3;
+    repeated ControlSignal control_signals = 4;
+}

@@ -1,5 +1,7 @@
 #include "trajectory_tracker.h"
+
 #include <Eigen/src/Core/Matrix.h>
+
 #include <cmath>
 
 namespace willand_ackermann {
@@ -9,11 +11,16 @@ TrackerParam::TrackerParam(int horizon, double interval, int state_size,
                            double front_wheel_angle_limit,
                            double front_wheel_angle_rate_limit,
                            double track_width, double dist_front_to_rear)
-    : horizon_(horizon), interval_(interval), state_size_(state_size),
-      input_size_(input_size), speed_limit_(speed_limit), acc_limit_(acc_limit),
+    : horizon_(horizon),
+      interval_(interval),
+      state_size_(state_size),
+      input_size_(input_size),
+      speed_limit_(speed_limit),
+      acc_limit_(acc_limit),
       front_wheel_angle_limit_(front_wheel_angle_limit),
       front_wheel_angle_rate_limit_(front_wheel_angle_rate_limit),
-      track_width_(track_width), dist_front_to_rear_(dist_front_to_rear) {}
+      track_width_(track_width),
+      dist_front_to_rear_(dist_front_to_rear) {}
 
 TrajectoryTracker::TrajectoryTracker(const TrackerParam &param)
     : param_(param) {
@@ -25,9 +32,8 @@ TrajectoryTracker::TrajectoryTracker(const TrackerParam &param)
   g_.resize(qp_state_size_);
 };
 
-bool TrajectoryTracker::init(const DVector &init_state,
-                             const Trajectory2D &refer_traj) {
-
+bool TrajectoryTracker::update(const DVector &init_state,
+                               const Trajectory2D &refer_traj) {
   if (!setReferenceTrajectory(refer_traj)) {
     std::cout << "Invalid reference trajectory!" << std::endl;
     return false;
@@ -67,7 +73,6 @@ bool TrajectoryTracker::solve(DVector &solution) {
 
   solver.data()->setNumberOfConstraints(M_.rows());
   if (!solver.data()->setLinearConstraintsMatrix(M_)) {
-
     return false;
   }
   if (!solver.data()->setLowerBound(lb_)) {
@@ -125,7 +130,7 @@ void TrajectoryTracker::calcOsqpGradient() {
   // weights for state variables
   for (size_t i = 0; i <= param_.horizon_; ++i) {
     g_.segment(i * param_.state_size_, param_.state_size_) =
-        -Q_ * refer_state_seq_.at(i); // has multiplied by 0.5
+        -Q_ * refer_state_seq_.at(i);  // has multiplied by 0.5
   }
 }
 void TrajectoryTracker::calcOsqpConstraintMatrix() {
@@ -163,10 +168,10 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
               (i + 1) * param_.state_size_, param_.state_size_,
               param_.state_size_) =
           -Eigen::MatrixXd::Identity(param_.state_size_, param_.state_size_);
-      M.block(nums_of_initial_state + i * param_.state_size_,
-              (param_.horizon_ + 1) * param_.state_size_ +
-                  i * param_.input_size_,
-              param_.state_size_, param_.input_size_) =
+      M.block(
+          nums_of_initial_state + i * param_.state_size_,
+          (param_.horizon_ + 1) * param_.state_size_ + i * param_.input_size_,
+          param_.state_size_, param_.input_size_) =
           dynamicInputMatrixCaster(refer_state, refer_input);
     }
   }
@@ -177,13 +182,11 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
     for (size_t i = 0; i < param_.horizon_; ++i) {
       M.block(start_row_offset + i * block_rows, i * param_.state_size_,
               block_rows, param_.state_size_) = A_equal_;
-      M.block(start_row_offset + i * block_rows,
-              (param_.horizon_ + 1) * param_.state_size_ +
-                  i * param_.input_size_,
-              block_rows, param_.input_size_) = B_equal_;
+      M.block(
+          start_row_offset + i * block_rows,
+          (param_.horizon_ + 1) * param_.state_size_ + i * param_.input_size_,
+          block_rows, param_.input_size_) = B_equal_;
     }
-  } else {
-    std::cout << "No equality constraints need to be casted." << std::endl;
   }
   // inequality cons
   if (nums_of_inequality_cons != 0) {
@@ -193,14 +196,15 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
     for (size_t i = 0; i < param_.horizon_; ++i) {
       M.block(start_row_offset + i * block_rows, i * param_.state_size_,
               block_rows, param_.state_size_) = A_inequal_;
-      M.block(start_row_offset + i * block_rows,
-              (param_.horizon_ + 1) * param_.state_size_ +
-                  i * param_.input_size_,
-              block_rows, param_.input_size_) = B_inequal_;
+      M.block(
+          start_row_offset + i * block_rows,
+          (param_.horizon_ + 1) * param_.state_size_ + i * param_.input_size_,
+          block_rows, param_.input_size_) = B_inequal_;
     }
-  } else {
-    std::cout << "No inequality constraints need to be casted." << std::endl;
   }
+  // } else {
+  //   std::cout << "No inequality constraints need to be casted." << std::endl;
+  // }
 
   // state bounding box cons
   if (nums_of_state_bounding_box != 0) {
@@ -212,9 +216,6 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
               block_rows, param_.state_size_) =
           Eigen::MatrixXd::Identity(param_.state_size_, param_.state_size_);
     }
-  } else {
-    std::cout << "No state bounding box constraints need to be casted."
-              << std::endl;
   }
   // input bounding box cons
   if (nums_of_input_bounding_box != 0) {
@@ -223,15 +224,12 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
                            nums_of_equality_cons + nums_of_inequality_cons +
                            nums_of_state_bounding_box;
     for (size_t i = 0; i < param_.horizon_; ++i) {
-      M.block(start_row_offset + i * block_rows,
-              (param_.horizon_ + 1) * param_.state_size_ +
-                  i * param_.input_size_,
-              block_rows, param_.input_size_) =
+      M.block(
+          start_row_offset + i * block_rows,
+          (param_.horizon_ + 1) * param_.state_size_ + i * param_.input_size_,
+          block_rows, param_.input_size_) =
           Eigen::MatrixXd::Identity(param_.input_size_, param_.input_size_);
     }
-  } else {
-    std::cout << "No input bounding box constraints need to be casted."
-              << std::endl;
   }
   // steer rate cons
   if (nums_of_steer_rate_cons != 0) {
@@ -241,9 +239,8 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
                            nums_of_input_bounding_box;
     M.block(start_row_offset, 0, A_steer_rate_.rows(), A_steer_rate_.cols()) =
         A_steer_rate_;
-  } else {
-    std::cout << "No steer rate constraints need to be casted." << std::endl;
   }
+
   // accelerate cons
   if (nums_of_accelerate_cons != 0) {
     int start_row_offset = nums_of_initial_state + nums_of_dynamic +
@@ -252,8 +249,6 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
                            nums_of_input_bounding_box + nums_of_steer_rate_cons;
     M.block(start_row_offset, 0, A_accelerate_.rows(), A_accelerate_.cols()) =
         A_accelerate_;
-  } else {
-    std::cout << "No accelerate constraints need to be casted." << std::endl;
   }
   M_ = M.sparseView();
 }
@@ -422,9 +417,8 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   refer_input_seq_.front()(1) = refer_input_seq_.at(1)(1);
   return true;
 }
-TrajectoryTracker::DMatrix
-TrajectoryTracker::dynamicStateMatrixCaster(const DVector &x_refer,
-                                            const DVector &u_refer) {
+TrajectoryTracker::DMatrix TrajectoryTracker::dynamicStateMatrixCaster(
+    const DVector &x_refer, const DVector &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -434,9 +428,8 @@ TrajectoryTracker::dynamicStateMatrixCaster(const DVector &x_refer,
   return DMatrix::Identity(state_size, state_size) +
          interval * partial_x.transpose();
 }
-TrajectoryTracker::DMatrix
-TrajectoryTracker::dynamicInputMatrixCaster(const DVector &x_refer,
-                                            const DVector &u_refer) {
+TrajectoryTracker::DMatrix TrajectoryTracker::dynamicInputMatrixCaster(
+    const DVector &x_refer, const DVector &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -445,9 +438,8 @@ TrajectoryTracker::dynamicInputMatrixCaster(const DVector &x_refer,
   partial_u << std::cos(theta), std::sin(theta), 0, 0, 0, 1;
   return interval * partial_u.transpose();
 }
-TrajectoryTracker::DVector
-TrajectoryTracker::dynamicVectorCaster(const DVector &x_refer,
-                                       const DVector &u_refer) {
+TrajectoryTracker::DVector TrajectoryTracker::dynamicVectorCaster(
+    const DVector &x_refer, const DVector &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -671,4 +663,4 @@ void TrajectoryTracker::printRefereceInputSeq() {
   }
 }
 
-}; // namespace willand_ackermann
+};  // namespace willand_ackermann

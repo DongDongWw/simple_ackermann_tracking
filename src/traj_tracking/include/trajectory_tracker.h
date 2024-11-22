@@ -135,8 +135,8 @@ private:
     // if angle limit larger than PI/2, then the constraints are not need
     if (param_.front_wheel_angle_limit_ - M_PI / 2 > -kEps ||
         param_.front_wheel_angle_limit_ + M_PI / 2 < kEps) {
-      std::cout << "Front wheel angle limit too large, constraints abandoned"
-                << std::endl;
+      // std::cout << "Front wheel angle limit too large, constraints abandoned"
+      //           << std::endl;
       return;
     }
     A_inequal_ = DMatrix::Zero(4, param_.state_size_);
@@ -190,7 +190,7 @@ private:
 public:
   TrajectoryTracker(const TrackerParam &param);
 
-  bool init(const DVector &init_state, const Trajectory2D &reference_traj);
+  bool update(const DVector &init_state, const Trajectory2D &reference_traj);
   bool solve(DVector &solution);
   void printRefereceStateSeq();
   void printRefereceInputSeq();

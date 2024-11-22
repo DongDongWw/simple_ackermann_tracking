@@ -39,6 +39,19 @@ public:
     }
     return ref_traj;
   }
+  double getDistOffset(const Point2D &p) {
+    if (points_.empty()) {
+      return 0.0;
+    }
+    double min_dist = std::numeric_limits<double>::max();
+    for (size_t i = 0; i < points_.size(); ++i) {
+      double dist = (points_.at(i) - p).norm();
+      if (dist < min_dist) {
+        min_dist = dist;
+      }
+    }
+    return min_dist;
+  }
 
 private:
   Point2D start_;

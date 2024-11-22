@@ -45,7 +45,7 @@ int main() {
   // initialize trajectory tracker
   TrajectoryTracker::UniquePtr traj_tracker =
       std::make_unique<TrajectoryTracker>(param);
-  traj_tracker->init(init_state, refer_traj);
+  traj_tracker->update(init_state, refer_traj);
 
   TrajectoryTracker::DVector solution;
   if (traj_tracker->solve(solution)) {
