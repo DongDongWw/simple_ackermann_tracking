@@ -40,7 +40,7 @@ int main() {
     refer_state << 1.0, 1.0;
   }
   // initial state
-  TrajectoryTracker::DVector init_state(state_size);
+  TrajectoryTracker::Vector3d init_state(state_size);
   init_state << 0.0, 0.0, 0.0;
   // initialize trajectory tracker
   TrajectoryTracker::UniquePtr traj_tracker =

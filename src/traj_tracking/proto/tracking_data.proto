@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package willand_ackermann;
+package willand_ackermann_proto;
 
 message State {
     double x = 1;
@@ -9,17 +9,18 @@ message State {
     double v = 4;
     double omega = 5;
     double kappa = 6;
-}
+};
 
 message ControlSignal {
     double v = 1;
     double omega = 2;
     double kappa = 3;
-}
+};
 
 message TrackingData {
-    repeated double timestamp = 1;
-    repeated State reference_states = 2;
-    repeated State actual_states = 3;
-    repeated ControlSignal control_signals = 4;
-}
+    uint32 length = 1;
+    repeated string timestamp = 2;
+    repeated State reference_data = 3;
+    repeated State actual_data = 4;
+    repeated ControlSignal control_signal = 5;
+};

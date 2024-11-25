@@ -45,7 +45,7 @@ struct TableStruct {
 };
 void AddDescriptors();
 }  // namespace protobuf_tracking_5fdata_2eproto
-namespace willand_ackermann {
+namespace willand_ackermann_proto {
 class ControlSignal;
 class ControlSignalDefaultTypeInternal;
 extern ControlSignalDefaultTypeInternal _ControlSignal_default_instance_;
@@ -55,19 +55,19 @@ extern StateDefaultTypeInternal _State_default_instance_;
 class TrackingData;
 class TrackingDataDefaultTypeInternal;
 extern TrackingDataDefaultTypeInternal _TrackingData_default_instance_;
-}  // namespace willand_ackermann
+}  // namespace willand_ackermann_proto
 namespace google {
 namespace protobuf {
-template<> ::willand_ackermann::ControlSignal* Arena::CreateMaybeMessage<::willand_ackermann::ControlSignal>(Arena*);
-template<> ::willand_ackermann::State* Arena::CreateMaybeMessage<::willand_ackermann::State>(Arena*);
-template<> ::willand_ackermann::TrackingData* Arena::CreateMaybeMessage<::willand_ackermann::TrackingData>(Arena*);
+template<> ::willand_ackermann_proto::ControlSignal* Arena::CreateMaybeMessage<::willand_ackermann_proto::ControlSignal>(Arena*);
+template<> ::willand_ackermann_proto::State* Arena::CreateMaybeMessage<::willand_ackermann_proto::State>(Arena*);
+template<> ::willand_ackermann_proto::TrackingData* Arena::CreateMaybeMessage<::willand_ackermann_proto::TrackingData>(Arena*);
 }  // namespace protobuf
 }  // namespace google
-namespace willand_ackermann {
+namespace willand_ackermann_proto {
 
 // ===================================================================
 
-class State : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann.State) */ {
+class State : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.State) */ {
  public:
   State();
   virtual ~State();
@@ -154,53 +154,46 @@ class State : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 
   // accessors -------------------------------------------------------
 
-  // double timestamp = 1;
-  void clear_timestamp();
-  static const int kTimestampFieldNumber = 1;
-  double timestamp() const;
-  void set_timestamp(double value);
-
-  // double x = 2;
+  // double x = 1;
   void clear_x();
-  static const int kXFieldNumber = 2;
+  static const int kXFieldNumber = 1;
   double x() const;
   void set_x(double value);
 
-  // double y = 3;
+  // double y = 2;
   void clear_y();
-  static const int kYFieldNumber = 3;
+  static const int kYFieldNumber = 2;
   double y() const;
   void set_y(double value);
 
-  // double theta = 4;
+  // double theta = 3;
   void clear_theta();
-  static const int kThetaFieldNumber = 4;
+  static const int kThetaFieldNumber = 3;
   double theta() const;
   void set_theta(double value);
 
-  // double v = 5;
+  // double v = 4;
   void clear_v();
-  static const int kVFieldNumber = 5;
+  static const int kVFieldNumber = 4;
   double v() const;
   void set_v(double value);
 
-  // double omega = 6;
+  // double omega = 5;
   void clear_omega();
-  static const int kOmegaFieldNumber = 6;
+  static const int kOmegaFieldNumber = 5;
   double omega() const;
   void set_omega(double value);
 
-  // double kappa = 7;
+  // double kappa = 6;
   void clear_kappa();
-  static const int kKappaFieldNumber = 7;
+  static const int kKappaFieldNumber = 6;
   double kappa() const;
   void set_kappa(double value);
 
-  // @@protoc_insertion_point(class_scope:willand_ackermann.State)
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.State)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  double timestamp_;
   double x_;
   double y_;
   double theta_;
@@ -212,7 +205,7 @@ class State : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
 };
 // -------------------------------------------------------------------
 
-class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann.ControlSignal) */ {
+class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ControlSignal) */ {
  public:
   ControlSignal();
   virtual ~ControlSignal();
@@ -299,35 +292,28 @@ class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_p
 
   // accessors -------------------------------------------------------
 
-  // double timestamp = 1;
-  void clear_timestamp();
-  static const int kTimestampFieldNumber = 1;
-  double timestamp() const;
-  void set_timestamp(double value);
-
-  // double v = 2;
+  // double v = 1;
   void clear_v();
-  static const int kVFieldNumber = 2;
+  static const int kVFieldNumber = 1;
   double v() const;
   void set_v(double value);
 
-  // double omega = 3;
+  // double omega = 2;
   void clear_omega();
-  static const int kOmegaFieldNumber = 3;
+  static const int kOmegaFieldNumber = 2;
   double omega() const;
   void set_omega(double value);
 
-  // double kappa = 4;
+  // double kappa = 3;
   void clear_kappa();
-  static const int kKappaFieldNumber = 4;
+  static const int kKappaFieldNumber = 3;
   double kappa() const;
   void set_kappa(double value);
 
-  // @@protoc_insertion_point(class_scope:willand_ackermann.ControlSignal)
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlSignal)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  double timestamp_;
   double v_;
   double omega_;
   double kappa_;
@@ -336,7 +322,7 @@ class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_p
 };
 // -------------------------------------------------------------------
 
-class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann.TrackingData) */ {
+class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.TrackingData) */ {
  public:
   TrackingData();
   virtual ~TrackingData();
@@ -423,49 +409,79 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated .willand_ackermann.State reference_states = 1;
-  int reference_states_size() const;
-  void clear_reference_states();
-  static const int kReferenceStatesFieldNumber = 1;
-  ::willand_ackermann::State* mutable_reference_states(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >*
-      mutable_reference_states();
-  const ::willand_ackermann::State& reference_states(int index) const;
-  ::willand_ackermann::State* add_reference_states();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >&
-      reference_states() const;
+  // repeated string timestamp = 2;
+  int timestamp_size() const;
+  void clear_timestamp();
+  static const int kTimestampFieldNumber = 2;
+  const ::std::string& timestamp(int index) const;
+  ::std::string* mutable_timestamp(int index);
+  void set_timestamp(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_timestamp(int index, ::std::string&& value);
+  #endif
+  void set_timestamp(int index, const char* value);
+  void set_timestamp(int index, const char* value, size_t size);
+  ::std::string* add_timestamp();
+  void add_timestamp(const ::std::string& value);
+  #if LANG_CXX11
+  void add_timestamp(::std::string&& value);
+  #endif
+  void add_timestamp(const char* value);
+  void add_timestamp(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField< ::std::string>& timestamp() const;
+  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_timestamp();
 
-  // repeated .willand_ackermann.State actual_states = 2;
-  int actual_states_size() const;
-  void clear_actual_states();
-  static const int kActualStatesFieldNumber = 2;
-  ::willand_ackermann::State* mutable_actual_states(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >*
-      mutable_actual_states();
-  const ::willand_ackermann::State& actual_states(int index) const;
-  ::willand_ackermann::State* add_actual_states();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >&
-      actual_states() const;
+  // repeated .willand_ackermann_proto.State reference_data = 3;
+  int reference_data_size() const;
+  void clear_reference_data();
+  static const int kReferenceDataFieldNumber = 3;
+  ::willand_ackermann_proto::State* mutable_reference_data(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
+      mutable_reference_data();
+  const ::willand_ackermann_proto::State& reference_data(int index) const;
+  ::willand_ackermann_proto::State* add_reference_data();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
+      reference_data() const;
 
-  // repeated .willand_ackermann.ControlSignal control_signals = 3;
-  int control_signals_size() const;
-  void clear_control_signals();
-  static const int kControlSignalsFieldNumber = 3;
-  ::willand_ackermann::ControlSignal* mutable_control_signals(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::ControlSignal >*
-      mutable_control_signals();
-  const ::willand_ackermann::ControlSignal& control_signals(int index) const;
-  ::willand_ackermann::ControlSignal* add_control_signals();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::ControlSignal >&
-      control_signals() const;
+  // repeated .willand_ackermann_proto.State actual_data = 4;
+  int actual_data_size() const;
+  void clear_actual_data();
+  static const int kActualDataFieldNumber = 4;
+  ::willand_ackermann_proto::State* mutable_actual_data(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
+      mutable_actual_data();
+  const ::willand_ackermann_proto::State& actual_data(int index) const;
+  ::willand_ackermann_proto::State* add_actual_data();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
+      actual_data() const;
 
-  // @@protoc_insertion_point(class_scope:willand_ackermann.TrackingData)
+  // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+  int control_signal_size() const;
+  void clear_control_signal();
+  static const int kControlSignalFieldNumber = 5;
+  ::willand_ackermann_proto::ControlSignal* mutable_control_signal(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >*
+      mutable_control_signal();
+  const ::willand_ackermann_proto::ControlSignal& control_signal(int index) const;
+  ::willand_ackermann_proto::ControlSignal* add_control_signal();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >&
+      control_signal() const;
+
+  // uint32 length = 1;
+  void clear_length();
+  static const int kLengthFieldNumber = 1;
+  ::google::protobuf::uint32 length() const;
+  void set_length(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.TrackingData)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State > reference_states_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State > actual_states_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann::ControlSignal > control_signals_;
+  ::google::protobuf::RepeatedPtrField< ::std::string> timestamp_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State > reference_data_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State > actual_data_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal > control_signal_;
+  ::google::protobuf::uint32 length_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
 };
@@ -480,256 +496,311 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
 #endif  // __GNUC__
 // State
 
-// double timestamp = 1;
-inline void State::clear_timestamp() {
-  timestamp_ = 0;
-}
-inline double State::timestamp() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.timestamp)
-  return timestamp_;
-}
-inline void State::set_timestamp(double value) {
-  
-  timestamp_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.timestamp)
-}
-
-// double x = 2;
+// double x = 1;
 inline void State::clear_x() {
   x_ = 0;
 }
 inline double State::x() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.x)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.x)
   return x_;
 }
 inline void State::set_x(double value) {
   
   x_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.x)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.x)
 }
 
-// double y = 3;
+// double y = 2;
 inline void State::clear_y() {
   y_ = 0;
 }
 inline double State::y() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.y)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.y)
   return y_;
 }
 inline void State::set_y(double value) {
   
   y_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.y)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.y)
 }
 
-// double theta = 4;
+// double theta = 3;
 inline void State::clear_theta() {
   theta_ = 0;
 }
 inline double State::theta() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.theta)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.theta)
   return theta_;
 }
 inline void State::set_theta(double value) {
   
   theta_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.theta)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.theta)
 }
 
-// double v = 5;
+// double v = 4;
 inline void State::clear_v() {
   v_ = 0;
 }
 inline double State::v() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.v)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.v)
   return v_;
 }
 inline void State::set_v(double value) {
   
   v_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.v)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.v)
 }
 
-// double omega = 6;
+// double omega = 5;
 inline void State::clear_omega() {
   omega_ = 0;
 }
 inline double State::omega() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.omega)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.omega)
   return omega_;
 }
 inline void State::set_omega(double value) {
   
   omega_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.omega)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.omega)
 }
 
-// double kappa = 7;
+// double kappa = 6;
 inline void State::clear_kappa() {
   kappa_ = 0;
 }
 inline double State::kappa() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.State.kappa)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.kappa)
   return kappa_;
 }
 inline void State::set_kappa(double value) {
   
   kappa_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.State.kappa)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.kappa)
 }
 
 // -------------------------------------------------------------------
 
 // ControlSignal
 
-// double timestamp = 1;
-inline void ControlSignal::clear_timestamp() {
-  timestamp_ = 0;
-}
-inline double ControlSignal::timestamp() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.ControlSignal.timestamp)
-  return timestamp_;
-}
-inline void ControlSignal::set_timestamp(double value) {
-  
-  timestamp_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.ControlSignal.timestamp)
-}
-
-// double v = 2;
+// double v = 1;
 inline void ControlSignal::clear_v() {
   v_ = 0;
 }
 inline double ControlSignal::v() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.ControlSignal.v)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.v)
   return v_;
 }
 inline void ControlSignal::set_v(double value) {
   
   v_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.ControlSignal.v)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.v)
 }
 
-// double omega = 3;
+// double omega = 2;
 inline void ControlSignal::clear_omega() {
   omega_ = 0;
 }
 inline double ControlSignal::omega() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.ControlSignal.omega)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.omega)
   return omega_;
 }
 inline void ControlSignal::set_omega(double value) {
   
   omega_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.ControlSignal.omega)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.omega)
 }
 
-// double kappa = 4;
+// double kappa = 3;
 inline void ControlSignal::clear_kappa() {
   kappa_ = 0;
 }
 inline double ControlSignal::kappa() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.ControlSignal.kappa)
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.kappa)
   return kappa_;
 }
 inline void ControlSignal::set_kappa(double value) {
   
   kappa_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann.ControlSignal.kappa)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.kappa)
 }
 
 // -------------------------------------------------------------------
 
 // TrackingData
 
-// repeated .willand_ackermann.State reference_states = 1;
-inline int TrackingData::reference_states_size() const {
-  return reference_states_.size();
+// uint32 length = 1;
+inline void TrackingData::clear_length() {
+  length_ = 0u;
 }
-inline void TrackingData::clear_reference_states() {
-  reference_states_.Clear();
+inline ::google::protobuf::uint32 TrackingData::length() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.length)
+  return length_;
 }
-inline ::willand_ackermann::State* TrackingData::mutable_reference_states(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann.TrackingData.reference_states)
-  return reference_states_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >*
-TrackingData::mutable_reference_states() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann.TrackingData.reference_states)
-  return &reference_states_;
-}
-inline const ::willand_ackermann::State& TrackingData::reference_states(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.TrackingData.reference_states)
-  return reference_states_.Get(index);
-}
-inline ::willand_ackermann::State* TrackingData::add_reference_states() {
-  // @@protoc_insertion_point(field_add:willand_ackermann.TrackingData.reference_states)
-  return reference_states_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >&
-TrackingData::reference_states() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann.TrackingData.reference_states)
-  return reference_states_;
+inline void TrackingData::set_length(::google::protobuf::uint32 value) {
+  
+  length_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.length)
 }
 
-// repeated .willand_ackermann.State actual_states = 2;
-inline int TrackingData::actual_states_size() const {
-  return actual_states_.size();
+// repeated string timestamp = 2;
+inline int TrackingData::timestamp_size() const {
+  return timestamp_.size();
 }
-inline void TrackingData::clear_actual_states() {
-  actual_states_.Clear();
+inline void TrackingData::clear_timestamp() {
+  timestamp_.Clear();
 }
-inline ::willand_ackermann::State* TrackingData::mutable_actual_states(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann.TrackingData.actual_states)
-  return actual_states_.Mutable(index);
+inline const ::std::string& TrackingData::timestamp(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_.Get(index);
 }
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >*
-TrackingData::mutable_actual_states() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann.TrackingData.actual_states)
-  return &actual_states_;
+inline ::std::string* TrackingData::mutable_timestamp(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_.Mutable(index);
 }
-inline const ::willand_ackermann::State& TrackingData::actual_states(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.TrackingData.actual_states)
-  return actual_states_.Get(index);
+inline void TrackingData::set_timestamp(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.timestamp)
+  timestamp_.Mutable(index)->assign(value);
 }
-inline ::willand_ackermann::State* TrackingData::add_actual_states() {
-  // @@protoc_insertion_point(field_add:willand_ackermann.TrackingData.actual_states)
-  return actual_states_.Add();
+#if LANG_CXX11
+inline void TrackingData::set_timestamp(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.timestamp)
+  timestamp_.Mutable(index)->assign(std::move(value));
 }
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::State >&
-TrackingData::actual_states() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann.TrackingData.actual_states)
-  return actual_states_;
+#endif
+inline void TrackingData::set_timestamp(int index, const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  timestamp_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline void TrackingData::set_timestamp(int index, const char* value, size_t size) {
+  timestamp_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline ::std::string* TrackingData::add_timestamp() {
+  // @@protoc_insertion_point(field_add_mutable:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_.Add();
+}
+inline void TrackingData::add_timestamp(const ::std::string& value) {
+  timestamp_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.timestamp)
+}
+#if LANG_CXX11
+inline void TrackingData::add_timestamp(::std::string&& value) {
+  timestamp_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.timestamp)
+}
+#endif
+inline void TrackingData::add_timestamp(const char* value) {
+  GOOGLE_DCHECK(value != NULL);
+  timestamp_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline void TrackingData::add_timestamp(const char* value, size_t size) {
+  timestamp_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
+TrackingData::timestamp() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_;
+}
+inline ::google::protobuf::RepeatedPtrField< ::std::string>*
+TrackingData::mutable_timestamp() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.timestamp)
+  return &timestamp_;
 }
 
-// repeated .willand_ackermann.ControlSignal control_signals = 3;
-inline int TrackingData::control_signals_size() const {
-  return control_signals_.size();
+// repeated .willand_ackermann_proto.State reference_data = 3;
+inline int TrackingData::reference_data_size() const {
+  return reference_data_.size();
 }
-inline void TrackingData::clear_control_signals() {
-  control_signals_.Clear();
+inline void TrackingData::clear_reference_data() {
+  reference_data_.Clear();
 }
-inline ::willand_ackermann::ControlSignal* TrackingData::mutable_control_signals(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann.TrackingData.control_signals)
-  return control_signals_.Mutable(index);
+inline ::willand_ackermann_proto::State* TrackingData::mutable_reference_data(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.reference_data)
+  return reference_data_.Mutable(index);
 }
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann::ControlSignal >*
-TrackingData::mutable_control_signals() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann.TrackingData.control_signals)
-  return &control_signals_;
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
+TrackingData::mutable_reference_data() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.reference_data)
+  return &reference_data_;
 }
-inline const ::willand_ackermann::ControlSignal& TrackingData::control_signals(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann.TrackingData.control_signals)
-  return control_signals_.Get(index);
+inline const ::willand_ackermann_proto::State& TrackingData::reference_data(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.reference_data)
+  return reference_data_.Get(index);
 }
-inline ::willand_ackermann::ControlSignal* TrackingData::add_control_signals() {
-  // @@protoc_insertion_point(field_add:willand_ackermann.TrackingData.control_signals)
-  return control_signals_.Add();
+inline ::willand_ackermann_proto::State* TrackingData::add_reference_data() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.reference_data)
+  return reference_data_.Add();
 }
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann::ControlSignal >&
-TrackingData::control_signals() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann.TrackingData.control_signals)
-  return control_signals_;
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
+TrackingData::reference_data() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.reference_data)
+  return reference_data_;
+}
+
+// repeated .willand_ackermann_proto.State actual_data = 4;
+inline int TrackingData::actual_data_size() const {
+  return actual_data_.size();
+}
+inline void TrackingData::clear_actual_data() {
+  actual_data_.Clear();
+}
+inline ::willand_ackermann_proto::State* TrackingData::mutable_actual_data(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.actual_data)
+  return actual_data_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
+TrackingData::mutable_actual_data() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.actual_data)
+  return &actual_data_;
+}
+inline const ::willand_ackermann_proto::State& TrackingData::actual_data(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.actual_data)
+  return actual_data_.Get(index);
+}
+inline ::willand_ackermann_proto::State* TrackingData::add_actual_data() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.actual_data)
+  return actual_data_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
+TrackingData::actual_data() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.actual_data)
+  return actual_data_;
+}
+
+// repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+inline int TrackingData::control_signal_size() const {
+  return control_signal_.size();
+}
+inline void TrackingData::clear_control_signal() {
+  control_signal_.Clear();
+}
+inline ::willand_ackermann_proto::ControlSignal* TrackingData::mutable_control_signal(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.control_signal)
+  return control_signal_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >*
+TrackingData::mutable_control_signal() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.control_signal)
+  return &control_signal_;
+}
+inline const ::willand_ackermann_proto::ControlSignal& TrackingData::control_signal(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.control_signal)
+  return control_signal_.Get(index);
+}
+inline ::willand_ackermann_proto::ControlSignal* TrackingData::add_control_signal() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.control_signal)
+  return control_signal_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >&
+TrackingData::control_signal() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.control_signal)
+  return control_signal_;
 }
 
 #ifdef __GNUC__
@@ -742,7 +813,7 @@ TrackingData::control_signals() const {
 
 // @@protoc_insertion_point(namespace_scope)
 
-}  // namespace willand_ackermann
+}  // namespace willand_ackermann_proto
 
 // @@protoc_insertion_point(global_scope)
 

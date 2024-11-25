@@ -1,3 +1,6 @@
+#include <string>
+
+#include "fstream"
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Twist.h"
 #include "nav_msgs/Odometry.h"
@@ -7,6 +10,7 @@
 #include "ros/node_handle.h"
 #include "ros/publisher.h"
 #include "ros/ros.h"
+#include "ros/time.h"
 #include "ros/timer.h"
 #include "trajectory_tracker.h"
 #include "visualization_msgs/Marker.h"
@@ -18,7 +22,9 @@ class TrackingServer {
                  const PathGenerator &curve_generator)
       : mpc_param_(mpc_param),
         tracker_(TrajectoryTracker(mpc_param)),
-        curve_generator_(curve_generator){};
+        curve_generator_(curve_generator) {
+    max_length_record_ = mpc_param.horizon_ * 2;
+  };
 
   void init(ros::NodeHandle &nh) {
     odom_sub_ = nh.subscribe("/steer_bot/ackermann_steering_controller/odom",
@@ -43,6 +49,8 @@ class TrackingServer {
   }
 
  private:
+  const std::string file_path_ = "../pb_data/";
+
   const double global_traj_pub_interval = 20.0;
   const double local_traj_pub_interval = 0.10;
   ros::Subscriber odom_sub_;
@@ -58,11 +66,13 @@ class TrackingServer {
   TrajectoryTracker tracker_;
   PathGenerator curve_generator_;
   Eigen::Vector3d current_state_;
+  Eigen::Vector2d current_twist_;
   Eigen::Vector2d target_point_;
   std::vector<PathGenerator::Point2D> global_path_points_;
   std::vector<PathGenerator::Point2D> local_path_points_;
 
-  TrackingData tracking_data_;
+  int max_length_record_;  // cann't record unlimited data
+  willand_ackermann_proto::TrackingData tracking_data_;
 
  private:
   void odomCallback(const nav_msgs::Odometry::ConstPtr &msg) {
@@ -74,6 +84,7 @@ class TrackingServer {
                             1.0 - 2.0 * (quaternion.y() * quaternion.y() +
                                          quaternion.z() * quaternion.z()));
     current_state_ << msg->pose.pose.position.x, msg->pose.pose.position.y, yaw;
+    current_twist_ << msg->twist.twist.linear.x, msg->twist.twist.angular.z;
   }
   void targetPointCallback(const geometry_msgs::PoseStamped::ConstPtr &msg) {
     target_point_ << msg->pose.position.x, msg->pose.position.y;
@@ -201,7 +212,8 @@ class TrackingServer {
     }
     TrajectoryTracker::DVector solution;
     tracker_.update(current_state_, local_path_points_);
-    if (tracker_.solve(solution)) {
+    bool solve_succeed = tracker_.solve(solution);
+    if (solve_succeed) {
       cmd.linear.x =
           solution(mpc_param_.state_size_ * (mpc_param_.horizon_ + 1));
       cmd.linear.y = 0;
@@ -214,8 +226,58 @@ class TrackingServer {
       ROS_ERROR("Failed to solve the optimization problem");
     }
     twist_cmd_pub_.publish(cmd);
+
+    // save tracking data
+    if (solve_succeed) {
+      ros::Time cur_time = ros::Time::now();
+      std::stringstream ss;
+      ss << cur_time.sec << "_" << cur_time.nsec;
+      tracking_data_.set_length(tracking_data_.length() + 1);
+      tracking_data_.add_timestamp(ss.str());
+      auto refer_data_ptr = tracking_data_.add_reference_data();
+      auto actual_data_ptr = tracking_data_.add_actual_data();
+      auto control_signal_ptr = tracking_data_.add_control_signal();
+      // referene state
+      Eigen::Vector3d refer_state;
+      Eigen::Vector2d refer_input;
+      tracker_.getCurrentReferStateAndSeq(refer_state, refer_input);
+      // refer traj data
+      refer_data_ptr->set_x(refer_state(0));
+      refer_data_ptr->set_y(refer_state(1));
+      refer_data_ptr->set_theta(refer_state(2));
+      refer_data_ptr->set_v(refer_input(0));
+      refer_data_ptr->set_omega(refer_input(1));
+      refer_data_ptr->set_kappa(refer_input(1) / refer_input(0));
+      // actually data
+      actual_data_ptr->set_x(current_state_(0));
+      actual_data_ptr->set_y(current_state_(1));
+      actual_data_ptr->set_theta(current_state_(2));
+      actual_data_ptr->set_v(current_twist_(0));
+      actual_data_ptr->set_omega(current_twist_(1));
+      actual_data_ptr->set_kappa(current_twist_(1) / current_twist_(0));
+      // control data
+      double v = cmd.linear.x, omega = cmd.angular.z;
+      control_signal_ptr->set_v(v);
+      control_signal_ptr->set_omega(omega);
+      control_signal_ptr->set_kappa(omega / v);
+    }
+    if (tracking_data_.length() == max_length_record_) {
+      tracking_data_.Clear();
+    }
   }
-  void serialize() {}
+  void serialize() {
+    std::string time_stamp;
+    if (tracking_data_.timestamp().empty()) {
+      return;
+    } else {
+      time_stamp = tracking_data_.timestamp(0);
+    }
+    std::string file_name = file_path_ + "traj_data_" + time_stamp;
+    std::ofstream output_file(file_name, std::ios::out | std::ios::binary);
+    if (!tracking_data_.SerializeToOstream(&output_file)) {
+      ROS_ERROR("Failed to write tracking data to file.");
+    }
+  }
 };
 
 };  // namespace willand_ackermann

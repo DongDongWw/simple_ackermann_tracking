@@ -1,7 +1,5 @@
 #include "trajectory_tracker.h"
 
-#include <Eigen/src/Core/Matrix.h>
-
 #include <cmath>
 
 namespace willand_ackermann {
@@ -32,7 +30,7 @@ TrajectoryTracker::TrajectoryTracker(const TrackerParam &param)
   g_.resize(qp_state_size_);
 };
 
-bool TrajectoryTracker::update(const DVector &init_state,
+bool TrajectoryTracker::update(const Vector3d &init_state,
                                const Trajectory2D &refer_traj) {
   if (!setReferenceTrajectory(refer_traj)) {
     std::cout << "Invalid reference trajectory!" << std::endl;
@@ -359,7 +357,6 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   refer_state_seq_.resize(param_.horizon_ + 1);
   for (size_t i = 0; i < param_.horizon_; ++i) {
     auto &refer_state = refer_state_seq_.at(i);
-    refer_state.resize(param_.state_size_);
     refer_state.segment(0, 2) = refer_traj.at(i);
     double delta_x = refer_traj.at(i + 1)(0) - refer_traj.at(i)(0);
     double delta_y = refer_traj.at(i + 1)(1) - refer_traj.at(i)(1);
@@ -374,7 +371,6 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     refer_state(2) = yaw;
   }
   auto &refer_state = refer_state_seq_.back();
-  refer_state.resize(param_.state_size_);
   refer_state.segment(0, 2) = refer_traj.back();
   refer_state(2) = refer_state_seq_.at(param_.horizon_ - 1)(2);
 
@@ -387,16 +383,15 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     double delta_y = refer_traj.at(i + 1)(1) - refer_traj.at(i)(1);
     double v =
         std::sqrt(delta_x * delta_x + delta_y * delta_y) / param_.interval_;
-    refer_input.resize(param_.input_size_);
     refer_input(0) = v;
   }
   for (size_t i = 1; i < param_.horizon_; ++i) {
     auto &refer_input = refer_input_seq_.at(i);
     // calculate curvature by three points, assume moving along a circle path
     // in a short distance
-    Point2d A = refer_state_seq_.at(i - 1).segment<2>(0);
-    Point2d B = refer_state_seq_.at(i).segment<2>(0);
-    Point2d C = refer_state_seq_.at(i + 1).segment<2>(0);
+    Vector2d A = refer_state_seq_.at(i - 1).segment<2>(0);
+    Vector2d B = refer_state_seq_.at(i).segment<2>(0);
+    Vector2d C = refer_state_seq_.at(i + 1).segment<2>(0);
     Vector2d ab = B - A, ac = C - A, bc = C - B;
     if (ab.norm() > 1e-6 && bc.norm() > 1e-6) {
       double angle_included =
@@ -418,7 +413,7 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   return true;
 }
 TrajectoryTracker::DMatrix TrajectoryTracker::dynamicStateMatrixCaster(
-    const DVector &x_refer, const DVector &u_refer) {
+    const Vector3d &x_refer, const Vector2d &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -429,7 +424,7 @@ TrajectoryTracker::DMatrix TrajectoryTracker::dynamicStateMatrixCaster(
          interval * partial_x.transpose();
 }
 TrajectoryTracker::DMatrix TrajectoryTracker::dynamicInputMatrixCaster(
-    const DVector &x_refer, const DVector &u_refer) {
+    const Vector3d &x_refer, const Vector2d &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -439,7 +434,7 @@ TrajectoryTracker::DMatrix TrajectoryTracker::dynamicInputMatrixCaster(
   return interval * partial_u.transpose();
 }
 TrajectoryTracker::DVector TrajectoryTracker::dynamicVectorCaster(
-    const DVector &x_refer, const DVector &u_refer) {
+    const Vector3d &x_refer, const Vector2d &u_refer) {
   int state_size = param_.state_size_;
   int input_size = param_.input_size_;
   double interval = param_.interval_;
@@ -661,6 +656,16 @@ void TrajectoryTracker::printRefereceInputSeq() {
               << refer_input_seq_.at(i).transpose().format(CleanFmt)
               << std::endl;
   }
+}
+void TrajectoryTracker::getReferenceStateAndInputSeq(
+    Trajectory3D &refer_state_seq, Trajectory2D &refer_input_seq) {
+  refer_state_seq = refer_state_seq_;
+  refer_input_seq = refer_input_seq_;
+}
+void TrajectoryTracker::getCurrentReferStateAndSeq(Vector3d &refer_state,
+                                                   Vector2d &refer_input) {
+  refer_state = refer_state_seq_.front();
+  refer_input = refer_input_seq_.front();
 }
 
 };  // namespace willand_ackermann

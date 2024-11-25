@@ -1,7 +1,4 @@
 #pragma once
-#include "Eigen/Dense"
-#include "OsqpEigen/OsqpEigen.h"
-#include <Eigen/src/SparseCore/SparseMatrix.h>
 #include <cmath>
 #include <functional>
 #include <iomanip>
@@ -10,6 +7,9 @@
 #include <limits>
 #include <memory>
 #include <vector>
+
+#include "Eigen/Dense"
+#include "OsqpEigen/OsqpEigen.h"
 
 #define kEps 1.0e-6
 namespace willand_ackermann {
@@ -28,9 +28,15 @@ struct TrackerParam {
   double dist_front_to_rear_;
 
   TrackerParam()
-      : horizon_(20), interval_(0.2), state_size_(4), input_size_(2),
-        speed_limit_(1.0), acc_limit_(1.0), front_wheel_angle_limit_(M_PI / 4),
-        front_wheel_angle_rate_limit_(M_PI / 8), track_width_(0.5),
+      : horizon_(20),
+        interval_(0.2),
+        state_size_(4),
+        input_size_(2),
+        speed_limit_(1.0),
+        acc_limit_(1.0),
+        front_wheel_angle_limit_(M_PI / 4),
+        front_wheel_angle_rate_limit_(M_PI / 8),
+        track_width_(0.5),
         dist_front_to_rear_(0.8) {}
   TrackerParam(int horizon, double interval, int state_size, int input_size,
                double speed_limit, double acc_limit,
@@ -39,32 +45,20 @@ struct TrackerParam {
                double dist_front_to_rear);
 };
 class TrajectoryTracker {
-public:
+ public:
   typedef std::unique_ptr<TrajectoryTracker> UniquePtr;
   typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> DMatrix;
   typedef Eigen::SparseMatrix<double> SparseMatrix;
   typedef Eigen::VectorXd DVector;
-  typedef Eigen::Vector2d Point2d;
   typedef Eigen::Vector2d Vector2d;
+  typedef Eigen::Vector3d Vector3d;
   typedef std::vector<Eigen::Vector2d> Trajectory2D;
-  typedef std::vector<Eigen::VectorXd> TrajectoryXD;
-  typedef std::function<DMatrix(const TrackerParam &param, const DVector &,
-                                const DVector &)>
-      MatrixCaster;
-  typedef std::function<DVector(const TrackerParam &param, const DVector &,
-                                const DVector &)>
-      VectorCaster;
-  typedef std::function<DMatrix(const TrackerParam &param, TrajectoryXD,
-                                TrajectoryXD)>
-      UserCustomizeMatrixCaster;
-  typedef std::function<DMatrix(const TrackerParam &param, TrajectoryXD,
-                                TrajectoryXD)>
-      UserCustomizeBoundCaster;
+  typedef std::vector<Eigen::Vector3d> Trajectory3D;
 
-private:
+ private:
   TrackerParam param_;
-  DVector init_state_;
-  DMatrix Q_, R_; // weight matrices
+  Vector2d init_state_;
+  DMatrix Q_, R_;  // weight matrices
   DMatrix Ad_;
   DMatrix Bd_;
   DVector Kd_;
@@ -75,10 +69,10 @@ private:
   DMatrix B_inequal_;
   DVector K_inequal_lb_;
   DVector K_inequal_ub_;
-  DVector x_lb_;
-  DVector x_ub_;
-  DVector u_lb_;
-  DVector u_ub_;
+  Vector3d x_lb_;
+  Vector3d x_ub_;
+  Vector2d u_lb_;
+  Vector2d u_ub_;
   DMatrix A_steer_rate_;
   DVector lb_steer_rate_;
   DVector ub_steer_rate_;
@@ -89,20 +83,13 @@ private:
   int qp_state_size_;
   SparseMatrix H_;
   DVector g_;
-  SparseMatrix M_; // constraint matrices
+  SparseMatrix M_;  // constraint matrices
   DVector lb_, ub_;
-  // DMatrix cons_bd_;
-  // std::vector<DMatrix> Ad_seq_;
-  // std::vector<DMatrix> Bd_seq_;
-  // std::vector<DMatrix> Kd_seq_;
-  // const Trajectory2D *refer_traj_ptr_;
-  TrajectoryXD refer_state_seq_;
-  TrajectoryXD refer_input_seq_;
-  MatrixCaster DynamicStateMatrixCaster;
-  MatrixCaster DynamicInputMatrixCaster;
-  VectorCaster DynamicVectorCaster;
 
-private:
+  Trajectory3D refer_state_seq_;
+  Trajectory2D refer_input_seq_;
+
+ private:
   void calcOsqpHession();
   void calcOsqpGradient();
   void calcOsqpConstraintMatrix();
@@ -122,9 +109,11 @@ private:
     Q_ << 100.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 0.0, 1.0;
     R_ << 1.0, 0.0, 0.0, 1.0;
   }
-  DMatrix dynamicStateMatrixCaster(const DVector &state, const DVector &input);
-  DMatrix dynamicInputMatrixCaster(const DVector &state, const DVector &input);
-  DVector dynamicVectorCaster(const DVector &state, const DVector &input);
+  DMatrix dynamicStateMatrixCaster(const Vector3d &state,
+                                   const Vector2d &input);
+  DMatrix dynamicInputMatrixCaster(const Vector3d &state,
+                                   const Vector2d &input);
+  DVector dynamicVectorCaster(const Vector3d &state, const Vector2d &input);
   DMatrix steerRateConstraintsMatrixCaster();
   DMatrix steerRateConstraintsBoundCaster();
   DMatrix accelerateConstraintsMatrixCaster();
@@ -160,16 +149,16 @@ private:
     K_inequal_ub_.setZero();
   }
   void setGeneralBoundBoxConstraints() {
-    x_lb_ = DVector::Zero(param_.state_size_);
-    x_ub_ = DVector::Zero(param_.state_size_);
+    x_lb_ = Vector3d::Zero();
+    x_ub_ = Vector3d::Zero();
     x_lb_ << -std::numeric_limits<double>::infinity(),
         -std::numeric_limits<double>::infinity(),
         -std::numeric_limits<double>::infinity();
     x_ub_ << +std::numeric_limits<double>::infinity(),
         +std::numeric_limits<double>::infinity(),
         +std::numeric_limits<double>::infinity();
-    u_lb_ = DVector::Zero(param_.input_size_);
-    u_ub_ = DVector::Zero(param_.input_size_);
+    u_lb_ = Vector2d::Zero();
+    u_ub_ = Vector2d::Zero();
     u_lb_ << -param_.speed_limit_, -std::numeric_limits<double>::infinity();
     u_ub_ << param_.speed_limit_, std::numeric_limits<double>::infinity();
   }
@@ -187,13 +176,16 @@ private:
   }
   void CastProblemToQpForm();
 
-public:
+ public:
   TrajectoryTracker(const TrackerParam &param);
 
-  bool update(const DVector &init_state, const Trajectory2D &reference_traj);
+  bool update(const Vector3d &init_state, const Trajectory2D &reference_traj);
   bool solve(DVector &solution);
+  void getReferenceStateAndInputSeq(Trajectory3D &refer_state_seq,
+                                    Trajectory2D &refer_input_seq);
+  void getCurrentReferStateAndSeq(Vector3d &refer_state, Vector2d &refer_input);
   void printRefereceStateSeq();
   void printRefereceInputSeq();
 };
 
-} // namespace willand_ackermann
+}  // namespace willand_ackermann

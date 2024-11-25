@@ -14,6 +14,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/osqp-eigen)
 # # protobuffer
 find_package(Protobuf 3 REQUIRED)
 message(STATUS "Protobuf compiler: ${PROTOBUF_PROTOC_EXECUTABLE}")
+message(STATUS "[PROTOBUF_INCLUDE_DIRS]" ${Protobuf_INCLUDE_DIRS})
 
 SET(PROTO_DIR ${PROJECT_SOURCE_DIR}/proto/)
 SET(PB_DIR ${PROJECT_SOURCE_DIR}/include/proto)
@@ -63,6 +64,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${PB_DIR}
 )
+include_directories(${Protobuf_INCLUDE_DIRS})
 add_executable(${PROJECT_NAME}_example
   src/example.cpp
   src/trajectory_tracker.cpp
@@ -74,9 +76,10 @@ add_executable(${PROJECT_NAME}_gazebo
   src/traj_tracking_gazebo.cpp
   src/trajectory_tracker.cpp
   ${PROTO_SRC}
+  ${PROTO_INC}
 )
 target_link_libraries(${PROJECT_NAME}_gazebo
   ${catkin_LIBRARIES}
   OsqpEigen::OsqpEigen
-  ${PROTOBUF_LIBRARIES}
+  protobuf::libprotobuf
 )
