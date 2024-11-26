@@ -11,9 +11,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/osqp)
 add_subdirectory(${PROJECT_SOURCE_DIR}/third_party/osqp-eigen)
 
 # # protobuffer
-file(MAKE_DIRECTORY "/tmp/ros/proto/traj_tracking")
-file(GLOB files "/tmp/ros/proto/traj_tracking/*")
-file(REMOVE ${files})
+set(PROTO_DATA_PATH "/tmp/ros/proto/traj_tracking")
+file(REMOVE_RECURSE ${PROTO_DATA_PATH})
+file(MAKE_DIRECTORY ${PROTO_DATA_PATH})
 find_package(Protobuf 3 REQUIRED)
 message(STATUS "Protobuf compiler: ${PROTOBUF_PROTOC_EXECUTABLE}")
 message(STATUS "[PROTOBUF_INCLUDE_DIRS]" ${Protobuf_INCLUDE_DIRS})
