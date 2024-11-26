@@ -1,17 +1,18 @@
+#include <fstream>
 #include <string>
 
-#include "fstream"
 #include "geometry_msgs/PoseStamped.h"
 #include "geometry_msgs/Twist.h"
 #include "nav_msgs/Odometry.h"
 #include "path_generator.h"
-#include "proto/tracking_data.pb.h"
+#include "ros/duration.h"
 #include "ros/init.h"
 #include "ros/node_handle.h"
 #include "ros/publisher.h"
 #include "ros/ros.h"
 #include "ros/time.h"
 #include "ros/timer.h"
+#include "tracking_data.pb.h"
 #include "trajectory_tracker.h"
 #include "visualization_msgs/Marker.h"
 namespace willand_ackermann {
@@ -32,27 +33,35 @@ class TrackingServer {
     nav_point_sub_ = nh.subscribe("/move_base_simple/goal", 10,
                                   &TrackingServer::targetPointCallback, this);
 
+    // timer_global_traj_pub_ =
+    //     nh.createTimer(ros::Duration(global_traj_pub_interval),
+    //                    &TrackingServer::publishGlobalTrajectory, this);
     timer_local_traj_pub_ =
         nh.createTimer(ros::Duration(local_traj_pub_interval),
                        &TrackingServer::publishLocalTrajectory, this);
     timer_contol_cmd_pub_ =
         nh.createTimer(ros::Duration(mpc_param_.interval_),
                        &TrackingServer::publishControlCommand, this);
-
     global_traj_pub_ =
         nh.advertise<visualization_msgs::Marker>("global_traj", 10);
     local_traj_pub_ =
         nh.advertise<visualization_msgs::Marker>("local_traj", 10);
     twist_cmd_pub_ = nh.advertise<geometry_msgs::Twist>(
         "/steer_bot/ackermann_steering_controller/cmd_vel", 10);
+
+    nh.param("/global_circle_radius", global_circle_radius_, 0.0);
+
+    ros::Duration(5.0).sleep();
+    publishGlobalCircleTrajectory();  // only publish once
     return;
   }
 
  private:
-  const std::string file_path_ = "../pb_data/";
+  const std::string file_path_ = "/tmp/ros/proto/traj_tracking/";
 
   const double global_traj_pub_interval = 20.0;
   const double local_traj_pub_interval = 0.10;
+  double global_circle_radius_;
   ros::Subscriber odom_sub_;
   ros::Subscriber nav_point_sub_;
   ros::Publisher global_traj_pub_;
@@ -132,7 +141,39 @@ class TrackingServer {
                     randomPointInAnnulus(inner_radius, outer_radius);
     global_path_points_ = curve_generator_.getGlobalPath(
         current_state_.segment(0, 2), target_point_, current_state_(2));
-
+    if (global_path_points_.empty()) {
+      ROS_ERROR("Failed to generate global path");
+      return;
+    }
+    visualization_msgs::Marker global_traj;
+    global_traj.header.frame_id = "odom";
+    global_traj.header.stamp = ros::Time::now();
+    global_traj.ns = "vehicle_traj";
+    global_traj.id = 1;
+    global_traj.type = visualization_msgs::Marker::LINE_STRIP;
+    global_traj.action = visualization_msgs::Marker::ADD;
+    global_traj.scale.x = 0.05;
+    global_traj.color.r = 1.0;
+    global_traj.color.g = 0.0;
+    global_traj.color.b = 0.0;
+    global_traj.color.a = 1.0;
+    global_traj.pose.orientation.w = 1.0;
+    for (auto &p : global_path_points_) {
+      geometry_msgs::Point cur;
+      cur.x = p(0);
+      cur.y = p(1);
+      global_traj.points.push_back(cur);
+    }
+    global_traj_pub_.publish(global_traj);
+    return;
+  }
+  void publishGlobalCircleTrajectory() {
+    target_point_ = Eigen::Vector2d(0, global_circle_radius_);
+    global_path_points_ = curve_generator_.getGlobalPath(global_circle_radius_);
+    if (global_path_points_.empty()) {
+      ROS_ERROR("Failed to generate global path");
+      return;
+    }
     visualization_msgs::Marker global_traj;
     global_traj.header.frame_id = "odom";
     global_traj.header.stamp = ros::Time::now();
@@ -156,14 +197,13 @@ class TrackingServer {
     return;
   }
   void publishLocalTrajectory(const ros::TimerEvent &) {
+    if (global_path_points_.empty()) {
+      return;
+    }
     local_path_points_ = curve_generator_.generateReferenceTrajectory(
         current_state_.segment(0, 2), mpc_param_.horizon_ + 1);
     if (local_path_points_.empty()) {
-      ROS_INFO("local trajectory is empty, wait ...");
       return;
-    } else {
-      ROS_INFO("length of local trajectory = %d",
-               static_cast<int>(local_path_points_.size()));
     }
     visualization_msgs::Marker local_traj;
     local_traj.header.frame_id = "odom";
@@ -185,7 +225,7 @@ class TrackingServer {
       local_traj.points.push_back(cur);
     }
     local_traj_pub_.publish(local_traj);
-    ROS_INFO("local path published, which length = %d",
+    ROS_INFO("Local path published, which length = %d",
              static_cast<int>(local_path_points_.size()));
     return;
   }
@@ -231,7 +271,7 @@ class TrackingServer {
     if (solve_succeed) {
       ros::Time cur_time = ros::Time::now();
       std::stringstream ss;
-      ss << cur_time.sec << "_" << cur_time.nsec;
+      ss << cur_time.sec << "_" << cur_time.nsec / 1e6;
       tracking_data_.set_length(tracking_data_.length() + 1);
       tracking_data_.add_timestamp(ss.str());
       auto refer_data_ptr = tracking_data_.add_reference_data();
@@ -260,8 +300,10 @@ class TrackingServer {
       control_signal_ptr->set_v(v);
       control_signal_ptr->set_omega(omega);
       control_signal_ptr->set_kappa(omega / v);
+      ROS_INFO("Record data length = %d", tracking_data_.length());
     }
     if (tracking_data_.length() == max_length_record_) {
+      serialize();
       tracking_data_.Clear();
     }
   }
@@ -272,12 +314,14 @@ class TrackingServer {
     } else {
       time_stamp = tracking_data_.timestamp(0);
     }
-    std::string file_name = file_path_ + "traj_data_" + time_stamp;
+    std::string file_name = file_path_ + "tracking_data_" + time_stamp;
     std::ofstream output_file(file_name, std::ios::out | std::ios::binary);
+
     if (!tracking_data_.SerializeToOstream(&output_file)) {
       ROS_ERROR("Failed to write tracking data to file.");
+    } else {
+      ROS_INFO("Tracking data has been written to file %s", file_name.c_str());
     }
   }
 };
-
 };  // namespace willand_ackermann

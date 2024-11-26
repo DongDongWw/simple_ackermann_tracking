@@ -2,7 +2,9 @@
 #include <nav_msgs/Odometry.h>
 #include <ros/ros.h>
 #include <visualization_msgs/Marker.h>
+
 #include <cmath>
+
 #include "geometry_msgs/Twist.h"
 #include "ros/node_handle.h"
 #include "ros/timer.h"
@@ -15,7 +17,7 @@ int main(int argc, char **argv) {
   ros::init(argc, argv, "trajectory_tracking_node");
   ros::NodeHandle nh;
 
-  constexpr int horizon = 40;                           // duration = 8 secs
+  constexpr int horizon = 20;                           // duration = 8 secs
   constexpr double interval = 0.02;                     // unit, sec
   constexpr int state_size = 3;                         // (x, y, theta)
   constexpr int input_size = 2;                         // (v, omega)
@@ -32,9 +34,10 @@ int main(int argc, char **argv) {
                      dist_front_to_rear);
   constexpr double scale_coef = 0.8;
   double interval_between_points = scale_coef * speed_limit * interval;
-  PathGenerator curve_generator(interval_between_points);
-  TrackingServer tracking_server(param, curve_generator);
+  PathGenerator path_generator(interval_between_points);
+  TrackingServer tracking_server(param, path_generator);
   tracking_server.init(nh);
   ros::spin();
+
   return 0;
 }

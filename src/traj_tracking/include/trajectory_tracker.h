@@ -57,7 +57,7 @@ class TrajectoryTracker {
 
  private:
   TrackerParam param_;
-  Vector2d init_state_;
+  Vector3d init_state_;
   DMatrix Q_, R_;  // weight matrices
   DMatrix Ad_;
   DMatrix Bd_;
@@ -94,7 +94,7 @@ class TrajectoryTracker {
   void calcOsqpGradient();
   void calcOsqpConstraintMatrix();
   void calcOsqpConstraintBound();
-  bool setInitialState(const DVector &init_state) {
+  bool setInitialState(const Vector3d &init_state) {
     if (init_state.rows() != param_.state_size_) {
       std::cout << "Invalid initial state" << std::endl;
       return false;

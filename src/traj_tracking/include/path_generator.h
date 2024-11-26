@@ -1,14 +1,18 @@
 #include <Eigen/Dense>
+#include <boost/signals2/deconstruct.hpp>
 #include <cmath>
 #include <cstddef>
 #include <iostream>
 #include <random>
 #include <vector>
 
+#include "geometry_msgs/Pose2D.h"
+#include "ros/ros.h"
+
 namespace willand_ackermann {
 
 class PathGenerator {
-public:
+ public:
   typedef Eigen::Vector2d Point2D;
   PathGenerator() = default;
   PathGenerator(double interval) : interval_(interval) {}
@@ -17,7 +21,10 @@ public:
     points_ = getQuadraticCurve(start, end, theta, interval_);
     return points_;
   }
-
+  std::vector<Point2D> getGlobalPath(double radius) {
+    points_ = getCircularCurve(radius);
+    return points_;
+  }
   std::vector<Point2D> generateReferenceTrajectory(const Point2D &p,
                                                    int number_of_points) {
     if (points_.empty()) {
@@ -32,6 +39,7 @@ public:
         min_dist_idx = i;
       }
     }
+    ROS_INFO("min_dist_idx = %d, min_dist = %f", min_dist_idx, min_dist);
     std::vector<Point2D> ref_traj(number_of_points, points_.back());
     for (size_t i = min_dist_idx;
          i < min_dist_idx + number_of_points && i < points_.size(); ++i) {
@@ -53,12 +61,32 @@ public:
     return min_dist;
   }
 
-private:
+ private:
   Point2D start_;
   Point2D end_;
   double interval_;
   std::vector<Point2D> points_;
   Eigen::Matrix<double, 3, 2> coefficients_;
+
+ private:
+  std::vector<Point2D> getCircularCurve(double radius) {
+    if (std::abs(radius) < 0.5) {  // too small radius
+      return std::vector<Point2D>();
+    }
+    double radius_abs = std::abs(radius);
+    double delta_theta = interval_ / radius_abs;
+    // positive radius means turning left, anti-clockwise
+    std::vector<Point2D> points;
+    for (double theta = 0; theta < 2 * M_PI; theta += delta_theta) {
+      double x = radius_abs * std::cos(theta - M_PI / 2);
+      double y = radius_abs * std::sin(theta - M_PI / 2) + radius_abs;
+      if (radius < 0) {
+        y = -y;
+      }
+      points.push_back(Point2D(x, y));
+    }
+    return points;
+  }
   std::vector<Point2D> getQuadraticCurve(const Point2D &start,
                                          const Point2D &end, double theta,
                                          double interval) {
@@ -144,4 +172,4 @@ private:
     return (low + high) / 2.0;
   }
 };
-}; // namespace willand_ackermann
+};  // namespace willand_ackermann
