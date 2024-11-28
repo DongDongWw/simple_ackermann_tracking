@@ -28,6 +28,19 @@ class TrackingServer {
   };
 
   void init(ros::NodeHandle &nh) {
+    // remove the old tracking data directory
+    const char *directory_path = "/tmp/ros/proto/traj_tracking/";
+    std::string rm_cmd =
+        "rm -rf " + std::string(directory_path);  // Linux/macOS命令
+    int result = system(rm_cmd.c_str());
+    if (result == 0) {
+      ROS_INFO("Old tracking data directory removed");
+    }
+    std::string mkdir_cmd = "mkdir -p " + std::string(directory_path);
+    result = system(mkdir_cmd.c_str());
+    if (result == 0) {
+      ROS_INFO("New tracking data directory created");
+    }
     odom_sub_ = nh.subscribe("/steer_bot/ackermann_steering_controller/odom",
                              50, &TrackingServer::odomCallback, this);
     nav_point_sub_ = nh.subscribe("/move_base_simple/goal", 10,
@@ -280,7 +293,7 @@ class TrackingServer {
       // referene state
       Eigen::Vector3d refer_state;
       Eigen::Vector2d refer_input;
-      tracker_.getCurrentReferStateAndSeq(refer_state, refer_input);
+      tracker_.getCurrentReferStateAndInput(refer_state, refer_input);
       // refer traj data
       refer_data_ptr->set_x(refer_state(0));
       refer_data_ptr->set_y(refer_state(1));
@@ -300,7 +313,6 @@ class TrackingServer {
       control_signal_ptr->set_v(v);
       control_signal_ptr->set_omega(omega);
       control_signal_ptr->set_kappa(omega / v);
-      ROS_INFO("Record data length = %d", tracking_data_.length());
     }
     if (tracking_data_.length() == max_length_record_) {
       serialize();
@@ -314,9 +326,23 @@ class TrackingServer {
     } else {
       time_stamp = tracking_data_.timestamp(0);
     }
+    willand_ackermann_proto::ParamMPC *mpc_param =
+        tracking_data_.mutable_mpc_param();
+    // load mpc parameters
+    mpc_param->set_horizon(mpc_param_.horizon_);
+    mpc_param->set_interval(mpc_param_.interval_);
+    mpc_param->set_state_dim(mpc_param_.state_size_);
+    mpc_param->set_input_dim(mpc_param_.input_size_);
+    mpc_param->set_speed_limit(mpc_param_.speed_limit_);
+    mpc_param->set_acc_limit(mpc_param_.acc_limit_);
+    mpc_param->set_front_wheel_angle_limit(mpc_param_.front_wheel_angle_limit_);
+    mpc_param->set_front_wheel_angle_rate_limit(
+        mpc_param_.front_wheel_angle_rate_limit_);
+    mpc_param->set_track_width(mpc_param_.track_width_);
+    mpc_param->set_dist_front_to_rear(mpc_param_.dist_front_to_rear_);
+
     std::string file_name = file_path_ + "tracking_data_" + time_stamp;
     std::ofstream output_file(file_name, std::ios::out | std::ios::binary);
-
     if (!tracking_data_.SerializeToOstream(&output_file)) {
       ROS_ERROR("Failed to write tracking data to file.");
     } else {

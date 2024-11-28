@@ -32,12 +32,12 @@ TrajectoryTracker::TrajectoryTracker(const TrackerParam &param)
 
 bool TrajectoryTracker::update(const Vector3d &init_state,
                                const Trajectory2D &refer_traj) {
-  if (!setReferenceTrajectory(refer_traj)) {
-    std::cout << "Invalid reference trajectory!" << std::endl;
-    return false;
-  }
   if (!setInitialState(init_state)) {
     std::cout << "Invalid initial state!" << std::endl;
+    return false;
+  }
+  if (!setReferenceTrajectory(refer_traj)) {
+    std::cout << "Invalid reference trajectory!" << std::endl;
     return false;
   }
   setWeightMatrices();
@@ -150,8 +150,6 @@ void TrajectoryTracker::calcOsqpConstraintMatrix() {
   //! Note: all the elements in the matrix should be set to zero directly,
   //! otherwise, the matrix will be filled with random values !!!!!!!!
   DMatrix M = DMatrix::Zero(nums_of_cons_rows, qp_state_size_);
-  // M.resize(nums_of_cons_rows, qp_state_size_);
-
   // initial state cons
   M.block(0, 0, param_.state_size_, param_.state_size_).setIdentity();
   // dynamic
@@ -360,8 +358,21 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     refer_state.segment(0, 2) = refer_traj.at(i);
     double delta_x = refer_traj.at(i + 1)(0) - refer_traj.at(i)(0);
     double delta_y = refer_traj.at(i + 1)(1) - refer_traj.at(i)(1);
-    double yaw = std::atan(delta_y / (delta_x + kEps));
-    yaw = delta_x > 0 ? yaw : delta_y > 0 ? yaw + M_PI : yaw - M_PI;
+    double dist = std::sqrt(delta_x * delta_x + delta_y * delta_y);
+    double yaw;
+    // if two points are too close, remain the yaw angle unchanged
+    constexpr double threshold_valid_dist = 1e-4;
+    if (dist < threshold_valid_dist) {
+      if (i == 0) {
+        yaw = init_state_(2);
+      } else {
+        yaw = refer_state_seq_.at(i - 1)(2);
+      }
+    } else {
+      yaw = std::atan2(delta_y, (delta_x + kEps));
+      // yaw = delta_x > 0 ? yaw : delta_y > 0 ? yaw + M_PI : yaw - M_PI;
+    }
+
     // avoid the yaw angle jump
     if (i > 0) {
       double delta_yaw = yaw - refer_state_seq_.at(i - 1)(2);
@@ -662,8 +673,8 @@ void TrajectoryTracker::getReferenceStateAndInputSeq(
   refer_state_seq = refer_state_seq_;
   refer_input_seq = refer_input_seq_;
 }
-void TrajectoryTracker::getCurrentReferStateAndSeq(Vector3d &refer_state,
-                                                   Vector2d &refer_input) {
+void TrajectoryTracker::getCurrentReferStateAndInput(Vector3d &refer_state,
+                                                     Vector2d &refer_input) {
   refer_state = refer_state_seq_.front();
   refer_input = refer_input_seq_.front();
 }

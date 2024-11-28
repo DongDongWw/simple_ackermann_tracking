@@ -13,10 +13,9 @@
 
 using namespace willand_ackermann;
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   ros::init(argc, argv, "trajectory_tracking_node");
   ros::NodeHandle nh;
-
   constexpr int horizon = 20;                           // duration = 8 secs
   constexpr double interval = 0.02;                     // unit, sec
   constexpr int state_size = 3;                         // (x, y, theta)
@@ -32,7 +31,8 @@ int main(int argc, char **argv) {
                      acc_limit, front_wheel_angle_limit,
                      front_wheel_angle_rate_limit, track_width,
                      dist_front_to_rear);
-  constexpr double scale_coef = 0.8;
+
+  constexpr double scale_coef = 0.2;
   double interval_between_points = scale_coef * speed_limit * interval;
   PathGenerator path_generator(interval_between_points);
   TrackingServer tracking_server(param, path_generator);

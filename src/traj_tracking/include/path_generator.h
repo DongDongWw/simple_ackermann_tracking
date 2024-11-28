@@ -39,7 +39,6 @@ class PathGenerator {
         min_dist_idx = i;
       }
     }
-    ROS_INFO("min_dist_idx = %d, min_dist = %f", min_dist_idx, min_dist);
     std::vector<Point2D> ref_traj(number_of_points, points_.back());
     for (size_t i = min_dist_idx;
          i < min_dist_idx + number_of_points && i < points_.size(); ++i) {

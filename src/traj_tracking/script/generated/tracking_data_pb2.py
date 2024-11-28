@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='willand_ackermann_proto',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x13tracking_data.proto\x12\x17willand_ackermann_proto\"U\n\x05State\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\x12\t\n\x01v\x18\x04 \x01(\x01\x12\r\n\x05omega\x18\x05 \x01(\x01\x12\r\n\x05kappa\x18\x06 \x01(\x01\"8\n\rControlSignal\x12\t\n\x01v\x18\x01 \x01(\x01\x12\r\n\x05omega\x18\x02 \x01(\x01\x12\r\n\x05kappa\x18\x03 \x01(\x01\"\xde\x01\n\x0cTrackingData\x12\x0e\n\x06length\x18\x01 \x01(\r\x12\x11\n\ttimestamp\x18\x02 \x03(\t\x12\x36\n\x0ereference_data\x18\x03 \x03(\x0b\x32\x1e.willand_ackermann_proto.State\x12\x33\n\x0b\x61\x63tual_data\x18\x04 \x03(\x0b\x32\x1e.willand_ackermann_proto.State\x12>\n\x0e\x63ontrol_signal\x18\x05 \x03(\x0b\x32&.willand_ackermann_proto.ControlSignalb\x06proto3')
+  serialized_pb=_b('\n\x13tracking_data.proto\x12\x17willand_ackermann_proto\"U\n\x05State\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\x12\t\n\x01v\x18\x04 \x01(\x01\x12\r\n\x05omega\x18\x05 \x01(\x01\x12\r\n\x05kappa\x18\x06 \x01(\x01\"8\n\rControlSignal\x12\t\n\x01v\x18\x01 \x01(\x01\x12\r\n\x05omega\x18\x02 \x01(\x01\x12\r\n\x05kappa\x18\x03 \x01(\x01\"\xf3\x01\n\x08ParamMPC\x12\x0f\n\x07horizon\x18\x01 \x01(\r\x12\x10\n\x08interval\x18\x02 \x01(\x01\x12\x11\n\tstate_dim\x18\x03 \x01(\r\x12\x11\n\tinput_dim\x18\x04 \x01(\r\x12\x13\n\x0bspeed_limit\x18\x05 \x01(\x01\x12\x11\n\tacc_limit\x18\x06 \x01(\x01\x12\x1f\n\x17\x66ront_wheel_angle_limit\x18\x07 \x01(\x01\x12$\n\x1c\x66ront_wheel_angle_rate_limit\x18\x08 \x01(\x01\x12\x13\n\x0btrack_width\x18\t \x01(\x01\x12\x1a\n\x12\x64ist_front_to_rear\x18\n \x01(\x01\"\x94\x02\n\x0cTrackingData\x12\x0e\n\x06length\x18\x01 \x01(\r\x12\x11\n\ttimestamp\x18\x02 \x03(\t\x12\x36\n\x0ereference_data\x18\x03 \x03(\x0b\x32\x1e.willand_ackermann_proto.State\x12\x33\n\x0b\x61\x63tual_data\x18\x04 \x03(\x0b\x32\x1e.willand_ackermann_proto.State\x12>\n\x0e\x63ontrol_signal\x18\x05 \x03(\x0b\x32&.willand_ackermann_proto.ControlSignal\x12\x34\n\tmpc_param\x18\x06 \x01(\x0b\x32!.willand_ackermann_proto.ParamMPCb\x06proto3')
 )
 
 
@@ -136,6 +136,100 @@ _CONTROLSIGNAL = _descriptor.Descriptor(
 )
 
 
+_PARAMMPC = _descriptor.Descriptor(
+  name='ParamMPC',
+  full_name='willand_ackermann_proto.ParamMPC',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='horizon', full_name='willand_ackermann_proto.ParamMPC.horizon', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='interval', full_name='willand_ackermann_proto.ParamMPC.interval', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='state_dim', full_name='willand_ackermann_proto.ParamMPC.state_dim', index=2,
+      number=3, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='input_dim', full_name='willand_ackermann_proto.ParamMPC.input_dim', index=3,
+      number=4, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='speed_limit', full_name='willand_ackermann_proto.ParamMPC.speed_limit', index=4,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='acc_limit', full_name='willand_ackermann_proto.ParamMPC.acc_limit', index=5,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='front_wheel_angle_limit', full_name='willand_ackermann_proto.ParamMPC.front_wheel_angle_limit', index=6,
+      number=7, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='front_wheel_angle_rate_limit', full_name='willand_ackermann_proto.ParamMPC.front_wheel_angle_rate_limit', index=7,
+      number=8, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='track_width', full_name='willand_ackermann_proto.ParamMPC.track_width', index=8,
+      number=9, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='dist_front_to_rear', full_name='willand_ackermann_proto.ParamMPC.dist_front_to_rear', index=9,
+      number=10, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=194,
+  serialized_end=437,
+)
+
+
 _TRACKINGDATA = _descriptor.Descriptor(
   name='TrackingData',
   full_name='willand_ackermann_proto.TrackingData',
@@ -178,6 +272,13 @@ _TRACKINGDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='mpc_param', full_name='willand_ackermann_proto.TrackingData.mpc_param', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -190,15 +291,17 @@ _TRACKINGDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=194,
-  serialized_end=416,
+  serialized_start=440,
+  serialized_end=716,
 )
 
 _TRACKINGDATA.fields_by_name['reference_data'].message_type = _STATE
 _TRACKINGDATA.fields_by_name['actual_data'].message_type = _STATE
 _TRACKINGDATA.fields_by_name['control_signal'].message_type = _CONTROLSIGNAL
+_TRACKINGDATA.fields_by_name['mpc_param'].message_type = _PARAMMPC
 DESCRIPTOR.message_types_by_name['State'] = _STATE
 DESCRIPTOR.message_types_by_name['ControlSignal'] = _CONTROLSIGNAL
+DESCRIPTOR.message_types_by_name['ParamMPC'] = _PARAMMPC
 DESCRIPTOR.message_types_by_name['TrackingData'] = _TRACKINGDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -215,6 +318,13 @@ ControlSignal = _reflection.GeneratedProtocolMessageType('ControlSignal', (_mess
   # @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlSignal)
   ))
 _sym_db.RegisterMessage(ControlSignal)
+
+ParamMPC = _reflection.GeneratedProtocolMessageType('ParamMPC', (_message.Message,), dict(
+  DESCRIPTOR = _PARAMMPC,
+  __module__ = 'tracking_data_pb2'
+  # @@protoc_insertion_point(class_scope:willand_ackermann_proto.ParamMPC)
+  ))
+_sym_db.RegisterMessage(ParamMPC)
 
 TrackingData = _reflection.GeneratedProtocolMessageType('TrackingData', (_message.Message,), dict(
   DESCRIPTOR = _TRACKINGDATA,

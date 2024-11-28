@@ -11,7 +11,7 @@
 #include "Eigen/Dense"
 #include "OsqpEigen/OsqpEigen.h"
 
-#define kEps 1.0e-6
+#define kEps 2.333e-33
 namespace willand_ackermann {
 struct TrackerParam {
   // mpc parameters
@@ -106,7 +106,7 @@ class TrajectoryTracker {
   void setWeightMatrices() {
     Q_.resize(param_.state_size_, param_.state_size_);
     R_.resize(param_.input_size_, param_.input_size_);
-    Q_ << 100.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 0.0, 1.0;
+    Q_ << 1000.0, 0.0, 0.0, 0.0, 1000.0, 0.0, 0.0, 0.0, 1.0;
     R_ << 1.0, 0.0, 0.0, 1.0;
   }
   DMatrix dynamicStateMatrixCaster(const Vector3d &state,
@@ -183,7 +183,8 @@ class TrajectoryTracker {
   bool solve(DVector &solution);
   void getReferenceStateAndInputSeq(Trajectory3D &refer_state_seq,
                                     Trajectory2D &refer_input_seq);
-  void getCurrentReferStateAndSeq(Vector3d &refer_state, Vector2d &refer_input);
+  void getCurrentReferStateAndInput(Vector3d &refer_state,
+                                    Vector2d &refer_input);
   void printRefereceStateSeq();
   void printRefereceInputSeq();
 };
