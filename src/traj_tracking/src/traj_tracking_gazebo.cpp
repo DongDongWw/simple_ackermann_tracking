@@ -21,10 +21,10 @@ int main(int argc, char** argv) {
   constexpr int state_size = 3;                         // (x, y, theta)
   constexpr int input_size = 2;                         // (v, omega)
   constexpr double speed_limit = 1.5;                   // unit, m / s
-  constexpr double acc_limit = 1.0;                     // unit, m / s^2
-  constexpr double front_wheel_angle_limit = M_PI / 3;  // unit, rad
+  constexpr double acc_limit = 1.5;                     // unit, m / s^2
+  constexpr double front_wheel_angle_limit = M_PI / 2;  // unit, rad
   constexpr double front_wheel_angle_rate_limit =
-      M_PI / 4;                               // unit, rad per sec
+      M_PI / 2;                               // unit, rad per sec
   constexpr double track_width = 0.4;         // unit, m
   constexpr double dist_front_to_rear = 0.4;  // unit, m
   TrackerParam param(horizon, interval, state_size, input_size, speed_limit,
@@ -32,8 +32,8 @@ int main(int argc, char** argv) {
                      front_wheel_angle_rate_limit, track_width,
                      dist_front_to_rear);
 
-  constexpr double scale_coef = 0.2;
-  double interval_between_points = scale_coef * speed_limit * interval;
+  constexpr double scale_coef = 0.8;
+  double interval_between_points = 1.2 * interval;
   PathGenerator path_generator(interval_between_points);
   TrackingServer tracking_server(param, path_generator);
   tracking_server.init(nh);

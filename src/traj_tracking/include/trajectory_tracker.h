@@ -106,9 +106,10 @@ class TrajectoryTracker {
   void setWeightMatrices() {
     Q_.resize(param_.state_size_, param_.state_size_);
     R_.resize(param_.input_size_, param_.input_size_);
-    Q_ << 1000.0, 0.0, 0.0, 0.0, 1000.0, 0.0, 0.0, 0.0, 1.0;
-    R_ << 1.0, 0.0, 0.0, 1.0;
+    Q_ << 2333.3, 0.0, 0.0, 0.0, 2333.3, 0.0, 0.0, 0.0, 111.1;
+    R_ << 111.11, 0.0, 0.0, 111.11;
   }
+
   DMatrix dynamicStateMatrixCaster(const Vector3d &state,
                                    const Vector2d &input);
   DMatrix dynamicInputMatrixCaster(const Vector3d &state,
@@ -124,7 +125,8 @@ class TrajectoryTracker {
     // if angle limit larger than PI/2, then the constraints are not need
     if (param_.front_wheel_angle_limit_ - M_PI / 2 > -kEps ||
         param_.front_wheel_angle_limit_ + M_PI / 2 < kEps) {
-      // std::cout << "Front wheel angle limit too large, constraints abandoned"
+      // std::cout << "Front wheel angle limit too large, constraints
+      // abandoned"
       //           << std::endl;
       return;
     }

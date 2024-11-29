@@ -374,7 +374,11 @@ bool TrajectoryTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
     }
 
     // avoid the yaw angle jump
-    if (i > 0) {
+    if (i == 0) {  // the first yaw should be align with the initial state
+      double delta_yaw = yaw - init_state_(2);
+      int r = std::round(-delta_yaw / (2 * M_PI));
+      yaw += r * 2 * M_PI;
+    } else {
       double delta_yaw = yaw - refer_state_seq_.at(i - 1)(2);
       int r = std::round(-delta_yaw / (2 * M_PI));
       yaw += r * 2 * M_PI;
