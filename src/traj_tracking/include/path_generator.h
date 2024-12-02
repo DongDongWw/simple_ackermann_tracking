@@ -69,9 +69,9 @@ class PathGenerator {
 
  private:
   std::vector<Point2D> getCircularCurve(double radius) {
-    if (std::abs(radius) < 0.5) {  // too small radius
-      return std::vector<Point2D>();
-    }
+    // if (std::abs(radius) < 0.5) {  // too small radius
+    //   return std::vector<Point2D>();
+    // }
     double radius_abs = std::abs(radius);
     double delta_theta = interval_ / radius_abs;
     // positive radius means turning left, anti-clockwise
