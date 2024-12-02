@@ -69,9 +69,9 @@ class PathGenerator {
 
  private:
   std::vector<Point2D> getCircularCurve(double radius) {
-    if (std::abs(radius) < 0.5) {  // too small radius
-      return std::vector<Point2D>();
-    }
+    // if (std::abs(radius) < 0.5) {  // too small radius
+    //   return std::vector<Point2D>();
+    // }
     double radius_abs = std::abs(radius);
     double delta_theta = interval_ / radius_abs;
     // positive radius means turning left, anti-clockwise
@@ -94,7 +94,8 @@ class PathGenerator {
     generateCoefficients(theta);
     points_ = std::vector<Point2D>();
     double t = 0.0;
-    while (std::abs(t - 1.0) > 1e-6) {
+    constexpr int max_points_num = 1000;
+    while (std::abs(t - 1.0) > 1e-6 && points_.size() < max_points_num) {
       points_.push_back(getPoint(t));
       double next_t = findParameterForArcLength(interval, t);
       t = next_t;
@@ -141,7 +142,7 @@ class PathGenerator {
     return coefficients_.transpose() * powers;
   }
 
-  double calculateArcLength(double t0, double t1, int num_samples = 100) const {
+  double calculateArcLength(double t0, double t1, int num_samples = 10) const {
     double length = 0.0;
     double dt = (t1 - t0) / num_samples;
     for (int i = 0; i < num_samples; ++i) {
@@ -153,11 +154,11 @@ class PathGenerator {
   }
 
   double findParameterForArcLength(double target_length, double start,
-                                   int num_samples = 100) const {
+                                   int num_samples = 10) const {
     double low = start, high = 1.0;
-    double length = calculateArcLength(start, high, num_samples);
+    double length = calculateArcLength(start, 1.0, num_samples);
     if (length < target_length) {
-      return high;
+      return 1.0;
     }
     while (high - low > 1e-6) {
       double mid = (low + high) / 2.0;
