@@ -8,7 +8,7 @@
 #include "Eigen/Dense"
 #include "OsqpEigen/OsqpEigen.h"
 
-#define kEps 2.333e-33
+#define kEps 2.333e-10
 namespace willand_ackermann {
 enum class SolveStatus {
   SUCCESS = 0x00000000,
@@ -100,13 +100,6 @@ class MpcTracker {
   DMatrix Ad_;
   DMatrix Bd_;
   DVector Kd_;
-  DMatrix A_equal_;
-  DMatrix B_equal_;
-  DVector K_equal_;
-  DMatrix A_inequal_;
-  DMatrix B_inequal_;
-  DVector K_inequal_lb_;
-  DVector K_inequal_ub_;
   Vector3d x_lb_;
   Vector3d x_ub_;
   Vector2d u_lb_;
@@ -165,7 +158,7 @@ class MpcTracker {
         +std::numeric_limits<double>::infinity();
     u_lb_ = Vector2d::Zero();
     u_ub_ = Vector2d::Zero();
-    u_lb_ << -param_.min_vel_, -std::numeric_limits<double>::infinity();
+    u_lb_ << param_.min_vel_, -std::numeric_limits<double>::infinity();
     u_ub_ << param_.max_vel_, std::numeric_limits<double>::infinity();
   }
   void setSteerRateConstraints() {

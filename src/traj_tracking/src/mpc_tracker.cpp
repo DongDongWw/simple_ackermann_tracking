@@ -1,4 +1,6 @@
 #include "mpc_tracker.h"
+
+#include <ostream>
 namespace willand_ackermann {
 
 MpcTracker::MpcTracker(const TrackerParam &param) : param_(param) {
@@ -70,7 +72,7 @@ SolveStatus MpcTracker::solve(Vector2d &solution) {
   solution << osqp_solution(param_.state_size_ * (param_.horizon_ + 1)),
       osqp_solution(param_.state_size_ * (param_.horizon_ + 1) + 1);
   // post check
-  return posterioriCheck(solution);
+  return posterioriCheck(osqp_solution);
 }
 
 void MpcTracker::castProblemToQpForm() {
@@ -342,6 +344,7 @@ bool MpcTracker::setReferenceTrajectory(const Trajectory2D &refer_traj) {
   }
   // the first input vector is not yet be calculated
   refer_input_seq_.front()(1) = refer_input_seq_.at(1)(1);
+
   return true;
 }
 MpcTracker::DMatrix MpcTracker::dynamicStateMatrixCaster(

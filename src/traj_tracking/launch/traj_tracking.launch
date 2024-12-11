@@ -5,19 +5,23 @@
 	<node pkg="traj_tracking" type="mpc_tracker_node" name="traj_tracking" output="screen">
 		<param name="~global_circle_radius" value="0.5" />
 		<param name="~horizon" value="20" />
-		<param name="~interval" value="0.02" />
+		<param name="~interval" value="0.05" />
 		<param name="~state_size" value="3" />
 		<param name="~input_size" value="2" />
 		<param name="~min_vel" value="-1.5" />
 		<param name="~max_vel" value="1.5" />
+		<param name="~min_acc" value="-1.0" />
+		<param name="~max_acc" value="1.0" />
 		<param name="~steer_angle_rate_limit" value="6.28318" />
 		<param name="~track_width" value="0.6" />
 		<param name="~wheel_base" value="1.0" />
 		<!-- weights of cost function -->
 		<param name="~weight_x_error" value="3333.3" />
 		<param name="~weight_y_error" value="3333.3" />
-		<param name="~weight_theta_error" value="55.55" />
+		<param name="~weight_theta_error" value="233.33" />
 		<param name="~weight_v" value="63.33" />
 		<param name="~weight_omega" value="63.33" />
+		<param name="~simulate_time" value="100.0" />
+		<param name="~refer_speed" value="1.0" />
 	</node>
 </launch>

@@ -19,121 +19,10 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='willand_ackermann_proto',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x13tracking_data.proto\x12\x17willand_ackermann_proto\"0\n\tStateType\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\"\xa7\x01\n\x0b\x43ontrolType\x12\t\n\x01v\x18\x01 \x01(\x01\x12\r\n\x05omega\x18\x02 \x01(\x01\x12\x1e\n\x16steer_angle_front_left\x18\x03 \x01(\x01\x12\x1f\n\x17steer_angle_front_right\x18\x04 \x01(\x01\x12\x1d\n\x15steer_angle_back_left\x18\x05 \x01(\x01\x12\x1e\n\x16steer_angle_back_right\x18\x06 \x01(\x01\"\xe0\x01\n\x08ParamMPC\x12\x0f\n\x07horizon\x18\x01 \x01(\r\x12\x10\n\x08interval\x18\x02 \x01(\x01\x12\x11\n\tstate_dim\x18\x03 \x01(\r\x12\x11\n\tinput_dim\x18\x04 \x01(\r\x12\x0f\n\x07min_vel\x18\x05 \x01(\x01\x12\x0f\n\x07max_vel\x18\x06 \x01(\x01\x12\x0f\n\x07min_acc\x18\x07 \x01(\x01\x12\x0f\n\x07max_acc\x18\x08 \x01(\x01\x12\x1e\n\x16steer_angle_rate_limit\x18\t \x01(\x01\x12\x13\n\x0btrack_width\x18\n \x01(\x01\x12\x12\n\nwheel_base\x18\x0b \x01(\x01\"\x92\x02\n\x0cTrackingData\x12\x34\n\tmpc_param\x18\x01 \x01(\x0b\x32!.willand_ackermann_proto.ParamMPC\x12\x0e\n\x06length\x18\x02 \x01(\r\x12\x11\n\ttimestamp\x18\x03 \x03(\r\x12\x37\n\x0brefer_state\x18\x04 \x03(\x0b\x32\".willand_ackermann_proto.StateType\x12\x38\n\x0c\x61\x63tual_state\x18\x05 \x03(\x0b\x32\".willand_ackermann_proto.StateType\x12\x36\n\x08\x63trl_cmd\x18\x06 \x03(\x0b\x32$.willand_ackermann_proto.ControlTypeb\x06proto3')
+  serialized_pb=_b('\n\x13tracking_data.proto\x12\x17willand_ackermann_proto\"\xe0\x01\n\x08ParamMPC\x12\x0f\n\x07horizon\x18\x01 \x01(\r\x12\x10\n\x08interval\x18\x02 \x01(\x01\x12\x11\n\tstate_dim\x18\x03 \x01(\r\x12\x11\n\tinput_dim\x18\x04 \x01(\r\x12\x0f\n\x07min_vel\x18\x05 \x01(\x01\x12\x0f\n\x07max_vel\x18\x06 \x01(\x01\x12\x0f\n\x07min_acc\x18\x07 \x01(\x01\x12\x0f\n\x07max_acc\x18\x08 \x01(\x01\x12\x1e\n\x16steer_angle_rate_limit\x18\t \x01(\x01\x12\x13\n\x0btrack_width\x18\n \x01(\x01\x12\x12\n\nwheel_base\x18\x0b \x01(\x01\"0\n\tStateType\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\x12\r\n\x05theta\x18\x03 \x01(\x01\"\xa7\x01\n\x0b\x43ontrolType\x12\t\n\x01v\x18\x01 \x01(\x01\x12\r\n\x05omega\x18\x02 \x01(\x01\x12\x1e\n\x16steer_angle_front_left\x18\x03 \x01(\x01\x12\x1f\n\x17steer_angle_front_right\x18\x04 \x01(\x01\x12\x1d\n\x15steer_angle_back_left\x18\x05 \x01(\x01\x12\x1e\n\x16steer_angle_back_right\x18\x06 \x01(\x01\"!\n\tPointType\x12\t\n\x01x\x18\x01 \x01(\x01\x12\t\n\x01y\x18\x02 \x01(\x01\"\xcc\x02\n\x0cTrackingData\x12\x34\n\tmpc_param\x18\x01 \x01(\x0b\x32!.willand_ackermann_proto.ParamMPC\x12\x0e\n\x06length\x18\x02 \x01(\r\x12\x11\n\ttimestamp\x18\x03 \x03(\r\x12\x37\n\x0brefer_state\x18\x04 \x03(\x0b\x32\".willand_ackermann_proto.StateType\x12\x38\n\x0c\x61\x63tual_state\x18\x05 \x03(\x0b\x32\".willand_ackermann_proto.StateType\x12\x36\n\x08\x63trl_cmd\x18\x06 \x03(\x0b\x32$.willand_ackermann_proto.ControlType\x12\x38\n\x0cglobal_point\x18\x07 \x03(\x0b\x32\".willand_ackermann_proto.PointTypeb\x06proto3')
 )
 
 
-
-
-_STATETYPE = _descriptor.Descriptor(
-  name='StateType',
-  full_name='willand_ackermann_proto.StateType',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='x', full_name='willand_ackermann_proto.StateType.x', index=0,
-      number=1, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='y', full_name='willand_ackermann_proto.StateType.y', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='theta', full_name='willand_ackermann_proto.StateType.theta', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=48,
-  serialized_end=96,
-)
-
-
-_CONTROLTYPE = _descriptor.Descriptor(
-  name='ControlType',
-  full_name='willand_ackermann_proto.ControlType',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='v', full_name='willand_ackermann_proto.ControlType.v', index=0,
-      number=1, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='omega', full_name='willand_ackermann_proto.ControlType.omega', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='steer_angle_front_left', full_name='willand_ackermann_proto.ControlType.steer_angle_front_left', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='steer_angle_front_right', full_name='willand_ackermann_proto.ControlType.steer_angle_front_right', index=3,
-      number=4, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='steer_angle_back_left', full_name='willand_ackermann_proto.ControlType.steer_angle_back_left', index=4,
-      number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='steer_angle_back_right', full_name='willand_ackermann_proto.ControlType.steer_angle_back_right', index=5,
-      number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=99,
-  serialized_end=266,
-)
 
 
 _PARAMMPC = _descriptor.Descriptor(
@@ -232,8 +121,157 @@ _PARAMMPC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=269,
+  serialized_start=49,
+  serialized_end=273,
+)
+
+
+_STATETYPE = _descriptor.Descriptor(
+  name='StateType',
+  full_name='willand_ackermann_proto.StateType',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='x', full_name='willand_ackermann_proto.StateType.x', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='willand_ackermann_proto.StateType.y', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='theta', full_name='willand_ackermann_proto.StateType.theta', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=275,
+  serialized_end=323,
+)
+
+
+_CONTROLTYPE = _descriptor.Descriptor(
+  name='ControlType',
+  full_name='willand_ackermann_proto.ControlType',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='v', full_name='willand_ackermann_proto.ControlType.v', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='omega', full_name='willand_ackermann_proto.ControlType.omega', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='steer_angle_front_left', full_name='willand_ackermann_proto.ControlType.steer_angle_front_left', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='steer_angle_front_right', full_name='willand_ackermann_proto.ControlType.steer_angle_front_right', index=3,
+      number=4, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='steer_angle_back_left', full_name='willand_ackermann_proto.ControlType.steer_angle_back_left', index=4,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='steer_angle_back_right', full_name='willand_ackermann_proto.ControlType.steer_angle_back_right', index=5,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=326,
   serialized_end=493,
+)
+
+
+_POINTTYPE = _descriptor.Descriptor(
+  name='PointType',
+  full_name='willand_ackermann_proto.PointType',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='x', full_name='willand_ackermann_proto.PointType.x', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='y', full_name='willand_ackermann_proto.PointType.y', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=495,
+  serialized_end=528,
 )
 
 
@@ -286,6 +324,13 @@ _TRACKINGDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='global_point', full_name='willand_ackermann_proto.TrackingData.global_point', index=6,
+      number=7, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -298,19 +343,28 @@ _TRACKINGDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=496,
-  serialized_end=770,
+  serialized_start=531,
+  serialized_end=863,
 )
 
 _TRACKINGDATA.fields_by_name['mpc_param'].message_type = _PARAMMPC
 _TRACKINGDATA.fields_by_name['refer_state'].message_type = _STATETYPE
 _TRACKINGDATA.fields_by_name['actual_state'].message_type = _STATETYPE
 _TRACKINGDATA.fields_by_name['ctrl_cmd'].message_type = _CONTROLTYPE
+_TRACKINGDATA.fields_by_name['global_point'].message_type = _POINTTYPE
+DESCRIPTOR.message_types_by_name['ParamMPC'] = _PARAMMPC
 DESCRIPTOR.message_types_by_name['StateType'] = _STATETYPE
 DESCRIPTOR.message_types_by_name['ControlType'] = _CONTROLTYPE
-DESCRIPTOR.message_types_by_name['ParamMPC'] = _PARAMMPC
+DESCRIPTOR.message_types_by_name['PointType'] = _POINTTYPE
 DESCRIPTOR.message_types_by_name['TrackingData'] = _TRACKINGDATA
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
+
+ParamMPC = _reflection.GeneratedProtocolMessageType('ParamMPC', (_message.Message,), dict(
+  DESCRIPTOR = _PARAMMPC,
+  __module__ = 'tracking_data_pb2'
+  # @@protoc_insertion_point(class_scope:willand_ackermann_proto.ParamMPC)
+  ))
+_sym_db.RegisterMessage(ParamMPC)
 
 StateType = _reflection.GeneratedProtocolMessageType('StateType', (_message.Message,), dict(
   DESCRIPTOR = _STATETYPE,
@@ -326,12 +380,12 @@ ControlType = _reflection.GeneratedProtocolMessageType('ControlType', (_message.
   ))
 _sym_db.RegisterMessage(ControlType)
 
-ParamMPC = _reflection.GeneratedProtocolMessageType('ParamMPC', (_message.Message,), dict(
-  DESCRIPTOR = _PARAMMPC,
+PointType = _reflection.GeneratedProtocolMessageType('PointType', (_message.Message,), dict(
+  DESCRIPTOR = _POINTTYPE,
   __module__ = 'tracking_data_pb2'
-  # @@protoc_insertion_point(class_scope:willand_ackermann_proto.ParamMPC)
+  # @@protoc_insertion_point(class_scope:willand_ackermann_proto.PointType)
   ))
-_sym_db.RegisterMessage(ParamMPC)
+_sym_db.RegisterMessage(PointType)
 
 TrackingData = _reflection.GeneratedProtocolMessageType('TrackingData', (_message.Message,), dict(
   DESCRIPTOR = _TRACKINGDATA,

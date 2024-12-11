@@ -2,19 +2,6 @@ syntax = "proto3";
 
 package willand_ackermann_proto;
 
-message StateType {
-    double x = 1;
-    double y = 2;
-    double theta = 3;
-};
-message ControlType {
-    double v = 1;
-    double omega = 2;
-    double steer_angle_front_left= 3;
-    double steer_angle_front_right= 4;
-    double steer_angle_back_left= 5;
-    double steer_angle_back_right= 6;
-};
 message ParamMPC {
     uint32 horizon = 1;
     double interval = 2;
@@ -28,6 +15,23 @@ message ParamMPC {
     double track_width = 10;
     double wheel_base = 11;
 };
+message StateType {
+    double x = 1;
+    double y = 2;
+    double theta = 3;
+};
+message ControlType {
+    double v = 1;
+    double omega = 2;
+    double steer_angle_front_left= 3;
+    double steer_angle_front_right= 4;
+    double steer_angle_back_left= 5;
+    double steer_angle_back_right= 6;
+};
+message PointType{
+    double x = 1;
+    double y = 2;
+};
 message TrackingData {
     ParamMPC mpc_param = 1;
     uint32 length = 2;
@@ -35,4 +39,5 @@ message TrackingData {
     repeated StateType refer_state = 4;
     repeated StateType actual_state = 5;
     repeated ControlType ctrl_cmd= 6;
+    repeated PointType global_point= 7;
 };

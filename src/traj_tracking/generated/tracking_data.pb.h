@@ -38,7 +38,7 @@ namespace protobuf_tracking_5fdata_2eproto {
 struct TableStruct {
   static const ::google::protobuf::internal::ParseTableField entries[];
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[];
-  static const ::google::protobuf::internal::ParseTable schema[4];
+  static const ::google::protobuf::internal::ParseTable schema[5];
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
   static const ::google::protobuf::uint32 offsets[];
@@ -52,6 +52,9 @@ extern ControlTypeDefaultTypeInternal _ControlType_default_instance_;
 class ParamMPC;
 class ParamMPCDefaultTypeInternal;
 extern ParamMPCDefaultTypeInternal _ParamMPC_default_instance_;
+class PointType;
+class PointTypeDefaultTypeInternal;
+extern PointTypeDefaultTypeInternal _PointType_default_instance_;
 class StateType;
 class StateTypeDefaultTypeInternal;
 extern StateTypeDefaultTypeInternal _StateType_default_instance_;
@@ -63,6 +66,7 @@ namespace google {
 namespace protobuf {
 template<> ::willand_ackermann_proto::ControlType* Arena::CreateMaybeMessage<::willand_ackermann_proto::ControlType>(Arena*);
 template<> ::willand_ackermann_proto::ParamMPC* Arena::CreateMaybeMessage<::willand_ackermann_proto::ParamMPC>(Arena*);
+template<> ::willand_ackermann_proto::PointType* Arena::CreateMaybeMessage<::willand_ackermann_proto::PointType>(Arena*);
 template<> ::willand_ackermann_proto::StateType* Arena::CreateMaybeMessage<::willand_ackermann_proto::StateType>(Arena*);
 template<> ::willand_ackermann_proto::TrackingData* Arena::CreateMaybeMessage<::willand_ackermann_proto::TrackingData>(Arena*);
 }  // namespace protobuf
@@ -70,261 +74,6 @@ template<> ::willand_ackermann_proto::TrackingData* Arena::CreateMaybeMessage<::
 namespace willand_ackermann_proto {
 
 // ===================================================================
-
-class StateType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.StateType) */ {
- public:
-  StateType();
-  virtual ~StateType();
-
-  StateType(const StateType& from);
-
-  inline StateType& operator=(const StateType& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  StateType(StateType&& from) noexcept
-    : StateType() {
-    *this = ::std::move(from);
-  }
-
-  inline StateType& operator=(StateType&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const StateType& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const StateType* internal_default_instance() {
-    return reinterpret_cast<const StateType*>(
-               &_StateType_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    0;
-
-  void Swap(StateType* other);
-  friend void swap(StateType& a, StateType& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline StateType* New() const final {
-    return CreateMaybeMessage<StateType>(NULL);
-  }
-
-  StateType* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<StateType>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const StateType& from);
-  void MergeFrom(const StateType& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(StateType* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // double x = 1;
-  void clear_x();
-  static const int kXFieldNumber = 1;
-  double x() const;
-  void set_x(double value);
-
-  // double y = 2;
-  void clear_y();
-  static const int kYFieldNumber = 2;
-  double y() const;
-  void set_y(double value);
-
-  // double theta = 3;
-  void clear_theta();
-  static const int kThetaFieldNumber = 3;
-  double theta() const;
-  void set_theta(double value);
-
-  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.StateType)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  double x_;
-  double y_;
-  double theta_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
-
-class ControlType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ControlType) */ {
- public:
-  ControlType();
-  virtual ~ControlType();
-
-  ControlType(const ControlType& from);
-
-  inline ControlType& operator=(const ControlType& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ControlType(ControlType&& from) noexcept
-    : ControlType() {
-    *this = ::std::move(from);
-  }
-
-  inline ControlType& operator=(ControlType&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const ControlType& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ControlType* internal_default_instance() {
-    return reinterpret_cast<const ControlType*>(
-               &_ControlType_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    1;
-
-  void Swap(ControlType* other);
-  friend void swap(ControlType& a, ControlType& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ControlType* New() const final {
-    return CreateMaybeMessage<ControlType>(NULL);
-  }
-
-  ControlType* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<ControlType>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const ControlType& from);
-  void MergeFrom(const ControlType& from);
-  void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      bool deterministic, ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ControlType* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return NULL;
-  }
-  inline void* MaybeArenaPtr() const {
-    return NULL;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // double v = 1;
-  void clear_v();
-  static const int kVFieldNumber = 1;
-  double v() const;
-  void set_v(double value);
-
-  // double omega = 2;
-  void clear_omega();
-  static const int kOmegaFieldNumber = 2;
-  double omega() const;
-  void set_omega(double value);
-
-  // double steer_angle_front_left = 3;
-  void clear_steer_angle_front_left();
-  static const int kSteerAngleFrontLeftFieldNumber = 3;
-  double steer_angle_front_left() const;
-  void set_steer_angle_front_left(double value);
-
-  // double steer_angle_front_right = 4;
-  void clear_steer_angle_front_right();
-  static const int kSteerAngleFrontRightFieldNumber = 4;
-  double steer_angle_front_right() const;
-  void set_steer_angle_front_right(double value);
-
-  // double steer_angle_back_left = 5;
-  void clear_steer_angle_back_left();
-  static const int kSteerAngleBackLeftFieldNumber = 5;
-  double steer_angle_back_left() const;
-  void set_steer_angle_back_left(double value);
-
-  // double steer_angle_back_right = 6;
-  void clear_steer_angle_back_right();
-  static const int kSteerAngleBackRightFieldNumber = 6;
-  double steer_angle_back_right() const;
-  void set_steer_angle_back_right(double value);
-
-  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlType)
- private:
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  double v_;
-  double omega_;
-  double steer_angle_front_left_;
-  double steer_angle_front_right_;
-  double steer_angle_back_left_;
-  double steer_angle_back_right_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
-};
-// -------------------------------------------------------------------
 
 class ParamMPC : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ParamMPC) */ {
  public:
@@ -361,7 +110,7 @@ class ParamMPC : public ::google::protobuf::Message /* @@protoc_insertion_point(
                &_ParamMPC_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    2;
+    0;
 
   void Swap(ParamMPC* other);
   friend void swap(ParamMPC& a, ParamMPC& b) {
@@ -499,6 +248,371 @@ class ParamMPC : public ::google::protobuf::Message /* @@protoc_insertion_point(
 };
 // -------------------------------------------------------------------
 
+class StateType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.StateType) */ {
+ public:
+  StateType();
+  virtual ~StateType();
+
+  StateType(const StateType& from);
+
+  inline StateType& operator=(const StateType& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  StateType(StateType&& from) noexcept
+    : StateType() {
+    *this = ::std::move(from);
+  }
+
+  inline StateType& operator=(StateType&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StateType& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const StateType* internal_default_instance() {
+    return reinterpret_cast<const StateType*>(
+               &_StateType_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    1;
+
+  void Swap(StateType* other);
+  friend void swap(StateType& a, StateType& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline StateType* New() const final {
+    return CreateMaybeMessage<StateType>(NULL);
+  }
+
+  StateType* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<StateType>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const StateType& from);
+  void MergeFrom(const StateType& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(StateType* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // double x = 1;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  double x() const;
+  void set_x(double value);
+
+  // double y = 2;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  double y() const;
+  void set_y(double value);
+
+  // double theta = 3;
+  void clear_theta();
+  static const int kThetaFieldNumber = 3;
+  double theta() const;
+  void set_theta(double value);
+
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.StateType)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  double x_;
+  double y_;
+  double theta_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class ControlType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ControlType) */ {
+ public:
+  ControlType();
+  virtual ~ControlType();
+
+  ControlType(const ControlType& from);
+
+  inline ControlType& operator=(const ControlType& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  ControlType(ControlType&& from) noexcept
+    : ControlType() {
+    *this = ::std::move(from);
+  }
+
+  inline ControlType& operator=(ControlType&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ControlType& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const ControlType* internal_default_instance() {
+    return reinterpret_cast<const ControlType*>(
+               &_ControlType_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    2;
+
+  void Swap(ControlType* other);
+  friend void swap(ControlType& a, ControlType& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline ControlType* New() const final {
+    return CreateMaybeMessage<ControlType>(NULL);
+  }
+
+  ControlType* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ControlType>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const ControlType& from);
+  void MergeFrom(const ControlType& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(ControlType* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // double v = 1;
+  void clear_v();
+  static const int kVFieldNumber = 1;
+  double v() const;
+  void set_v(double value);
+
+  // double omega = 2;
+  void clear_omega();
+  static const int kOmegaFieldNumber = 2;
+  double omega() const;
+  void set_omega(double value);
+
+  // double steer_angle_front_left = 3;
+  void clear_steer_angle_front_left();
+  static const int kSteerAngleFrontLeftFieldNumber = 3;
+  double steer_angle_front_left() const;
+  void set_steer_angle_front_left(double value);
+
+  // double steer_angle_front_right = 4;
+  void clear_steer_angle_front_right();
+  static const int kSteerAngleFrontRightFieldNumber = 4;
+  double steer_angle_front_right() const;
+  void set_steer_angle_front_right(double value);
+
+  // double steer_angle_back_left = 5;
+  void clear_steer_angle_back_left();
+  static const int kSteerAngleBackLeftFieldNumber = 5;
+  double steer_angle_back_left() const;
+  void set_steer_angle_back_left(double value);
+
+  // double steer_angle_back_right = 6;
+  void clear_steer_angle_back_right();
+  static const int kSteerAngleBackRightFieldNumber = 6;
+  double steer_angle_back_right() const;
+  void set_steer_angle_back_right(double value);
+
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlType)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  double v_;
+  double omega_;
+  double steer_angle_front_left_;
+  double steer_angle_front_right_;
+  double steer_angle_back_left_;
+  double steer_angle_back_right_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
+class PointType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.PointType) */ {
+ public:
+  PointType();
+  virtual ~PointType();
+
+  PointType(const PointType& from);
+
+  inline PointType& operator=(const PointType& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  PointType(PointType&& from) noexcept
+    : PointType() {
+    *this = ::std::move(from);
+  }
+
+  inline PointType& operator=(PointType&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const PointType& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const PointType* internal_default_instance() {
+    return reinterpret_cast<const PointType*>(
+               &_PointType_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  void Swap(PointType* other);
+  friend void swap(PointType& a, PointType& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline PointType* New() const final {
+    return CreateMaybeMessage<PointType>(NULL);
+  }
+
+  PointType* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<PointType>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const PointType& from);
+  void MergeFrom(const PointType& from);
+  void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(PointType* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return NULL;
+  }
+  inline void* MaybeArenaPtr() const {
+    return NULL;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // double x = 1;
+  void clear_x();
+  static const int kXFieldNumber = 1;
+  double x() const;
+  void set_x(double value);
+
+  // double y = 2;
+  void clear_y();
+  static const int kYFieldNumber = 2;
+  double y() const;
+  void set_y(double value);
+
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.PointType)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  double x_;
+  double y_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
+};
+// -------------------------------------------------------------------
+
 class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.TrackingData) */ {
  public:
   TrackingData();
@@ -534,7 +648,7 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
                &_TrackingData_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   void Swap(TrackingData* other);
   friend void swap(TrackingData& a, TrackingData& b) {
@@ -634,6 +748,18 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
   const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType >&
       ctrl_cmd() const;
 
+  // repeated .willand_ackermann_proto.PointType global_point = 7;
+  int global_point_size() const;
+  void clear_global_point();
+  static const int kGlobalPointFieldNumber = 7;
+  ::willand_ackermann_proto::PointType* mutable_global_point(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::PointType >*
+      mutable_global_point();
+  const ::willand_ackermann_proto::PointType& global_point(int index) const;
+  ::willand_ackermann_proto::PointType* add_global_point();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::PointType >&
+      global_point() const;
+
   // .willand_ackermann_proto.ParamMPC mpc_param = 1;
   bool has_mpc_param() const;
   void clear_mpc_param();
@@ -661,6 +787,7 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType > refer_state_;
   ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType > actual_state_;
   ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType > ctrl_cmd_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::PointType > global_point_;
   ::willand_ackermann_proto::ParamMPC* mpc_param_;
   ::google::protobuf::uint32 length_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -675,140 +802,6 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// StateType
-
-// double x = 1;
-inline void StateType::clear_x() {
-  x_ = 0;
-}
-inline double StateType::x() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.x)
-  return x_;
-}
-inline void StateType::set_x(double value) {
-  
-  x_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.x)
-}
-
-// double y = 2;
-inline void StateType::clear_y() {
-  y_ = 0;
-}
-inline double StateType::y() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.y)
-  return y_;
-}
-inline void StateType::set_y(double value) {
-  
-  y_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.y)
-}
-
-// double theta = 3;
-inline void StateType::clear_theta() {
-  theta_ = 0;
-}
-inline double StateType::theta() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.theta)
-  return theta_;
-}
-inline void StateType::set_theta(double value) {
-  
-  theta_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.theta)
-}
-
-// -------------------------------------------------------------------
-
-// ControlType
-
-// double v = 1;
-inline void ControlType::clear_v() {
-  v_ = 0;
-}
-inline double ControlType::v() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.v)
-  return v_;
-}
-inline void ControlType::set_v(double value) {
-  
-  v_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.v)
-}
-
-// double omega = 2;
-inline void ControlType::clear_omega() {
-  omega_ = 0;
-}
-inline double ControlType::omega() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.omega)
-  return omega_;
-}
-inline void ControlType::set_omega(double value) {
-  
-  omega_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.omega)
-}
-
-// double steer_angle_front_left = 3;
-inline void ControlType::clear_steer_angle_front_left() {
-  steer_angle_front_left_ = 0;
-}
-inline double ControlType::steer_angle_front_left() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_left)
-  return steer_angle_front_left_;
-}
-inline void ControlType::set_steer_angle_front_left(double value) {
-  
-  steer_angle_front_left_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_left)
-}
-
-// double steer_angle_front_right = 4;
-inline void ControlType::clear_steer_angle_front_right() {
-  steer_angle_front_right_ = 0;
-}
-inline double ControlType::steer_angle_front_right() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_right)
-  return steer_angle_front_right_;
-}
-inline void ControlType::set_steer_angle_front_right(double value) {
-  
-  steer_angle_front_right_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_right)
-}
-
-// double steer_angle_back_left = 5;
-inline void ControlType::clear_steer_angle_back_left() {
-  steer_angle_back_left_ = 0;
-}
-inline double ControlType::steer_angle_back_left() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_left)
-  return steer_angle_back_left_;
-}
-inline void ControlType::set_steer_angle_back_left(double value) {
-  
-  steer_angle_back_left_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_left)
-}
-
-// double steer_angle_back_right = 6;
-inline void ControlType::clear_steer_angle_back_right() {
-  steer_angle_back_right_ = 0;
-}
-inline double ControlType::steer_angle_back_right() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_right)
-  return steer_angle_back_right_;
-}
-inline void ControlType::set_steer_angle_back_right(double value) {
-  
-  steer_angle_back_right_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_right)
-}
-
-// -------------------------------------------------------------------
-
 // ParamMPC
 
 // uint32 horizon = 1;
@@ -963,6 +956,172 @@ inline void ParamMPC::set_wheel_base(double value) {
   
   wheel_base_ = value;
   // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.wheel_base)
+}
+
+// -------------------------------------------------------------------
+
+// StateType
+
+// double x = 1;
+inline void StateType::clear_x() {
+  x_ = 0;
+}
+inline double StateType::x() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.x)
+  return x_;
+}
+inline void StateType::set_x(double value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.x)
+}
+
+// double y = 2;
+inline void StateType::clear_y() {
+  y_ = 0;
+}
+inline double StateType::y() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.y)
+  return y_;
+}
+inline void StateType::set_y(double value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.y)
+}
+
+// double theta = 3;
+inline void StateType::clear_theta() {
+  theta_ = 0;
+}
+inline double StateType::theta() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.theta)
+  return theta_;
+}
+inline void StateType::set_theta(double value) {
+  
+  theta_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.theta)
+}
+
+// -------------------------------------------------------------------
+
+// ControlType
+
+// double v = 1;
+inline void ControlType::clear_v() {
+  v_ = 0;
+}
+inline double ControlType::v() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.v)
+  return v_;
+}
+inline void ControlType::set_v(double value) {
+  
+  v_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.v)
+}
+
+// double omega = 2;
+inline void ControlType::clear_omega() {
+  omega_ = 0;
+}
+inline double ControlType::omega() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.omega)
+  return omega_;
+}
+inline void ControlType::set_omega(double value) {
+  
+  omega_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.omega)
+}
+
+// double steer_angle_front_left = 3;
+inline void ControlType::clear_steer_angle_front_left() {
+  steer_angle_front_left_ = 0;
+}
+inline double ControlType::steer_angle_front_left() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_left)
+  return steer_angle_front_left_;
+}
+inline void ControlType::set_steer_angle_front_left(double value) {
+  
+  steer_angle_front_left_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_left)
+}
+
+// double steer_angle_front_right = 4;
+inline void ControlType::clear_steer_angle_front_right() {
+  steer_angle_front_right_ = 0;
+}
+inline double ControlType::steer_angle_front_right() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_right)
+  return steer_angle_front_right_;
+}
+inline void ControlType::set_steer_angle_front_right(double value) {
+  
+  steer_angle_front_right_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_right)
+}
+
+// double steer_angle_back_left = 5;
+inline void ControlType::clear_steer_angle_back_left() {
+  steer_angle_back_left_ = 0;
+}
+inline double ControlType::steer_angle_back_left() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_left)
+  return steer_angle_back_left_;
+}
+inline void ControlType::set_steer_angle_back_left(double value) {
+  
+  steer_angle_back_left_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_left)
+}
+
+// double steer_angle_back_right = 6;
+inline void ControlType::clear_steer_angle_back_right() {
+  steer_angle_back_right_ = 0;
+}
+inline double ControlType::steer_angle_back_right() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_right)
+  return steer_angle_back_right_;
+}
+inline void ControlType::set_steer_angle_back_right(double value) {
+  
+  steer_angle_back_right_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_right)
+}
+
+// -------------------------------------------------------------------
+
+// PointType
+
+// double x = 1;
+inline void PointType::clear_x() {
+  x_ = 0;
+}
+inline double PointType::x() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.PointType.x)
+  return x_;
+}
+inline void PointType::set_x(double value) {
+  
+  x_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.PointType.x)
+}
+
+// double y = 2;
+inline void PointType::clear_y() {
+  y_ = 0;
+}
+inline double PointType::y() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.PointType.y)
+  return y_;
+}
+inline void PointType::set_y(double value) {
+  
+  y_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.PointType.y)
 }
 
 // -------------------------------------------------------------------
@@ -1157,9 +1316,41 @@ TrackingData::ctrl_cmd() const {
   return ctrl_cmd_;
 }
 
+// repeated .willand_ackermann_proto.PointType global_point = 7;
+inline int TrackingData::global_point_size() const {
+  return global_point_.size();
+}
+inline void TrackingData::clear_global_point() {
+  global_point_.Clear();
+}
+inline ::willand_ackermann_proto::PointType* TrackingData::mutable_global_point(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.global_point)
+  return global_point_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::PointType >*
+TrackingData::mutable_global_point() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.global_point)
+  return &global_point_;
+}
+inline const ::willand_ackermann_proto::PointType& TrackingData::global_point(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.global_point)
+  return global_point_.Get(index);
+}
+inline ::willand_ackermann_proto::PointType* TrackingData::add_global_point() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.global_point)
+  return global_point_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::PointType >&
+TrackingData::global_point() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.global_point)
+  return global_point_;
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

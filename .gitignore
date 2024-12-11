@@ -47,8 +47,11 @@ qtcreator-*
 # Emacs
 .#*
 
+.clangd/
+.cache/
+.vscode/
+.catkin_workspace
+
 # Catkin custom files
 CATKIN_IGNORE
 
-.clangd
-.cache
