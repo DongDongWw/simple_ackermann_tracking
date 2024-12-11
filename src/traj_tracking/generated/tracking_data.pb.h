@@ -46,24 +46,24 @@ struct TableStruct {
 void AddDescriptors();
 }  // namespace protobuf_tracking_5fdata_2eproto
 namespace willand_ackermann_proto {
-class ControlSignal;
-class ControlSignalDefaultTypeInternal;
-extern ControlSignalDefaultTypeInternal _ControlSignal_default_instance_;
+class ControlType;
+class ControlTypeDefaultTypeInternal;
+extern ControlTypeDefaultTypeInternal _ControlType_default_instance_;
 class ParamMPC;
 class ParamMPCDefaultTypeInternal;
 extern ParamMPCDefaultTypeInternal _ParamMPC_default_instance_;
-class State;
-class StateDefaultTypeInternal;
-extern StateDefaultTypeInternal _State_default_instance_;
+class StateType;
+class StateTypeDefaultTypeInternal;
+extern StateTypeDefaultTypeInternal _StateType_default_instance_;
 class TrackingData;
 class TrackingDataDefaultTypeInternal;
 extern TrackingDataDefaultTypeInternal _TrackingData_default_instance_;
 }  // namespace willand_ackermann_proto
 namespace google {
 namespace protobuf {
-template<> ::willand_ackermann_proto::ControlSignal* Arena::CreateMaybeMessage<::willand_ackermann_proto::ControlSignal>(Arena*);
+template<> ::willand_ackermann_proto::ControlType* Arena::CreateMaybeMessage<::willand_ackermann_proto::ControlType>(Arena*);
 template<> ::willand_ackermann_proto::ParamMPC* Arena::CreateMaybeMessage<::willand_ackermann_proto::ParamMPC>(Arena*);
-template<> ::willand_ackermann_proto::State* Arena::CreateMaybeMessage<::willand_ackermann_proto::State>(Arena*);
+template<> ::willand_ackermann_proto::StateType* Arena::CreateMaybeMessage<::willand_ackermann_proto::StateType>(Arena*);
 template<> ::willand_ackermann_proto::TrackingData* Arena::CreateMaybeMessage<::willand_ackermann_proto::TrackingData>(Arena*);
 }  // namespace protobuf
 }  // namespace google
@@ -71,24 +71,24 @@ namespace willand_ackermann_proto {
 
 // ===================================================================
 
-class State : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.State) */ {
+class StateType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.StateType) */ {
  public:
-  State();
-  virtual ~State();
+  StateType();
+  virtual ~StateType();
 
-  State(const State& from);
+  StateType(const StateType& from);
 
-  inline State& operator=(const State& from) {
+  inline StateType& operator=(const StateType& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  State(State&& from) noexcept
-    : State() {
+  StateType(StateType&& from) noexcept
+    : StateType() {
     *this = ::std::move(from);
   }
 
-  inline State& operator=(State&& from) noexcept {
+  inline StateType& operator=(StateType&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -98,34 +98,34 @@ class State : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const State& default_instance();
+  static const StateType& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const State* internal_default_instance() {
-    return reinterpret_cast<const State*>(
-               &_State_default_instance_);
+  static inline const StateType* internal_default_instance() {
+    return reinterpret_cast<const StateType*>(
+               &_StateType_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  void Swap(State* other);
-  friend void swap(State& a, State& b) {
+  void Swap(StateType* other);
+  friend void swap(StateType& a, StateType& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline State* New() const final {
-    return CreateMaybeMessage<State>(NULL);
+  inline StateType* New() const final {
+    return CreateMaybeMessage<StateType>(NULL);
   }
 
-  State* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<State>(arena);
+  StateType* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<StateType>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const State& from);
-  void MergeFrom(const State& from);
+  void CopyFrom(const StateType& from);
+  void MergeFrom(const StateType& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -142,7 +142,7 @@ class State : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(State* other);
+  void InternalSwap(StateType* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -176,57 +176,36 @@ class State : public ::google::protobuf::Message /* @@protoc_insertion_point(cla
   double theta() const;
   void set_theta(double value);
 
-  // double v = 4;
-  void clear_v();
-  static const int kVFieldNumber = 4;
-  double v() const;
-  void set_v(double value);
-
-  // double omega = 5;
-  void clear_omega();
-  static const int kOmegaFieldNumber = 5;
-  double omega() const;
-  void set_omega(double value);
-
-  // double kappa = 6;
-  void clear_kappa();
-  static const int kKappaFieldNumber = 6;
-  double kappa() const;
-  void set_kappa(double value);
-
-  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.StateType)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   double x_;
   double y_;
   double theta_;
-  double v_;
-  double omega_;
-  double kappa_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
 };
 // -------------------------------------------------------------------
 
-class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ControlSignal) */ {
+class ControlType : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:willand_ackermann_proto.ControlType) */ {
  public:
-  ControlSignal();
-  virtual ~ControlSignal();
+  ControlType();
+  virtual ~ControlType();
 
-  ControlSignal(const ControlSignal& from);
+  ControlType(const ControlType& from);
 
-  inline ControlSignal& operator=(const ControlSignal& from) {
+  inline ControlType& operator=(const ControlType& from) {
     CopyFrom(from);
     return *this;
   }
   #if LANG_CXX11
-  ControlSignal(ControlSignal&& from) noexcept
-    : ControlSignal() {
+  ControlType(ControlType&& from) noexcept
+    : ControlType() {
     *this = ::std::move(from);
   }
 
-  inline ControlSignal& operator=(ControlSignal&& from) noexcept {
+  inline ControlType& operator=(ControlType&& from) noexcept {
     if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -236,34 +215,34 @@ class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_p
   }
   #endif
   static const ::google::protobuf::Descriptor* descriptor();
-  static const ControlSignal& default_instance();
+  static const ControlType& default_instance();
 
   static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ControlSignal* internal_default_instance() {
-    return reinterpret_cast<const ControlSignal*>(
-               &_ControlSignal_default_instance_);
+  static inline const ControlType* internal_default_instance() {
+    return reinterpret_cast<const ControlType*>(
+               &_ControlType_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     1;
 
-  void Swap(ControlSignal* other);
-  friend void swap(ControlSignal& a, ControlSignal& b) {
+  void Swap(ControlType* other);
+  friend void swap(ControlType& a, ControlType& b) {
     a.Swap(&b);
   }
 
   // implements Message ----------------------------------------------
 
-  inline ControlSignal* New() const final {
-    return CreateMaybeMessage<ControlSignal>(NULL);
+  inline ControlType* New() const final {
+    return CreateMaybeMessage<ControlType>(NULL);
   }
 
-  ControlSignal* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<ControlSignal>(arena);
+  ControlType* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<ControlType>(arena);
   }
   void CopyFrom(const ::google::protobuf::Message& from) final;
   void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const ControlSignal& from);
-  void MergeFrom(const ControlSignal& from);
+  void CopyFrom(const ControlType& from);
+  void MergeFrom(const ControlType& from);
   void Clear() final;
   bool IsInitialized() const final;
 
@@ -280,7 +259,7 @@ class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_p
   void SharedCtor();
   void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(ControlSignal* other);
+  void InternalSwap(ControlType* other);
   private:
   inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
     return NULL;
@@ -308,19 +287,40 @@ class ControlSignal : public ::google::protobuf::Message /* @@protoc_insertion_p
   double omega() const;
   void set_omega(double value);
 
-  // double kappa = 3;
-  void clear_kappa();
-  static const int kKappaFieldNumber = 3;
-  double kappa() const;
-  void set_kappa(double value);
+  // double steer_angle_front_left = 3;
+  void clear_steer_angle_front_left();
+  static const int kSteerAngleFrontLeftFieldNumber = 3;
+  double steer_angle_front_left() const;
+  void set_steer_angle_front_left(double value);
 
-  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlSignal)
+  // double steer_angle_front_right = 4;
+  void clear_steer_angle_front_right();
+  static const int kSteerAngleFrontRightFieldNumber = 4;
+  double steer_angle_front_right() const;
+  void set_steer_angle_front_right(double value);
+
+  // double steer_angle_back_left = 5;
+  void clear_steer_angle_back_left();
+  static const int kSteerAngleBackLeftFieldNumber = 5;
+  double steer_angle_back_left() const;
+  void set_steer_angle_back_left(double value);
+
+  // double steer_angle_back_right = 6;
+  void clear_steer_angle_back_right();
+  static const int kSteerAngleBackRightFieldNumber = 6;
+  double steer_angle_back_right() const;
+  void set_steer_angle_back_right(double value);
+
+  // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlType)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   double v_;
   double omega_;
-  double kappa_;
+  double steer_angle_front_left_;
+  double steer_angle_front_right_;
+  double steer_angle_back_left_;
+  double steer_angle_back_right_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
 };
@@ -431,41 +431,47 @@ class ParamMPC : public ::google::protobuf::Message /* @@protoc_insertion_point(
   ::google::protobuf::uint32 state_dim() const;
   void set_state_dim(::google::protobuf::uint32 value);
 
-  // double speed_limit = 5;
-  void clear_speed_limit();
-  static const int kSpeedLimitFieldNumber = 5;
-  double speed_limit() const;
-  void set_speed_limit(double value);
+  // double min_vel = 5;
+  void clear_min_vel();
+  static const int kMinVelFieldNumber = 5;
+  double min_vel() const;
+  void set_min_vel(double value);
 
-  // double acc_limit = 6;
-  void clear_acc_limit();
-  static const int kAccLimitFieldNumber = 6;
-  double acc_limit() const;
-  void set_acc_limit(double value);
+  // double max_vel = 6;
+  void clear_max_vel();
+  static const int kMaxVelFieldNumber = 6;
+  double max_vel() const;
+  void set_max_vel(double value);
 
-  // double front_wheel_angle_limit = 7;
-  void clear_front_wheel_angle_limit();
-  static const int kFrontWheelAngleLimitFieldNumber = 7;
-  double front_wheel_angle_limit() const;
-  void set_front_wheel_angle_limit(double value);
+  // double min_acc = 7;
+  void clear_min_acc();
+  static const int kMinAccFieldNumber = 7;
+  double min_acc() const;
+  void set_min_acc(double value);
 
-  // double front_wheel_angle_rate_limit = 8;
-  void clear_front_wheel_angle_rate_limit();
-  static const int kFrontWheelAngleRateLimitFieldNumber = 8;
-  double front_wheel_angle_rate_limit() const;
-  void set_front_wheel_angle_rate_limit(double value);
+  // double max_acc = 8;
+  void clear_max_acc();
+  static const int kMaxAccFieldNumber = 8;
+  double max_acc() const;
+  void set_max_acc(double value);
 
-  // double track_width = 9;
+  // double steer_angle_rate_limit = 9;
+  void clear_steer_angle_rate_limit();
+  static const int kSteerAngleRateLimitFieldNumber = 9;
+  double steer_angle_rate_limit() const;
+  void set_steer_angle_rate_limit(double value);
+
+  // double track_width = 10;
   void clear_track_width();
-  static const int kTrackWidthFieldNumber = 9;
+  static const int kTrackWidthFieldNumber = 10;
   double track_width() const;
   void set_track_width(double value);
 
-  // double dist_front_to_rear = 10;
-  void clear_dist_front_to_rear();
-  static const int kDistFrontToRearFieldNumber = 10;
-  double dist_front_to_rear() const;
-  void set_dist_front_to_rear(double value);
+  // double wheel_base = 11;
+  void clear_wheel_base();
+  static const int kWheelBaseFieldNumber = 11;
+  double wheel_base() const;
+  void set_wheel_base(double value);
 
   // uint32 input_dim = 4;
   void clear_input_dim();
@@ -480,12 +486,13 @@ class ParamMPC : public ::google::protobuf::Message /* @@protoc_insertion_point(
   double interval_;
   ::google::protobuf::uint32 horizon_;
   ::google::protobuf::uint32 state_dim_;
-  double speed_limit_;
-  double acc_limit_;
-  double front_wheel_angle_limit_;
-  double front_wheel_angle_rate_limit_;
+  double min_vel_;
+  double max_vel_;
+  double min_acc_;
+  double max_acc_;
+  double steer_angle_rate_limit_;
   double track_width_;
-  double dist_front_to_rear_;
+  double wheel_base_;
   ::google::protobuf::uint32 input_dim_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
@@ -579,68 +586,58 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
 
   // accessors -------------------------------------------------------
 
-  // repeated string timestamp = 2;
+  // repeated uint32 timestamp = 3;
   int timestamp_size() const;
   void clear_timestamp();
-  static const int kTimestampFieldNumber = 2;
-  const ::std::string& timestamp(int index) const;
-  ::std::string* mutable_timestamp(int index);
-  void set_timestamp(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_timestamp(int index, ::std::string&& value);
-  #endif
-  void set_timestamp(int index, const char* value);
-  void set_timestamp(int index, const char* value, size_t size);
-  ::std::string* add_timestamp();
-  void add_timestamp(const ::std::string& value);
-  #if LANG_CXX11
-  void add_timestamp(::std::string&& value);
-  #endif
-  void add_timestamp(const char* value);
-  void add_timestamp(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField< ::std::string>& timestamp() const;
-  ::google::protobuf::RepeatedPtrField< ::std::string>* mutable_timestamp();
+  static const int kTimestampFieldNumber = 3;
+  ::google::protobuf::uint32 timestamp(int index) const;
+  void set_timestamp(int index, ::google::protobuf::uint32 value);
+  void add_timestamp(::google::protobuf::uint32 value);
+  const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+      timestamp() const;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+      mutable_timestamp();
 
-  // repeated .willand_ackermann_proto.State reference_data = 3;
-  int reference_data_size() const;
-  void clear_reference_data();
-  static const int kReferenceDataFieldNumber = 3;
-  ::willand_ackermann_proto::State* mutable_reference_data(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
-      mutable_reference_data();
-  const ::willand_ackermann_proto::State& reference_data(int index) const;
-  ::willand_ackermann_proto::State* add_reference_data();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
-      reference_data() const;
+  // repeated .willand_ackermann_proto.StateType refer_state = 4;
+  int refer_state_size() const;
+  void clear_refer_state();
+  static const int kReferStateFieldNumber = 4;
+  ::willand_ackermann_proto::StateType* mutable_refer_state(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >*
+      mutable_refer_state();
+  const ::willand_ackermann_proto::StateType& refer_state(int index) const;
+  ::willand_ackermann_proto::StateType* add_refer_state();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >&
+      refer_state() const;
 
-  // repeated .willand_ackermann_proto.State actual_data = 4;
-  int actual_data_size() const;
-  void clear_actual_data();
-  static const int kActualDataFieldNumber = 4;
-  ::willand_ackermann_proto::State* mutable_actual_data(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
-      mutable_actual_data();
-  const ::willand_ackermann_proto::State& actual_data(int index) const;
-  ::willand_ackermann_proto::State* add_actual_data();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
-      actual_data() const;
+  // repeated .willand_ackermann_proto.StateType actual_state = 5;
+  int actual_state_size() const;
+  void clear_actual_state();
+  static const int kActualStateFieldNumber = 5;
+  ::willand_ackermann_proto::StateType* mutable_actual_state(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >*
+      mutable_actual_state();
+  const ::willand_ackermann_proto::StateType& actual_state(int index) const;
+  ::willand_ackermann_proto::StateType* add_actual_state();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >&
+      actual_state() const;
 
-  // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
-  int control_signal_size() const;
-  void clear_control_signal();
-  static const int kControlSignalFieldNumber = 5;
-  ::willand_ackermann_proto::ControlSignal* mutable_control_signal(int index);
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >*
-      mutable_control_signal();
-  const ::willand_ackermann_proto::ControlSignal& control_signal(int index) const;
-  ::willand_ackermann_proto::ControlSignal* add_control_signal();
-  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >&
-      control_signal() const;
+  // repeated .willand_ackermann_proto.ControlType ctrl_cmd = 6;
+  int ctrl_cmd_size() const;
+  void clear_ctrl_cmd();
+  static const int kCtrlCmdFieldNumber = 6;
+  ::willand_ackermann_proto::ControlType* mutable_ctrl_cmd(int index);
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType >*
+      mutable_ctrl_cmd();
+  const ::willand_ackermann_proto::ControlType& ctrl_cmd(int index) const;
+  ::willand_ackermann_proto::ControlType* add_ctrl_cmd();
+  const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType >&
+      ctrl_cmd() const;
 
-  // .willand_ackermann_proto.ParamMPC mpc_param = 6;
+  // .willand_ackermann_proto.ParamMPC mpc_param = 1;
   bool has_mpc_param() const;
   void clear_mpc_param();
-  static const int kMpcParamFieldNumber = 6;
+  static const int kMpcParamFieldNumber = 1;
   private:
   const ::willand_ackermann_proto::ParamMPC& _internal_mpc_param() const;
   public:
@@ -649,9 +646,9 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
   ::willand_ackermann_proto::ParamMPC* mutable_mpc_param();
   void set_allocated_mpc_param(::willand_ackermann_proto::ParamMPC* mpc_param);
 
-  // uint32 length = 1;
+  // uint32 length = 2;
   void clear_length();
-  static const int kLengthFieldNumber = 1;
+  static const int kLengthFieldNumber = 2;
   ::google::protobuf::uint32 length() const;
   void set_length(::google::protobuf::uint32 value);
 
@@ -659,10 +656,11 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField< ::std::string> timestamp_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State > reference_data_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State > actual_data_;
-  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal > control_signal_;
+  ::google::protobuf::RepeatedField< ::google::protobuf::uint32 > timestamp_;
+  mutable int _timestamp_cached_byte_size_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType > refer_state_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType > actual_state_;
+  ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType > ctrl_cmd_;
   ::willand_ackermann_proto::ParamMPC* mpc_param_;
   ::google::protobuf::uint32 length_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
@@ -677,136 +675,136 @@ class TrackingData : public ::google::protobuf::Message /* @@protoc_insertion_po
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// State
+// StateType
 
 // double x = 1;
-inline void State::clear_x() {
+inline void StateType::clear_x() {
   x_ = 0;
 }
-inline double State::x() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.x)
+inline double StateType::x() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.x)
   return x_;
 }
-inline void State::set_x(double value) {
+inline void StateType::set_x(double value) {
   
   x_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.x)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.x)
 }
 
 // double y = 2;
-inline void State::clear_y() {
+inline void StateType::clear_y() {
   y_ = 0;
 }
-inline double State::y() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.y)
+inline double StateType::y() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.y)
   return y_;
 }
-inline void State::set_y(double value) {
+inline void StateType::set_y(double value) {
   
   y_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.y)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.y)
 }
 
 // double theta = 3;
-inline void State::clear_theta() {
+inline void StateType::clear_theta() {
   theta_ = 0;
 }
-inline double State::theta() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.theta)
+inline double StateType::theta() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.StateType.theta)
   return theta_;
 }
-inline void State::set_theta(double value) {
+inline void StateType::set_theta(double value) {
   
   theta_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.theta)
-}
-
-// double v = 4;
-inline void State::clear_v() {
-  v_ = 0;
-}
-inline double State::v() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.v)
-  return v_;
-}
-inline void State::set_v(double value) {
-  
-  v_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.v)
-}
-
-// double omega = 5;
-inline void State::clear_omega() {
-  omega_ = 0;
-}
-inline double State::omega() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.omega)
-  return omega_;
-}
-inline void State::set_omega(double value) {
-  
-  omega_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.omega)
-}
-
-// double kappa = 6;
-inline void State::clear_kappa() {
-  kappa_ = 0;
-}
-inline double State::kappa() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.State.kappa)
-  return kappa_;
-}
-inline void State::set_kappa(double value) {
-  
-  kappa_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.State.kappa)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.StateType.theta)
 }
 
 // -------------------------------------------------------------------
 
-// ControlSignal
+// ControlType
 
 // double v = 1;
-inline void ControlSignal::clear_v() {
+inline void ControlType::clear_v() {
   v_ = 0;
 }
-inline double ControlSignal::v() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.v)
+inline double ControlType::v() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.v)
   return v_;
 }
-inline void ControlSignal::set_v(double value) {
+inline void ControlType::set_v(double value) {
   
   v_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.v)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.v)
 }
 
 // double omega = 2;
-inline void ControlSignal::clear_omega() {
+inline void ControlType::clear_omega() {
   omega_ = 0;
 }
-inline double ControlSignal::omega() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.omega)
+inline double ControlType::omega() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.omega)
   return omega_;
 }
-inline void ControlSignal::set_omega(double value) {
+inline void ControlType::set_omega(double value) {
   
   omega_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.omega)
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.omega)
 }
 
-// double kappa = 3;
-inline void ControlSignal::clear_kappa() {
-  kappa_ = 0;
+// double steer_angle_front_left = 3;
+inline void ControlType::clear_steer_angle_front_left() {
+  steer_angle_front_left_ = 0;
 }
-inline double ControlSignal::kappa() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlSignal.kappa)
-  return kappa_;
+inline double ControlType::steer_angle_front_left() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_left)
+  return steer_angle_front_left_;
 }
-inline void ControlSignal::set_kappa(double value) {
+inline void ControlType::set_steer_angle_front_left(double value) {
   
-  kappa_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlSignal.kappa)
+  steer_angle_front_left_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_left)
+}
+
+// double steer_angle_front_right = 4;
+inline void ControlType::clear_steer_angle_front_right() {
+  steer_angle_front_right_ = 0;
+}
+inline double ControlType::steer_angle_front_right() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_right)
+  return steer_angle_front_right_;
+}
+inline void ControlType::set_steer_angle_front_right(double value) {
+  
+  steer_angle_front_right_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_right)
+}
+
+// double steer_angle_back_left = 5;
+inline void ControlType::clear_steer_angle_back_left() {
+  steer_angle_back_left_ = 0;
+}
+inline double ControlType::steer_angle_back_left() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_left)
+  return steer_angle_back_left_;
+}
+inline void ControlType::set_steer_angle_back_left(double value) {
+  
+  steer_angle_back_left_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_left)
+}
+
+// double steer_angle_back_right = 6;
+inline void ControlType::clear_steer_angle_back_right() {
+  steer_angle_back_right_ = 0;
+}
+inline double ControlType::steer_angle_back_right() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_right)
+  return steer_angle_back_right_;
+}
+inline void ControlType::set_steer_angle_back_right(double value) {
+  
+  steer_angle_back_right_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_right)
 }
 
 // -------------------------------------------------------------------
@@ -869,63 +867,77 @@ inline void ParamMPC::set_input_dim(::google::protobuf::uint32 value) {
   // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.input_dim)
 }
 
-// double speed_limit = 5;
-inline void ParamMPC::clear_speed_limit() {
-  speed_limit_ = 0;
+// double min_vel = 5;
+inline void ParamMPC::clear_min_vel() {
+  min_vel_ = 0;
 }
-inline double ParamMPC::speed_limit() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.speed_limit)
-  return speed_limit_;
+inline double ParamMPC::min_vel() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.min_vel)
+  return min_vel_;
 }
-inline void ParamMPC::set_speed_limit(double value) {
+inline void ParamMPC::set_min_vel(double value) {
   
-  speed_limit_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.speed_limit)
+  min_vel_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.min_vel)
 }
 
-// double acc_limit = 6;
-inline void ParamMPC::clear_acc_limit() {
-  acc_limit_ = 0;
+// double max_vel = 6;
+inline void ParamMPC::clear_max_vel() {
+  max_vel_ = 0;
 }
-inline double ParamMPC::acc_limit() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.acc_limit)
-  return acc_limit_;
+inline double ParamMPC::max_vel() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.max_vel)
+  return max_vel_;
 }
-inline void ParamMPC::set_acc_limit(double value) {
+inline void ParamMPC::set_max_vel(double value) {
   
-  acc_limit_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.acc_limit)
+  max_vel_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.max_vel)
 }
 
-// double front_wheel_angle_limit = 7;
-inline void ParamMPC::clear_front_wheel_angle_limit() {
-  front_wheel_angle_limit_ = 0;
+// double min_acc = 7;
+inline void ParamMPC::clear_min_acc() {
+  min_acc_ = 0;
 }
-inline double ParamMPC::front_wheel_angle_limit() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.front_wheel_angle_limit)
-  return front_wheel_angle_limit_;
+inline double ParamMPC::min_acc() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.min_acc)
+  return min_acc_;
 }
-inline void ParamMPC::set_front_wheel_angle_limit(double value) {
+inline void ParamMPC::set_min_acc(double value) {
   
-  front_wheel_angle_limit_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.front_wheel_angle_limit)
+  min_acc_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.min_acc)
 }
 
-// double front_wheel_angle_rate_limit = 8;
-inline void ParamMPC::clear_front_wheel_angle_rate_limit() {
-  front_wheel_angle_rate_limit_ = 0;
+// double max_acc = 8;
+inline void ParamMPC::clear_max_acc() {
+  max_acc_ = 0;
 }
-inline double ParamMPC::front_wheel_angle_rate_limit() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.front_wheel_angle_rate_limit)
-  return front_wheel_angle_rate_limit_;
+inline double ParamMPC::max_acc() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.max_acc)
+  return max_acc_;
 }
-inline void ParamMPC::set_front_wheel_angle_rate_limit(double value) {
+inline void ParamMPC::set_max_acc(double value) {
   
-  front_wheel_angle_rate_limit_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.front_wheel_angle_rate_limit)
+  max_acc_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.max_acc)
 }
 
-// double track_width = 9;
+// double steer_angle_rate_limit = 9;
+inline void ParamMPC::clear_steer_angle_rate_limit() {
+  steer_angle_rate_limit_ = 0;
+}
+inline double ParamMPC::steer_angle_rate_limit() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.steer_angle_rate_limit)
+  return steer_angle_rate_limit_;
+}
+inline void ParamMPC::set_steer_angle_rate_limit(double value) {
+  
+  steer_angle_rate_limit_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.steer_angle_rate_limit)
+}
+
+// double track_width = 10;
 inline void ParamMPC::clear_track_width() {
   track_width_ = 0;
 }
@@ -939,198 +951,25 @@ inline void ParamMPC::set_track_width(double value) {
   // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.track_width)
 }
 
-// double dist_front_to_rear = 10;
-inline void ParamMPC::clear_dist_front_to_rear() {
-  dist_front_to_rear_ = 0;
+// double wheel_base = 11;
+inline void ParamMPC::clear_wheel_base() {
+  wheel_base_ = 0;
 }
-inline double ParamMPC::dist_front_to_rear() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.dist_front_to_rear)
-  return dist_front_to_rear_;
+inline double ParamMPC::wheel_base() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ParamMPC.wheel_base)
+  return wheel_base_;
 }
-inline void ParamMPC::set_dist_front_to_rear(double value) {
+inline void ParamMPC::set_wheel_base(double value) {
   
-  dist_front_to_rear_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.dist_front_to_rear)
+  wheel_base_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ParamMPC.wheel_base)
 }
 
 // -------------------------------------------------------------------
 
 // TrackingData
 
-// uint32 length = 1;
-inline void TrackingData::clear_length() {
-  length_ = 0u;
-}
-inline ::google::protobuf::uint32 TrackingData::length() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.length)
-  return length_;
-}
-inline void TrackingData::set_length(::google::protobuf::uint32 value) {
-  
-  length_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.length)
-}
-
-// repeated string timestamp = 2;
-inline int TrackingData::timestamp_size() const {
-  return timestamp_.size();
-}
-inline void TrackingData::clear_timestamp() {
-  timestamp_.Clear();
-}
-inline const ::std::string& TrackingData::timestamp(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.timestamp)
-  return timestamp_.Get(index);
-}
-inline ::std::string* TrackingData::mutable_timestamp(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.timestamp)
-  return timestamp_.Mutable(index);
-}
-inline void TrackingData::set_timestamp(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.timestamp)
-  timestamp_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void TrackingData::set_timestamp(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.timestamp)
-  timestamp_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void TrackingData::set_timestamp(int index, const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  timestamp_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:willand_ackermann_proto.TrackingData.timestamp)
-}
-inline void TrackingData::set_timestamp(int index, const char* value, size_t size) {
-  timestamp_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:willand_ackermann_proto.TrackingData.timestamp)
-}
-inline ::std::string* TrackingData::add_timestamp() {
-  // @@protoc_insertion_point(field_add_mutable:willand_ackermann_proto.TrackingData.timestamp)
-  return timestamp_.Add();
-}
-inline void TrackingData::add_timestamp(const ::std::string& value) {
-  timestamp_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.timestamp)
-}
-#if LANG_CXX11
-inline void TrackingData::add_timestamp(::std::string&& value) {
-  timestamp_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.timestamp)
-}
-#endif
-inline void TrackingData::add_timestamp(const char* value) {
-  GOOGLE_DCHECK(value != NULL);
-  timestamp_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:willand_ackermann_proto.TrackingData.timestamp)
-}
-inline void TrackingData::add_timestamp(const char* value, size_t size) {
-  timestamp_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:willand_ackermann_proto.TrackingData.timestamp)
-}
-inline const ::google::protobuf::RepeatedPtrField< ::std::string>&
-TrackingData::timestamp() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.timestamp)
-  return timestamp_;
-}
-inline ::google::protobuf::RepeatedPtrField< ::std::string>*
-TrackingData::mutable_timestamp() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.timestamp)
-  return &timestamp_;
-}
-
-// repeated .willand_ackermann_proto.State reference_data = 3;
-inline int TrackingData::reference_data_size() const {
-  return reference_data_.size();
-}
-inline void TrackingData::clear_reference_data() {
-  reference_data_.Clear();
-}
-inline ::willand_ackermann_proto::State* TrackingData::mutable_reference_data(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.reference_data)
-  return reference_data_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
-TrackingData::mutable_reference_data() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.reference_data)
-  return &reference_data_;
-}
-inline const ::willand_ackermann_proto::State& TrackingData::reference_data(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.reference_data)
-  return reference_data_.Get(index);
-}
-inline ::willand_ackermann_proto::State* TrackingData::add_reference_data() {
-  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.reference_data)
-  return reference_data_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
-TrackingData::reference_data() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.reference_data)
-  return reference_data_;
-}
-
-// repeated .willand_ackermann_proto.State actual_data = 4;
-inline int TrackingData::actual_data_size() const {
-  return actual_data_.size();
-}
-inline void TrackingData::clear_actual_data() {
-  actual_data_.Clear();
-}
-inline ::willand_ackermann_proto::State* TrackingData::mutable_actual_data(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.actual_data)
-  return actual_data_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >*
-TrackingData::mutable_actual_data() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.actual_data)
-  return &actual_data_;
-}
-inline const ::willand_ackermann_proto::State& TrackingData::actual_data(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.actual_data)
-  return actual_data_.Get(index);
-}
-inline ::willand_ackermann_proto::State* TrackingData::add_actual_data() {
-  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.actual_data)
-  return actual_data_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::State >&
-TrackingData::actual_data() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.actual_data)
-  return actual_data_;
-}
-
-// repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
-inline int TrackingData::control_signal_size() const {
-  return control_signal_.size();
-}
-inline void TrackingData::clear_control_signal() {
-  control_signal_.Clear();
-}
-inline ::willand_ackermann_proto::ControlSignal* TrackingData::mutable_control_signal(int index) {
-  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.control_signal)
-  return control_signal_.Mutable(index);
-}
-inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >*
-TrackingData::mutable_control_signal() {
-  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.control_signal)
-  return &control_signal_;
-}
-inline const ::willand_ackermann_proto::ControlSignal& TrackingData::control_signal(int index) const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.control_signal)
-  return control_signal_.Get(index);
-}
-inline ::willand_ackermann_proto::ControlSignal* TrackingData::add_control_signal() {
-  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.control_signal)
-  return control_signal_.Add();
-}
-inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlSignal >&
-TrackingData::control_signal() const {
-  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.control_signal)
-  return control_signal_;
-}
-
-// .willand_ackermann_proto.ParamMPC mpc_param = 6;
+// .willand_ackermann_proto.ParamMPC mpc_param = 1;
 inline bool TrackingData::has_mpc_param() const {
   return this != internal_default_instance() && mpc_param_ != NULL;
 }
@@ -1182,6 +1021,140 @@ inline void TrackingData::set_allocated_mpc_param(::willand_ackermann_proto::Par
   }
   mpc_param_ = mpc_param;
   // @@protoc_insertion_point(field_set_allocated:willand_ackermann_proto.TrackingData.mpc_param)
+}
+
+// uint32 length = 2;
+inline void TrackingData::clear_length() {
+  length_ = 0u;
+}
+inline ::google::protobuf::uint32 TrackingData::length() const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.length)
+  return length_;
+}
+inline void TrackingData::set_length(::google::protobuf::uint32 value) {
+  
+  length_ = value;
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.length)
+}
+
+// repeated uint32 timestamp = 3;
+inline int TrackingData::timestamp_size() const {
+  return timestamp_.size();
+}
+inline void TrackingData::clear_timestamp() {
+  timestamp_.Clear();
+}
+inline ::google::protobuf::uint32 TrackingData::timestamp(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_.Get(index);
+}
+inline void TrackingData::set_timestamp(int index, ::google::protobuf::uint32 value) {
+  timestamp_.Set(index, value);
+  // @@protoc_insertion_point(field_set:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline void TrackingData::add_timestamp(::google::protobuf::uint32 value) {
+  timestamp_.Add(value);
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.timestamp)
+}
+inline const ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >&
+TrackingData::timestamp() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.timestamp)
+  return timestamp_;
+}
+inline ::google::protobuf::RepeatedField< ::google::protobuf::uint32 >*
+TrackingData::mutable_timestamp() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.timestamp)
+  return &timestamp_;
+}
+
+// repeated .willand_ackermann_proto.StateType refer_state = 4;
+inline int TrackingData::refer_state_size() const {
+  return refer_state_.size();
+}
+inline void TrackingData::clear_refer_state() {
+  refer_state_.Clear();
+}
+inline ::willand_ackermann_proto::StateType* TrackingData::mutable_refer_state(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.refer_state)
+  return refer_state_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >*
+TrackingData::mutable_refer_state() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.refer_state)
+  return &refer_state_;
+}
+inline const ::willand_ackermann_proto::StateType& TrackingData::refer_state(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.refer_state)
+  return refer_state_.Get(index);
+}
+inline ::willand_ackermann_proto::StateType* TrackingData::add_refer_state() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.refer_state)
+  return refer_state_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >&
+TrackingData::refer_state() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.refer_state)
+  return refer_state_;
+}
+
+// repeated .willand_ackermann_proto.StateType actual_state = 5;
+inline int TrackingData::actual_state_size() const {
+  return actual_state_.size();
+}
+inline void TrackingData::clear_actual_state() {
+  actual_state_.Clear();
+}
+inline ::willand_ackermann_proto::StateType* TrackingData::mutable_actual_state(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.actual_state)
+  return actual_state_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >*
+TrackingData::mutable_actual_state() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.actual_state)
+  return &actual_state_;
+}
+inline const ::willand_ackermann_proto::StateType& TrackingData::actual_state(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.actual_state)
+  return actual_state_.Get(index);
+}
+inline ::willand_ackermann_proto::StateType* TrackingData::add_actual_state() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.actual_state)
+  return actual_state_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::StateType >&
+TrackingData::actual_state() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.actual_state)
+  return actual_state_;
+}
+
+// repeated .willand_ackermann_proto.ControlType ctrl_cmd = 6;
+inline int TrackingData::ctrl_cmd_size() const {
+  return ctrl_cmd_.size();
+}
+inline void TrackingData::clear_ctrl_cmd() {
+  ctrl_cmd_.Clear();
+}
+inline ::willand_ackermann_proto::ControlType* TrackingData::mutable_ctrl_cmd(int index) {
+  // @@protoc_insertion_point(field_mutable:willand_ackermann_proto.TrackingData.ctrl_cmd)
+  return ctrl_cmd_.Mutable(index);
+}
+inline ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType >*
+TrackingData::mutable_ctrl_cmd() {
+  // @@protoc_insertion_point(field_mutable_list:willand_ackermann_proto.TrackingData.ctrl_cmd)
+  return &ctrl_cmd_;
+}
+inline const ::willand_ackermann_proto::ControlType& TrackingData::ctrl_cmd(int index) const {
+  // @@protoc_insertion_point(field_get:willand_ackermann_proto.TrackingData.ctrl_cmd)
+  return ctrl_cmd_.Get(index);
+}
+inline ::willand_ackermann_proto::ControlType* TrackingData::add_ctrl_cmd() {
+  // @@protoc_insertion_point(field_add:willand_ackermann_proto.TrackingData.ctrl_cmd)
+  return ctrl_cmd_.Add();
+}
+inline const ::google::protobuf::RepeatedPtrField< ::willand_ackermann_proto::ControlType >&
+TrackingData::ctrl_cmd() const {
+  // @@protoc_insertion_point(field_list:willand_ackermann_proto.TrackingData.ctrl_cmd)
+  return ctrl_cmd_;
 }
 
 #ifdef __GNUC__

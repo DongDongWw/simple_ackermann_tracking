@@ -22,7 +22,6 @@ enum class SolveStatus {
   // infeasible solution
   INVALID_SPEED = 0x00010000,
   INVALID_ACC,
-  INVALID_STEER_ANGLE,
   INVALID_STEER_RATE,
 };
 struct TrackerParam {
@@ -31,43 +30,61 @@ struct TrackerParam {
   double interval_;
   int state_size_;
   int input_size_;
-  double speed_limit_;
-  double acc_limit_;
-  double front_wheel_angle_limit_;
-  double front_wheel_angle_rate_limit_;
   double weight_x_error_, weight_y_error_, weight_theta_error_;
   double weight_v_, weight_omega_;
+
   // vehicle parameters
+  double max_vel_;
+  double min_vel_;
+  double max_acc_;
+  double min_acc_;
+  double steer_angle_rate_limit_;
   double track_width_;
-  double dist_front_to_rear_;
+  double wheel_base_;
 
   TrackerParam()
       : horizon_(20),
-        interval_(0.2),
-        state_size_(4),
+        interval_(0.05),
+        state_size_(3),
         input_size_(2),
-        speed_limit_(1.0),
-        acc_limit_(1.0),
-        front_wheel_angle_limit_(M_PI / 4),
-        front_wheel_angle_rate_limit_(M_PI / 8),
-        weight_x_error_(1.0),
-        weight_y_error_(1.0),
-        weight_theta_error_(1.0),
-        weight_v_(1.0),
-        weight_omega_(1.0),
-        track_width_(0.5),
-        dist_front_to_rear_(0.8) {}
+        weight_x_error_(2333.3),
+        weight_y_error_(2333.3),
+        weight_theta_error_(233.3),
+        weight_v_(63.33),
+        weight_omega_(63.33),
+        max_vel_(1.5),
+        min_vel_(-1.5),
+        max_acc_(1.5),
+        min_acc_(-1.5),
+        steer_angle_rate_limit_(M_PI * 2),
+        track_width_(0.6),
+        wheel_base_(1.0) {}
   TrackerParam(int horizon, double interval, int state_size, int input_size,
-               double speed_limit, double acc_limit,
-               double front_wheel_angle_limit,
-               double front_wheel_angle_rate_limit, double weight_x_error,
-               double weight_y_error, double weight_theta_error,
-               double weight_v, double weight_omega, double track_width,
-               double dist_front_to_rear);
+               double weight_x_error, double weight_y_error,
+               double weight_theta_error, double weight_v, double weight_omega,
+               double max_vel, double min_vel, double max_acc, double min_acc,
+               double steer_angle_rate_limit, double track_width,
+               double wheel_base)
+      : horizon_(horizon),
+        interval_(interval),
+        state_size_(state_size),
+        input_size_(input_size),
+        weight_x_error_(weight_x_error),
+        weight_y_error_(weight_y_error),
+        weight_theta_error_(weight_theta_error),
+        weight_v_(weight_v),
+        weight_omega_(weight_omega),
+        max_vel_(max_vel),
+        min_vel_(min_vel),
+        max_acc_(max_acc),
+        min_acc_(min_acc),
+        steer_angle_rate_limit_(steer_angle_rate_limit),
+        track_width_(track_width),
+        wheel_base_(wheel_base) {}
 };
-class TrajectoryTracker {
+class MpcTracker {
  public:
-  typedef std::unique_ptr<TrajectoryTracker> UniquePtr;
+  typedef std::unique_ptr<MpcTracker> UniquePtr;
   typedef Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> DMatrix;
   typedef Eigen::SparseMatrix<double> SparseMatrix;
   typedef Eigen::VectorXd DVector;
@@ -137,41 +154,6 @@ class TrajectoryTracker {
   DMatrix dynamicInputMatrixCaster(const Vector3d &state,
                                    const Vector2d &input);
   DVector dynamicVectorCaster(const Vector3d &state, const Vector2d &input);
-  DMatrix steerRateConstraintsMatrixCaster();
-  DMatrix steerRateConstraintsBoundCaster();
-  DMatrix accelerateConstraintsMatrixCaster();
-  DMatrix accelerateConstraintsBoundCaster();
-  void setGeneralEqualityConstraints() {}
-
-  void setGeneralInequalityConstraints() {
-    // if angle limit larger than PI/2, then the constraints are not need
-    if (param_.front_wheel_angle_limit_ - M_PI / 2 > -kEps ||
-        param_.front_wheel_angle_limit_ + M_PI / 2 < kEps) {
-      // std::cout << "Front wheel angle limit too large, constraints
-      // abandoned"
-      //           << std::endl;
-      return;
-    }
-    A_inequal_ = DMatrix::Zero(4, param_.state_size_);
-    B_inequal_ = DMatrix::Zero(4, param_.input_size_);
-    B_inequal_ << -2 * std::tan(param_.front_wheel_angle_limit_),
-        -(2 * param_.dist_front_to_rear_ -
-          param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
-        -2 * std::tan(param_.front_wheel_angle_limit_),
-        (2 * param_.dist_front_to_rear_ +
-         param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
-        -2 * std::tan(param_.front_wheel_angle_limit_),
-        -(2 * param_.dist_front_to_rear_ +
-          param_.track_width_ * std::tan(param_.front_wheel_angle_limit_)),
-        -2 * std::tan(param_.front_wheel_angle_limit_),
-        (2 * param_.dist_front_to_rear_ -
-         param_.track_width_ * std::tan(param_.front_wheel_angle_limit_));
-
-    K_inequal_lb_.resize(4);
-    K_inequal_lb_.setConstant(-std::numeric_limits<double>::infinity());
-    K_inequal_ub_.resize(4);
-    K_inequal_ub_.setZero();
-  }
   void setGeneralBoundBoxConstraints() {
     x_lb_ = Vector3d::Zero();
     x_ub_ = Vector3d::Zero();
@@ -183,8 +165,8 @@ class TrajectoryTracker {
         +std::numeric_limits<double>::infinity();
     u_lb_ = Vector2d::Zero();
     u_ub_ = Vector2d::Zero();
-    u_lb_ << -param_.speed_limit_, -std::numeric_limits<double>::infinity();
-    u_ub_ << param_.speed_limit_, std::numeric_limits<double>::infinity();
+    u_lb_ << -param_.min_vel_, -std::numeric_limits<double>::infinity();
+    u_ub_ << param_.max_vel_, std::numeric_limits<double>::infinity();
   }
   void setSteerRateConstraints() {
     A_steer_rate_ = steerRateConstraintsMatrixCaster();
@@ -198,14 +180,20 @@ class TrajectoryTracker {
     lb_accelerate_ = b.col(0);
     ub_accelerate_ = b.col(1);
   }
+
+  DMatrix steerRateConstraintsMatrixCaster();
+  DMatrix steerRateConstraintsBoundCaster();
+  DMatrix accelerateConstraintsMatrixCaster();
+  DMatrix accelerateConstraintsBoundCaster();
+
   void castProblemToQpForm();
   SolveStatus posterioriCheck(const DVector &solution);
 
  public:
-  TrajectoryTracker(const TrackerParam &param);
+  MpcTracker(const TrackerParam &param);
 
   bool update(const Vector3d &init_state, const Trajectory2D &reference_traj);
-  SolveStatus solve(DVector &solution);
+  SolveStatus solve(Vector2d &solution);
   void getReferenceStateAndInputSeq(Trajectory3D &refer_state_seq,
                                     Trajectory2D &refer_input_seq);
   void getCurrentReferStateAndInput(Vector3d &refer_state,
