@@ -169,10 +169,6 @@ const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUT
   ~0u,  // no _weak_field_map_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, v_),
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, omega_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, steer_angle_front_left_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, steer_angle_front_right_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, steer_angle_back_left_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlType, steer_angle_back_right_),
   ~0u,  // no _has_bits_
   GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::PointType, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -197,8 +193,8 @@ static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROT
   { 0, -1, sizeof(::willand_ackermann_proto::ParamMPC)},
   { 16, -1, sizeof(::willand_ackermann_proto::StateType)},
   { 24, -1, sizeof(::willand_ackermann_proto::ControlType)},
-  { 35, -1, sizeof(::willand_ackermann_proto::PointType)},
-  { 42, -1, sizeof(::willand_ackermann_proto::TrackingData)},
+  { 31, -1, sizeof(::willand_ackermann_proto::PointType)},
+  { 38, -1, sizeof(::willand_ackermann_proto::TrackingData)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
@@ -238,23 +234,20 @@ void AddDescriptorsImpl() {
       "\022\036\n\026steer_angle_rate_limit\030\t \001(\001\022\023\n\013trac"
       "k_width\030\n \001(\001\022\022\n\nwheel_base\030\013 \001(\001\"0\n\tSta"
       "teType\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\022\r\n\005theta\030\003 "
-      "\001(\001\"\247\001\n\013ControlType\022\t\n\001v\030\001 \001(\001\022\r\n\005omega\030"
-      "\002 \001(\001\022\036\n\026steer_angle_front_left\030\003 \001(\001\022\037\n"
-      "\027steer_angle_front_right\030\004 \001(\001\022\035\n\025steer_"
-      "angle_back_left\030\005 \001(\001\022\036\n\026steer_angle_bac"
-      "k_right\030\006 \001(\001\"!\n\tPointType\022\t\n\001x\030\001 \001(\001\022\t\n"
-      "\001y\030\002 \001(\001\"\314\002\n\014TrackingData\0224\n\tmpc_param\030\001"
-      " \001(\0132!.willand_ackermann_proto.ParamMPC\022"
-      "\016\n\006length\030\002 \001(\r\022\021\n\ttimestamp\030\003 \003(\r\0227\n\013re"
-      "fer_state\030\004 \003(\0132\".willand_ackermann_prot"
-      "o.StateType\0228\n\014actual_state\030\005 \003(\0132\".will"
-      "and_ackermann_proto.StateType\0226\n\010ctrl_cm"
-      "d\030\006 \003(\0132$.willand_ackermann_proto.Contro"
-      "lType\0228\n\014global_point\030\007 \003(\0132\".willand_ac"
-      "kermann_proto.PointTypeb\006proto3"
+      "\001(\001\"\'\n\013ControlType\022\t\n\001v\030\001 \001(\001\022\r\n\005omega\030\002"
+      " \001(\001\"!\n\tPointType\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\""
+      "\314\002\n\014TrackingData\0224\n\tmpc_param\030\001 \001(\0132!.wi"
+      "lland_ackermann_proto.ParamMPC\022\016\n\006length"
+      "\030\002 \001(\r\022\021\n\ttimestamp\030\003 \003(\r\0227\n\013refer_state"
+      "\030\004 \003(\0132\".willand_ackermann_proto.StateTy"
+      "pe\0228\n\014actual_state\030\005 \003(\0132\".willand_acker"
+      "mann_proto.StateType\0226\n\010ctrl_cmd\030\006 \003(\0132$"
+      ".willand_ackermann_proto.ControlType\0228\n\014"
+      "global_point\030\007 \003(\0132\".willand_ackermann_p"
+      "roto.PointTypeb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 871);
+      descriptor, 742);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tracking_data.proto", &protobuf_RegisterTypes);
 }
@@ -1147,10 +1140,6 @@ void ControlType::InitAsDefaultInstance() {
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int ControlType::kVFieldNumber;
 const int ControlType::kOmegaFieldNumber;
-const int ControlType::kSteerAngleFrontLeftFieldNumber;
-const int ControlType::kSteerAngleFrontRightFieldNumber;
-const int ControlType::kSteerAngleBackLeftFieldNumber;
-const int ControlType::kSteerAngleBackRightFieldNumber;
 #endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
 
 ControlType::ControlType()
@@ -1165,15 +1154,15 @@ ControlType::ControlType(const ControlType& from)
       _internal_metadata_(NULL) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::memcpy(&v_, &from.v_,
-    static_cast<size_t>(reinterpret_cast<char*>(&steer_angle_back_right_) -
-    reinterpret_cast<char*>(&v_)) + sizeof(steer_angle_back_right_));
+    static_cast<size_t>(reinterpret_cast<char*>(&omega_) -
+    reinterpret_cast<char*>(&v_)) + sizeof(omega_));
   // @@protoc_insertion_point(copy_constructor:willand_ackermann_proto.ControlType)
 }
 
 void ControlType::SharedCtor() {
   ::memset(&v_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&steer_angle_back_right_) -
-      reinterpret_cast<char*>(&v_)) + sizeof(steer_angle_back_right_));
+      reinterpret_cast<char*>(&omega_) -
+      reinterpret_cast<char*>(&v_)) + sizeof(omega_));
 }
 
 ControlType::~ControlType() {
@@ -1205,8 +1194,8 @@ void ControlType::Clear() {
   (void) cached_has_bits;
 
   ::memset(&v_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&steer_angle_back_right_) -
-      reinterpret_cast<char*>(&v_)) + sizeof(steer_angle_back_right_));
+      reinterpret_cast<char*>(&omega_) -
+      reinterpret_cast<char*>(&v_)) + sizeof(omega_));
   _internal_metadata_.Clear();
 }
 
@@ -1242,62 +1231,6 @@ bool ControlType::MergePartialFromCodedStream(
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
                    double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
                  input, &omega_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // double steer_angle_front_left = 3;
-      case 3: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(25u /* 25 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &steer_angle_front_left_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // double steer_angle_front_right = 4;
-      case 4: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(33u /* 33 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &steer_angle_front_right_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // double steer_angle_back_left = 5;
-      case 5: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(41u /* 41 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &steer_angle_back_left_)));
-        } else {
-          goto handle_unusual;
-        }
-        break;
-      }
-
-      // double steer_angle_back_right = 6;
-      case 6: {
-        if (static_cast< ::google::protobuf::uint8>(tag) ==
-            static_cast< ::google::protobuf::uint8>(49u /* 49 & 0xFF */)) {
-
-          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   double, ::google::protobuf::internal::WireFormatLite::TYPE_DOUBLE>(
-                 input, &steer_angle_back_right_)));
         } else {
           goto handle_unusual;
         }
@@ -1340,26 +1273,6 @@ void ControlType::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteDouble(2, this->omega(), output);
   }
 
-  // double steer_angle_front_left = 3;
-  if (this->steer_angle_front_left() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(3, this->steer_angle_front_left(), output);
-  }
-
-  // double steer_angle_front_right = 4;
-  if (this->steer_angle_front_right() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(4, this->steer_angle_front_right(), output);
-  }
-
-  // double steer_angle_back_left = 5;
-  if (this->steer_angle_back_left() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(5, this->steer_angle_back_left(), output);
-  }
-
-  // double steer_angle_back_right = 6;
-  if (this->steer_angle_back_right() != 0) {
-    ::google::protobuf::internal::WireFormatLite::WriteDouble(6, this->steer_angle_back_right(), output);
-  }
-
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
@@ -1382,26 +1295,6 @@ void ControlType::SerializeWithCachedSizes(
   // double omega = 2;
   if (this->omega() != 0) {
     target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(2, this->omega(), target);
-  }
-
-  // double steer_angle_front_left = 3;
-  if (this->steer_angle_front_left() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(3, this->steer_angle_front_left(), target);
-  }
-
-  // double steer_angle_front_right = 4;
-  if (this->steer_angle_front_right() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(4, this->steer_angle_front_right(), target);
-  }
-
-  // double steer_angle_back_left = 5;
-  if (this->steer_angle_back_left() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(5, this->steer_angle_back_left(), target);
-  }
-
-  // double steer_angle_back_right = 6;
-  if (this->steer_angle_back_right() != 0) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteDoubleToArray(6, this->steer_angle_back_right(), target);
   }
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1428,26 +1321,6 @@ size_t ControlType::ByteSizeLong() const {
 
   // double omega = 2;
   if (this->omega() != 0) {
-    total_size += 1 + 8;
-  }
-
-  // double steer_angle_front_left = 3;
-  if (this->steer_angle_front_left() != 0) {
-    total_size += 1 + 8;
-  }
-
-  // double steer_angle_front_right = 4;
-  if (this->steer_angle_front_right() != 0) {
-    total_size += 1 + 8;
-  }
-
-  // double steer_angle_back_left = 5;
-  if (this->steer_angle_back_left() != 0) {
-    total_size += 1 + 8;
-  }
-
-  // double steer_angle_back_right = 6;
-  if (this->steer_angle_back_right() != 0) {
     total_size += 1 + 8;
   }
 
@@ -1484,18 +1357,6 @@ void ControlType::MergeFrom(const ControlType& from) {
   if (from.omega() != 0) {
     set_omega(from.omega());
   }
-  if (from.steer_angle_front_left() != 0) {
-    set_steer_angle_front_left(from.steer_angle_front_left());
-  }
-  if (from.steer_angle_front_right() != 0) {
-    set_steer_angle_front_right(from.steer_angle_front_right());
-  }
-  if (from.steer_angle_back_left() != 0) {
-    set_steer_angle_back_left(from.steer_angle_back_left());
-  }
-  if (from.steer_angle_back_right() != 0) {
-    set_steer_angle_back_right(from.steer_angle_back_right());
-  }
 }
 
 void ControlType::CopyFrom(const ::google::protobuf::Message& from) {
@@ -1524,10 +1385,6 @@ void ControlType::InternalSwap(ControlType* other) {
   using std::swap;
   swap(v_, other->v_);
   swap(omega_, other->omega_);
-  swap(steer_angle_front_left_, other->steer_angle_front_left_);
-  swap(steer_angle_front_right_, other->steer_angle_front_right_);
-  swap(steer_angle_back_left_, other->steer_angle_back_left_);
-  swap(steer_angle_back_right_, other->steer_angle_back_right_);
   _internal_metadata_.Swap(&other->_internal_metadata_);
 }
 

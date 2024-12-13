@@ -23,10 +23,6 @@ message StateType {
 message ControlType {
     double v = 1;
     double omega = 2;
-    double steer_angle_front_left= 3;
-    double steer_angle_front_right= 4;
-    double steer_angle_back_left= 5;
-    double steer_angle_back_right= 6;
 };
 message PointType{
     double x = 1;

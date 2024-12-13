@@ -26,7 +26,7 @@ bool MpcTracker::update(const Vector3d &init_state,
   setGeneralBoundBoxConstraints();
   setAccelerateConstraints();
   setSteerRateConstraints();
-
+  setSteerAngleConstraints();
   // cast everything need
   castProblemToQpForm();
   return true;
@@ -120,11 +120,12 @@ void MpcTracker::calcOsqpConstraintMatrix() {
       nums_of_state_bounding_box = x_lb_.rows() * (param_.horizon_ + 1),
       nums_of_input_bounding_box = u_lb_.rows() * param_.horizon_,
       nums_of_steer_rate_cons = A_steer_rate_.rows(),
-      nums_of_accelerate_cons = A_accelerate_.rows();
+      nums_of_accelerate_cons = A_accelerate_.rows(),
+      nums_of_steer_cons = A_steer_.rows();
   int nums_of_cons_rows = nums_of_initial_state + nums_of_dynamic +
                           nums_of_state_bounding_box +
                           nums_of_input_bounding_box + nums_of_steer_rate_cons +
-                          nums_of_accelerate_cons;
+                          nums_of_accelerate_cons + nums_of_steer_cons;
   //! Note: all the elements in the matrix should be set to zero directly,
   //! otherwise, the matrix will be filled with random values
   DMatrix M = DMatrix::Zero(nums_of_cons_rows, qp_state_size_);
@@ -192,6 +193,15 @@ void MpcTracker::calcOsqpConstraintMatrix() {
     M.block(start_row_offset, 0, A_accelerate_.rows(), A_accelerate_.cols()) =
         A_accelerate_;
   }
+
+  // steer cons
+  if (nums_of_steer_cons != 0) {
+    int start_row_offset = nums_of_initial_state + nums_of_dynamic +
+                           nums_of_state_bounding_box +
+                           nums_of_input_bounding_box +
+                           nums_of_steer_rate_cons + nums_of_accelerate_cons;
+    M.block(start_row_offset, 0, A_steer_.rows(), A_steer_.cols()) = A_steer_;
+  }
   M_ = M.sparseView();
 }
 void MpcTracker::calcOsqpConstraintBound() {
@@ -200,11 +210,12 @@ void MpcTracker::calcOsqpConstraintBound() {
       nums_of_state_bounding_box = x_lb_.rows() * (param_.horizon_ + 1),
       nums_of_input_bounding_box = u_lb_.rows() * param_.horizon_,
       nums_of_steer_rate_cons = A_steer_rate_.rows(),
-      nums_of_accelerate_cons = A_accelerate_.rows();
+      nums_of_accelerate_cons = A_accelerate_.rows(),
+      nums_of_steer_cons = A_steer_.rows();
   int nums_of_cons_rows = nums_of_initial_state + nums_of_dynamic +
                           nums_of_state_bounding_box +
                           nums_of_input_bounding_box + nums_of_steer_rate_cons +
-                          nums_of_accelerate_cons;
+                          nums_of_accelerate_cons + nums_of_steer_cons;
   lb_.resize(nums_of_cons_rows);
   ub_.resize(nums_of_cons_rows);
 
@@ -259,6 +270,15 @@ void MpcTracker::calcOsqpConstraintBound() {
                            nums_of_input_bounding_box + nums_of_steer_rate_cons;
     lb_.segment(start_row_offset, lb_accelerate_.rows()) = lb_accelerate_;
     ub_.segment(start_row_offset, ub_accelerate_.rows()) = ub_accelerate_;
+  }
+  // steer cons
+  if (nums_of_steer_cons != 0) {
+    int start_row_offset = nums_of_initial_state + nums_of_dynamic +
+                           nums_of_state_bounding_box +
+                           nums_of_input_bounding_box +
+                           nums_of_steer_rate_cons + nums_of_accelerate_cons;
+    lb_.segment(start_row_offset, lb_steer_.rows()) = lb_steer_;
+    ub_.segment(start_row_offset, ub_steer_.rows()) = ub_steer_;
   }
 }
 
@@ -646,12 +666,30 @@ SolveStatus MpcTracker::posterioriCheck(const DVector &solution) {
     return true;
   };
 
+  // check the steer angle constraints
+  auto check_steer_feasibility = [&]() -> bool {
+    for (size_t i = 0; i < param_.horizon_; ++i) {
+      double v = solution((param_.horizon_ + 1) * param_.state_size_ +
+                          i * param_.input_size_);
+      double omega = solution((param_.horizon_ + 1) * param_.state_size_ +
+                              i * param_.input_size_ + 1);
+      double turn_radius = v / (omega + kEps);
+      if (turn_radius > -param_.min_turn_radius_ + kEps &&
+          turn_radius < param_.min_turn_radius_ - kEps) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   if (!check_speed_feasibility()) {
     return SolveStatus::INVALID_SPEED;
   } else if (!check_acc_feasibility()) {
     return SolveStatus::INVALID_ACC;
   } else if (!check_steer_angle_rate_feasibility()) {
     return SolveStatus::INVALID_STEER_RATE;
+  } else if (!check_steer_feasibility()) {
+    return SolveStatus::INVALID_STEER_ANGLE;
   }
 
   return SolveStatus::SUCCESS;

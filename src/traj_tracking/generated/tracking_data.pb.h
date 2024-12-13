@@ -464,40 +464,12 @@ class ControlType : public ::google::protobuf::Message /* @@protoc_insertion_poi
   double omega() const;
   void set_omega(double value);
 
-  // double steer_angle_front_left = 3;
-  void clear_steer_angle_front_left();
-  static const int kSteerAngleFrontLeftFieldNumber = 3;
-  double steer_angle_front_left() const;
-  void set_steer_angle_front_left(double value);
-
-  // double steer_angle_front_right = 4;
-  void clear_steer_angle_front_right();
-  static const int kSteerAngleFrontRightFieldNumber = 4;
-  double steer_angle_front_right() const;
-  void set_steer_angle_front_right(double value);
-
-  // double steer_angle_back_left = 5;
-  void clear_steer_angle_back_left();
-  static const int kSteerAngleBackLeftFieldNumber = 5;
-  double steer_angle_back_left() const;
-  void set_steer_angle_back_left(double value);
-
-  // double steer_angle_back_right = 6;
-  void clear_steer_angle_back_right();
-  static const int kSteerAngleBackRightFieldNumber = 6;
-  double steer_angle_back_right() const;
-  void set_steer_angle_back_right(double value);
-
   // @@protoc_insertion_point(class_scope:willand_ackermann_proto.ControlType)
  private:
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   double v_;
   double omega_;
-  double steer_angle_front_left_;
-  double steer_angle_front_right_;
-  double steer_angle_back_left_;
-  double steer_angle_back_right_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::protobuf_tracking_5fdata_2eproto::TableStruct;
 };
@@ -1034,62 +1006,6 @@ inline void ControlType::set_omega(double value) {
   
   omega_ = value;
   // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.omega)
-}
-
-// double steer_angle_front_left = 3;
-inline void ControlType::clear_steer_angle_front_left() {
-  steer_angle_front_left_ = 0;
-}
-inline double ControlType::steer_angle_front_left() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_left)
-  return steer_angle_front_left_;
-}
-inline void ControlType::set_steer_angle_front_left(double value) {
-  
-  steer_angle_front_left_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_left)
-}
-
-// double steer_angle_front_right = 4;
-inline void ControlType::clear_steer_angle_front_right() {
-  steer_angle_front_right_ = 0;
-}
-inline double ControlType::steer_angle_front_right() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_front_right)
-  return steer_angle_front_right_;
-}
-inline void ControlType::set_steer_angle_front_right(double value) {
-  
-  steer_angle_front_right_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_front_right)
-}
-
-// double steer_angle_back_left = 5;
-inline void ControlType::clear_steer_angle_back_left() {
-  steer_angle_back_left_ = 0;
-}
-inline double ControlType::steer_angle_back_left() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_left)
-  return steer_angle_back_left_;
-}
-inline void ControlType::set_steer_angle_back_left(double value) {
-  
-  steer_angle_back_left_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_left)
-}
-
-// double steer_angle_back_right = 6;
-inline void ControlType::clear_steer_angle_back_right() {
-  steer_angle_back_right_ = 0;
-}
-inline double ControlType::steer_angle_back_right() const {
-  // @@protoc_insertion_point(field_get:willand_ackermann_proto.ControlType.steer_angle_back_right)
-  return steer_angle_back_right_;
-}
-inline void ControlType::set_steer_angle_back_right(double value) {
-  
-  steer_angle_back_right_ = value;
-  // @@protoc_insertion_point(field_set:willand_ackermann_proto.ControlType.steer_angle_back_right)
 }
 
 // -------------------------------------------------------------------

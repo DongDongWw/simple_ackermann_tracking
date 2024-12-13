@@ -1,27 +1,31 @@
 <launch>
-	<include file="$(find polygon_coverage_ros)/launch/coverage_planner.launch">
-	</include>
+	<arg name="use_coverage_planner" default="false" />
+	<!-- 使用 if 条件语句 -->
+	<include file="$(find polygon_coverage_ros)/launch/coverage_planner.launch" if="$(arg use_coverage_planner)" />
 	<!-- traj_tracking -->
 	<node pkg="traj_tracking" type="mpc_tracker_node" name="traj_tracking" output="screen">
-		<param name="~global_circle_radius" value="0.5" />
-		<param name="~horizon" value="20" />
+		<param name="~horizon" value="10" />
 		<param name="~interval" value="0.05" />
 		<param name="~state_size" value="3" />
 		<param name="~input_size" value="2" />
-		<param name="~min_vel" value="-1.5" />
+		<param name="~min_vel" value="0.0" />
 		<param name="~max_vel" value="1.5" />
 		<param name="~min_acc" value="-1.0" />
 		<param name="~max_acc" value="1.0" />
 		<param name="~steer_angle_rate_limit" value="6.28318" />
+		<param name="~min_turn_radius" value="0.30" />
 		<param name="~track_width" value="0.6" />
 		<param name="~wheel_base" value="1.0" />
 		<!-- weights of cost function -->
-		<param name="~weight_x_error" value="3333.3" />
-		<param name="~weight_y_error" value="3333.3" />
-		<param name="~weight_theta_error" value="233.33" />
-		<param name="~weight_v" value="63.33" />
-		<param name="~weight_omega" value="63.33" />
-		<param name="~simulate_time" value="100.0" />
+		<param name="~weight_x_error" value="2333.3" />
+		<param name="~weight_y_error" value="2333.3" />
+		<param name="~weight_theta_error" value="33.33" />
+		<param name="~weight_v" value="3.33" />
+		<param name="~weight_omega" value="3.33" />
+		<param name="~simulate_time" value="20.0" />
 		<param name="~refer_speed" value="1.0" />
+		<param name="~longi_length" value="10.0" />
+		<param name="~lateral_length" value="0.35" />
+		<param name="~use_coverage_planner" value="$(arg use_coverage_planner)" />
 	</node>
 </launch>

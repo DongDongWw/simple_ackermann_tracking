@@ -25,37 +25,42 @@ class TrackingServer {
   TrackingServer(const ros::NodeHandle &nh) : nh_(nh) {
     int horizon, state_size, input_size;
     double interval, min_vel, max_vel, min_acc, max_acc, steer_angle_rate_limit,
-        track_width, wheel_base;
+        min_turn_radius, track_width, wheel_base;
     double weight_x_error, weight_y_error, weight_theta_error, weight_v,
         weight_omega;
     nh_.param("/traj_tracking/horizon", horizon, 20);
     nh_.param("/traj_tracking/interval", interval, 0.05);
     nh_.param("/traj_tracking/state_size", state_size, 3);
     nh_.param("/traj_tracking/input_size", input_size, 2);
-    nh_.param("/traj_tracking/min_vel", min_vel, -1.5);
+    nh_.param("/traj_tracking/min_vel", min_vel, 0.0);
     nh_.param("/traj_tracking/max_vel", max_vel, 1.5);
     nh_.param("/traj_tracking/min_acc", min_acc, -1.0);
     nh_.param("/traj_tracking/max_acc", max_acc, 1.0);
     nh_.param("/traj_tracking/steer_angle_rate_limit", steer_angle_rate_limit,
               M_PI * 2);
+    nh_.param("/traj_tracking/min_turn_radius", min_turn_radius, 0.3);
     nh_.param("/traj_tracking/track_width", track_width, 0.6);
     nh_.param("/traj_tracking/wheel_base", wheel_base, 1.0);
     nh_.param("/traj_tracking/weight_x_error", weight_x_error, 3333.3);
     nh_.param("/traj_tracking/weight_y_error", weight_y_error, 3333.3);
-    nh_.param("/traj_tracking/weight_theta_error", weight_theta_error, 333.3);
+    nh_.param("/traj_tracking/weight_theta_error", weight_theta_error, 33.33);
     nh_.param("/traj_tracking/weight_v", weight_v, 63.3);
     nh_.param("/traj_tracking/weight_omega", weight_omega, 63.3);
 
     nh_.param("/traj_tracking/simulate_time", simulate_time_, 20.0);
     nh_.param("/traj_tracking/refer_speed", refer_speed_, 1.0);
+
     nh_.param("/traj_tracking/longi_length", longi_length_, 10.0);
     nh_.param("/traj_tracking/lateral_length", lateral_length_, 0.35);
+
+    nh_.param("/traj_tracking/use_coverage_planner", use_coverage_planner_,
+              true);
 
     TrackerParam param(horizon, interval, state_size, input_size,
                        weight_x_error, weight_y_error, weight_theta_error,
                        weight_v, weight_omega, max_vel, min_vel, max_acc,
-                       min_acc, steer_angle_rate_limit, track_width,
-                       wheel_base);
+                       min_acc, steer_angle_rate_limit, min_turn_radius,
+                       track_width, wheel_base);
     tracker_.reset(new MpcTracker(param));
     ROS_INFO(
         "horizon: %d,  interval: %f, state_size: %d, input_size: %d, "
@@ -82,25 +87,31 @@ class TrackingServer {
     }
 
     // subscribe the coverage planning result, by ethz
-    global_path_sub_ = nh_.subscribe("/waypoint_list", 1,
-                                     &TrackingServer::globalPathCallBack, this);
+    if (use_coverage_planner_) {
+      global_path_sub_ = nh_.subscribe(
+          "/waypoint_list", 1, &TrackingServer::globalPathCallBack, this);
+    }
   };
 
   void startSimulate() {
+    if (!use_coverage_planner_) {
+      generateGlobalPath();
+    }
     while (!receive_global_path_) {
       ros::Duration(0.5).sleep();
       ros::spinOnce();
       ROS_INFO("Waiting for global path...");
     }
+    double yaw = std::atan2(global_traj_.at(1)[1] - global_traj_.at(0)[1],
+                            global_traj_.at(1)[0] - global_traj_.at(0)[0]);
+    current_state_ =
+        Eigen::Vector3d(global_traj_.at(0)[0], global_traj_.at(0)[1], yaw);
+
     int sim_steps = simulate_time_ / mpc_param_.interval_;
     int cur_step = 0;
 
     while (cur_step < sim_steps) {
       double ts = mpc_param_.interval_ * cur_step;
-
-      auto refer_state_ptr = tracking_data_.add_refer_state();
-      auto actual_state_ptr = tracking_data_.add_actual_state();
-      auto ctrl_cmd_ptr = tracking_data_.add_ctrl_cmd();
 
       // calculate the local reference path
       calcLocalReferencePath(current_state_.segment(0, 2));
@@ -115,14 +126,15 @@ class TrackingServer {
       Eigen::Vector2d refer_input;
       tracker_->getCurrentReferStateAndInput(refer_state, refer_input);
 
+      auto refer_state_ptr = tracking_data_.add_refer_state();
+      auto actual_state_ptr = tracking_data_.add_actual_state();
+      auto ctrl_cmd_ptr = tracking_data_.add_ctrl_cmd();
       refer_state_ptr->set_x(refer_state[0]);
       refer_state_ptr->set_y(refer_state[1]);
       refer_state_ptr->set_theta(refer_state[2]);
-
       actual_state_ptr->set_x(current_state_[0]);
       actual_state_ptr->set_y(current_state_[1]);
       actual_state_ptr->set_theta(current_state_[2]);
-
       ctrl_cmd_ptr->set_v(control_cmd[0]);
       ctrl_cmd_ptr->set_omega(control_cmd[1]);
 
@@ -130,19 +142,6 @@ class TrackingServer {
       ++cur_step;
     }
 
-    auto mpc_param_ptr = tracking_data_.mutable_mpc_param();
-    mpc_param_ptr->set_horizon(mpc_param_.horizon_);
-    mpc_param_ptr->set_interval(mpc_param_.interval_);
-    mpc_param_ptr->set_state_dim(mpc_param_.state_size_);
-    mpc_param_ptr->set_input_dim(mpc_param_.input_size_);
-    mpc_param_ptr->set_min_vel(mpc_param_.min_vel_);
-    mpc_param_ptr->set_max_vel(mpc_param_.max_vel_);
-    mpc_param_ptr->set_min_acc(mpc_param_.min_acc_);
-    mpc_param_ptr->set_max_acc(mpc_param_.max_acc_);
-    mpc_param_ptr->set_steer_angle_rate_limit(
-        mpc_param_.steer_angle_rate_limit_);
-    mpc_param_ptr->set_track_width(mpc_param_.track_width_);
-    mpc_param_ptr->set_wheel_base(mpc_param_.wheel_base_);
     serialize();
     return;
   }
@@ -152,6 +151,7 @@ class TrackingServer {
   double refer_speed_;
   double longi_length_;
   double lateral_length_;
+  bool use_coverage_planner_;
 
   ros::NodeHandle nh_;
   ros::Subscriber global_path_sub_;
@@ -163,7 +163,6 @@ class TrackingServer {
   Eigen::Vector2d current_twist_;
 
   std::vector<Eigen::Vector2d> global_traj_;
-  std::vector<Eigen::Vector2d> global_traj_interp_;
   std::vector<Eigen::Vector2d> local_traj_;
 
   bool receive_global_path_ = false;
@@ -193,10 +192,53 @@ class TrackingServer {
   void generateGlobalPath() {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_real_distribution<> steer_angle(0.0, 2 * M_PI);
+    std::uniform_real_distribution<> steer_angle_gen(0.0, 2 * M_PI);
+    std::uniform_real_distribution<> init_pos_gen(-50.0, 50.0);
     double points_interval = refer_speed_ * mpc_param_.interval_;
     int longi_nums = std::floor(longi_length_ / points_interval),
         lateral_nums = std::floor(lateral_length_ / points_interval);
+    int total_points = simulate_time_ / mpc_param_.interval_;
+    Eigen::Vector2d cur_pos = {init_pos_gen(gen), init_pos_gen(gen)};
+    double cur_yaw = steer_angle_gen(gen);
+    global_traj_.clear();
+    global_traj_.reserve(total_points);
+    enum LocalPathType {
+      LongiRight = 0x0001,
+      LateralRight = 0x0100,
+      LongiLeft = 0x0011,
+      LateralLeft = 0x1100
+    };
+    global_traj_.push_back(cur_pos);
+    LocalPathType path_type = LocalPathType::LongiRight;
+    int cur_points = 0;
+    for (size_t i = 0; i < total_points; ++i) {
+      cur_pos = cur_pos + points_interval * Eigen::Vector2d(std::cos(cur_yaw),
+                                                            std::sin(cur_yaw));
+      global_traj_.push_back(cur_pos);
+      ++cur_points;
+      if ((path_type & 0x0001) && cur_points == longi_nums) {
+        cur_points = 0;
+        cur_yaw = path_type == LocalPathType::LongiRight ? cur_yaw - M_PI / 2
+                                                         : cur_yaw + M_PI / 2;
+        path_type = path_type == LocalPathType::LongiRight
+                        ? LocalPathType::LateralRight
+                        : LocalPathType::LateralLeft;
+      } else if ((path_type & 0x0100) && cur_points == lateral_nums) {
+        cur_points = 0;
+        cur_yaw = path_type == LocalPathType::LateralRight ? cur_yaw - M_PI / 2
+                                                           : cur_yaw + M_PI / 2;
+        path_type = path_type == LocalPathType::LateralRight
+                        ? LocalPathType::LongiLeft
+                        : LocalPathType::LongiRight;
+      }
+    }
+    ROS_INFO("Global path size = %lu", global_traj_.size());
+    for (const auto &p : global_traj_) {
+      auto point_proto = tracking_data_.add_global_point();
+      point_proto->set_x(p[0]);
+      point_proto->set_y(p[1]);
+    }
+    receive_global_path_ = true;
   }
   void globalPathCallBack(const geometry_msgs::PoseArray::ConstPtr &msg) {
     receive_global_path_ = true;
@@ -212,33 +254,26 @@ class TrackingServer {
       return;
     }
 
-    global_traj_interp_.clear();
-    global_traj_interp_ =
+    global_traj_ =
         interpolate2D(global_traj_, mpc_param_.interval_ * refer_speed_);
-    for (const auto &p : global_traj_interp_) {
+    for (const auto &p : global_traj_) {
       auto point_proto = tracking_data_.add_global_point();
       point_proto->set_x(p[0]);
       point_proto->set_y(p[1]);
     }
 
-    double yaw =
-        std::atan2(global_traj_interp_.at(1)[1] - global_traj_interp_.at(0)[1],
-                   global_traj_interp_.at(1)[0] - global_traj_interp_.at(0)[0]);
-    current_state_ = Eigen::Vector3d(global_traj_interp_.at(0)[0],
-                                     global_traj_interp_.at(0)[1], yaw);
     return;
   }
-
   void calcLocalReferencePath(const Eigen::Vector2d &current_pos) {
     int p_num = mpc_param_.horizon_ + 1;
-    if (global_traj_interp_.empty()) {
+    if (global_traj_.empty()) {
       ROS_ERROR("Global path is empty !");
       return;
     }
     double min_dist = std::numeric_limits<double>::max();
     int min_dist_idx = 0;
-    for (size_t i = 0; i < global_traj_interp_.size(); ++i) {
-      double dist = (global_traj_interp_.at(i) - current_pos).norm();
+    for (size_t i = 0; i < global_traj_.size(); ++i) {
+      double dist = (global_traj_.at(i) - current_pos).norm();
       if (dist < min_dist) {
         min_dist = dist;
         min_dist_idx = i;
@@ -248,10 +283,10 @@ class TrackingServer {
     int cur_idx = min_dist_idx;
     local_traj_.resize(mpc_param_.horizon_ + 1);
     for (size_t i = 0; i <= mpc_param_.horizon_; ++i) {
-      local_traj_[i] = global_traj_interp_[cur_idx];
+      local_traj_[i] = global_traj_[cur_idx];
       ++cur_idx;
-      if (cur_idx >= global_traj_interp_.size()) {
-        cur_idx = global_traj_interp_.size() - 1;
+      if (cur_idx >= global_traj_.size()) {
+        cur_idx = global_traj_.size() - 1;
       }
     }
   }
@@ -273,6 +308,20 @@ class TrackingServer {
     return next_state;
   }
   void serialize() {
+    auto mpc_param_ptr = tracking_data_.mutable_mpc_param();
+    mpc_param_ptr->set_horizon(mpc_param_.horizon_);
+    mpc_param_ptr->set_interval(mpc_param_.interval_);
+    mpc_param_ptr->set_state_dim(mpc_param_.state_size_);
+    mpc_param_ptr->set_input_dim(mpc_param_.input_size_);
+    mpc_param_ptr->set_min_vel(mpc_param_.min_vel_);
+    mpc_param_ptr->set_max_vel(mpc_param_.max_vel_);
+    mpc_param_ptr->set_min_acc(mpc_param_.min_acc_);
+    mpc_param_ptr->set_max_acc(mpc_param_.max_acc_);
+    mpc_param_ptr->set_steer_angle_rate_limit(
+        mpc_param_.steer_angle_rate_limit_);
+    mpc_param_ptr->set_track_width(mpc_param_.track_width_);
+    mpc_param_ptr->set_wheel_base(mpc_param_.wheel_base_);
+
     ros::Time now = ros::Time::now();
     std::stringstream ss;
     ss << now.sec << "." << now.nsec;

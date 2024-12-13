@@ -23,6 +23,7 @@ enum class SolveStatus {
   INVALID_SPEED = 0x00010000,
   INVALID_ACC,
   INVALID_STEER_RATE,
+  INVALID_STEER_ANGLE,
 };
 struct TrackerParam {
   // mpc parameters
@@ -39,6 +40,7 @@ struct TrackerParam {
   double max_acc_;
   double min_acc_;
   double steer_angle_rate_limit_;
+  double min_turn_radius_;
   double track_width_;
   double wheel_base_;
 
@@ -57,14 +59,15 @@ struct TrackerParam {
         max_acc_(1.5),
         min_acc_(-1.5),
         steer_angle_rate_limit_(M_PI * 2),
+        min_turn_radius_(0.3),
         track_width_(0.6),
         wheel_base_(1.0) {}
   TrackerParam(int horizon, double interval, int state_size, int input_size,
                double weight_x_error, double weight_y_error,
                double weight_theta_error, double weight_v, double weight_omega,
                double max_vel, double min_vel, double max_acc, double min_acc,
-               double steer_angle_rate_limit, double track_width,
-               double wheel_base)
+               double steer_angle_rate_limit, double min_turn_radius,
+               double track_width, double wheel_base)
       : horizon_(horizon),
         interval_(interval),
         state_size_(state_size),
@@ -79,6 +82,7 @@ struct TrackerParam {
         max_acc_(max_acc),
         min_acc_(min_acc),
         steer_angle_rate_limit_(steer_angle_rate_limit),
+        min_turn_radius_(min_turn_radius),
         track_width_(track_width),
         wheel_base_(wheel_base) {}
 };
@@ -104,6 +108,9 @@ class MpcTracker {
   Vector3d x_ub_;
   Vector2d u_lb_;
   Vector2d u_ub_;
+  DMatrix A_steer_;
+  DVector lb_steer_;
+  DVector ub_steer_;
   DMatrix A_steer_rate_;
   DVector lb_steer_rate_;
   DVector ub_steer_rate_;
@@ -160,6 +167,28 @@ class MpcTracker {
     u_ub_ = Vector2d::Zero();
     u_lb_ << param_.min_vel_, -std::numeric_limits<double>::infinity();
     u_ub_ << param_.max_vel_, std::numeric_limits<double>::infinity();
+  }
+  void setSteerAngleConstraints() {
+    A_steer_ = DMatrix::Zero(param_.horizon_ * 2, qp_state_size_);
+    lb_steer_ = DVector::Zero(param_.horizon_ * 2);
+    ub_steer_ = DVector::Zero(param_.horizon_ * 2);
+    for (size_t i = 0; i < param_.horizon_; ++i) {
+      A_steer_(2 * i, (param_.horizon_ + 1) * param_.state_size_ +
+                          i * param_.input_size_) =
+          1 / (param_.min_turn_radius_ + kEps);
+      A_steer_(2 * i, (param_.horizon_ + 1) * param_.state_size_ +
+                          i * param_.input_size_ + 1) = 1;
+      lb_steer_(2 * i) = 0.0;
+      ub_steer_(2 * i) = std::numeric_limits<double>::infinity();
+
+      A_steer_(2 * i + 1, (param_.horizon_ + 1) * param_.state_size_ +
+                              i * param_.input_size_) =
+          -1 / (param_.min_turn_radius_ + kEps);
+      A_steer_(2 * i + 1, (param_.horizon_ + 1) * param_.state_size_ +
+                              i * param_.input_size_ + 1) = 1;
+      lb_steer_(2 * i + 1) = -std::numeric_limits<double>::infinity();
+      ub_steer_(2 * i + 1) = 0;
+    }
   }
   void setSteerRateConstraints() {
     A_steer_rate_ = steerRateConstraintsMatrixCaster();
