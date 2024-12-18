@@ -5,9 +5,9 @@
         path = src/traj_tracking/third_party/osqp
         url = https://github.com/osqp/osqp.git
 
-[submodule "src/steer_drive_ros"]
-	path = src/steer_drive_ros
-	url = https://github.com:DongDongWw/steer_drive_ros.git
 [submodule "src/steer_bot"]
 	path = src/steer_bot
-	url = https://github.com:DongDongWw/steer_bot.git
+	url = https://github.com/srmainwaring/steer_bot
+[submodule "src/steer_drive_ros"]
+	path = src/steer_drive_ros
+	url = https://github.com/tsedl/steer_drive_ros.git
