@@ -7,7 +7,7 @@
 
 [submodule "src/steer_drive_ros"]
 	path = src/steer_drive_ros
-	url = git@github.com:DongDongWw/steer_drive_ros.git
+	url = https://github.com:DongDongWw/steer_drive_ros.git
 [submodule "src/steer_bot"]
 	path = src/steer_bot
-	url = git@github.com:DongDongWw/steer_bot.git
+	url = https://github.com:DongDongWw/steer_bot.git

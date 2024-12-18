@@ -15,7 +15,7 @@
 #include "tracking_data.pb.h"
 #include "trajectory_tracker.h"
 #include "visualization_msgs/Marker.h"
-namespace willand_ackermann {
+namespace simple_ackermann {
 
 class TrackingServer {
  public:
@@ -98,7 +98,7 @@ class TrackingServer {
   std::vector<PathGenerator::Point2D> local_path_points_;
 
   int max_length_record_;  // cann't record unlimited data
-  willand_ackermann_proto::TrackingData tracking_data_;
+  simple_ackermann_proto::TrackingData tracking_data_;
 
  private:
   void odomCallback(const nav_msgs::Odometry::ConstPtr &msg) {
@@ -377,7 +377,7 @@ class TrackingServer {
     } else {
       time_stamp = tracking_data_.timestamp(0);
     }
-    willand_ackermann_proto::ParamMPC *mpc_param =
+    simple_ackermann_proto::ParamMPC *mpc_param =
         tracking_data_.mutable_mpc_param();
     // load mpc parameters
     mpc_param->set_horizon(mpc_param_.horizon_);
@@ -402,4 +402,4 @@ class TrackingServer {
     output_file.close();
   }
 };
-};  // namespace willand_ackermann
+};  // namespace simple_ackermann

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package willand_ackermann_proto;
+package simple_ackermann_proto;
 
 message State {
     double x = 1;

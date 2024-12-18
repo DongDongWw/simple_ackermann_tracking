@@ -24,7 +24,7 @@ extern PROTOBUF_INTERNAL_EXPORT_protobuf_tracking_5fdata_2eproto ::google::proto
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_tracking_5fdata_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_ParamMPC;
 extern PROTOBUF_INTERNAL_EXPORT_protobuf_tracking_5fdata_2eproto ::google::protobuf::internal::SCCInfo<0> scc_info_State;
 }  // namespace protobuf_tracking_5fdata_2eproto
-namespace willand_ackermann_proto {
+namespace simple_ackermann_proto {
 class StateDefaultTypeInternal {
  public:
   ::google::protobuf::internal::ExplicitlyConstructed<State>
@@ -45,17 +45,17 @@ class TrackingDataDefaultTypeInternal {
   ::google::protobuf::internal::ExplicitlyConstructed<TrackingData>
       _instance;
 } _TrackingData_default_instance_;
-}  // namespace willand_ackermann_proto
+}  // namespace simple_ackermann_proto
 namespace protobuf_tracking_5fdata_2eproto {
 static void InitDefaultsState() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::willand_ackermann_proto::_State_default_instance_;
-    new (ptr) ::willand_ackermann_proto::State();
+    void* ptr = &::simple_ackermann_proto::_State_default_instance_;
+    new (ptr) ::simple_ackermann_proto::State();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::willand_ackermann_proto::State::InitAsDefaultInstance();
+  ::simple_ackermann_proto::State::InitAsDefaultInstance();
 }
 
 ::google::protobuf::internal::SCCInfo<0> scc_info_State =
@@ -65,11 +65,11 @@ static void InitDefaultsControlSignal() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::willand_ackermann_proto::_ControlSignal_default_instance_;
-    new (ptr) ::willand_ackermann_proto::ControlSignal();
+    void* ptr = &::simple_ackermann_proto::_ControlSignal_default_instance_;
+    new (ptr) ::simple_ackermann_proto::ControlSignal();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::willand_ackermann_proto::ControlSignal::InitAsDefaultInstance();
+  ::simple_ackermann_proto::ControlSignal::InitAsDefaultInstance();
 }
 
 ::google::protobuf::internal::SCCInfo<0> scc_info_ControlSignal =
@@ -79,11 +79,11 @@ static void InitDefaultsParamMPC() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::willand_ackermann_proto::_ParamMPC_default_instance_;
-    new (ptr) ::willand_ackermann_proto::ParamMPC();
+    void* ptr = &::simple_ackermann_proto::_ParamMPC_default_instance_;
+    new (ptr) ::simple_ackermann_proto::ParamMPC();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::willand_ackermann_proto::ParamMPC::InitAsDefaultInstance();
+  ::simple_ackermann_proto::ParamMPC::InitAsDefaultInstance();
 }
 
 ::google::protobuf::internal::SCCInfo<0> scc_info_ParamMPC =
@@ -93,11 +93,11 @@ static void InitDefaultsTrackingData() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::willand_ackermann_proto::_TrackingData_default_instance_;
-    new (ptr) ::willand_ackermann_proto::TrackingData();
+    void* ptr = &::simple_ackermann_proto::_TrackingData_default_instance_;
+    new (ptr) ::simple_ackermann_proto::TrackingData();
     ::google::protobuf::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::willand_ackermann_proto::TrackingData::InitAsDefaultInstance();
+  ::simple_ackermann_proto::TrackingData::InitAsDefaultInstance();
 }
 
 ::google::protobuf::internal::SCCInfo<3> scc_info_TrackingData =
@@ -117,63 +117,63 @@ void InitDefaults() {
 
 const ::google::protobuf::uint32 TableStruct::offsets[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, x_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, y_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, theta_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, v_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, omega_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::State, kappa_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, x_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, y_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, theta_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, v_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, omega_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::State, kappa_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlSignal, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ControlSignal, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlSignal, v_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlSignal, omega_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ControlSignal, kappa_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ControlSignal, v_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ControlSignal, omega_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ControlSignal, kappa_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, horizon_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, interval_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, state_dim_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, input_dim_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, speed_limit_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, acc_limit_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, front_wheel_angle_limit_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, front_wheel_angle_rate_limit_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, track_width_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::ParamMPC, dist_front_to_rear_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, horizon_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, interval_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, state_dim_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, input_dim_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, speed_limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, acc_limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, front_wheel_angle_limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, front_wheel_angle_rate_limit_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, track_width_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::ParamMPC, dist_front_to_rear_),
   ~0u,  // no _has_bits_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, _internal_metadata_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, length_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, timestamp_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, reference_data_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, actual_data_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, control_signal_),
-  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::willand_ackermann_proto::TrackingData, mpc_param_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, length_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, timestamp_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, reference_data_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, actual_data_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, control_signal_),
+  GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(::simple_ackermann_proto::TrackingData, mpc_param_),
 };
 static const ::google::protobuf::internal::MigrationSchema schemas[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::willand_ackermann_proto::State)},
-  { 11, -1, sizeof(::willand_ackermann_proto::ControlSignal)},
-  { 19, -1, sizeof(::willand_ackermann_proto::ParamMPC)},
-  { 34, -1, sizeof(::willand_ackermann_proto::TrackingData)},
+  { 0, -1, sizeof(::simple_ackermann_proto::State)},
+  { 11, -1, sizeof(::simple_ackermann_proto::ControlSignal)},
+  { 19, -1, sizeof(::simple_ackermann_proto::ParamMPC)},
+  { 34, -1, sizeof(::simple_ackermann_proto::TrackingData)},
 };
 
 static ::google::protobuf::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::google::protobuf::Message*>(&::willand_ackermann_proto::_State_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::willand_ackermann_proto::_ControlSignal_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::willand_ackermann_proto::_ParamMPC_default_instance_),
-  reinterpret_cast<const ::google::protobuf::Message*>(&::willand_ackermann_proto::_TrackingData_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::simple_ackermann_proto::_State_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::simple_ackermann_proto::_ControlSignal_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::simple_ackermann_proto::_ParamMPC_default_instance_),
+  reinterpret_cast<const ::google::protobuf::Message*>(&::simple_ackermann_proto::_TrackingData_default_instance_),
 };
 
 void protobuf_AssignDescriptors() {
@@ -197,28 +197,27 @@ void protobuf_RegisterTypes(const ::std::string&) {
 void AddDescriptorsImpl() {
   InitDefaults();
   static const char descriptor[] GOOGLE_PROTOBUF_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-      "\n\023tracking_data.proto\022\027willand_ackermann"
-      "_proto\"U\n\005State\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\022\r\n"
-      "\005theta\030\003 \001(\001\022\t\n\001v\030\004 \001(\001\022\r\n\005omega\030\005 \001(\001\022\r"
-      "\n\005kappa\030\006 \001(\001\"8\n\rControlSignal\022\t\n\001v\030\001 \001("
-      "\001\022\r\n\005omega\030\002 \001(\001\022\r\n\005kappa\030\003 \001(\001\"\363\001\n\010Para"
-      "mMPC\022\017\n\007horizon\030\001 \001(\r\022\020\n\010interval\030\002 \001(\001\022"
-      "\021\n\tstate_dim\030\003 \001(\r\022\021\n\tinput_dim\030\004 \001(\r\022\023\n"
-      "\013speed_limit\030\005 \001(\001\022\021\n\tacc_limit\030\006 \001(\001\022\037\n"
-      "\027front_wheel_angle_limit\030\007 \001(\001\022$\n\034front_"
-      "wheel_angle_rate_limit\030\010 \001(\001\022\023\n\013track_wi"
-      "dth\030\t \001(\001\022\032\n\022dist_front_to_rear\030\n \001(\001\"\224\002"
-      "\n\014TrackingData\022\016\n\006length\030\001 \001(\r\022\021\n\ttimest"
-      "amp\030\002 \003(\t\0226\n\016reference_data\030\003 \003(\0132\036.will"
-      "and_ackermann_proto.State\0223\n\013actual_data"
-      "\030\004 \003(\0132\036.willand_ackermann_proto.State\022>"
-      "\n\016control_signal\030\005 \003(\0132&.willand_ackerma"
-      "nn_proto.ControlSignal\0224\n\tmpc_param\030\006 \001("
-      "\0132!.willand_ackermann_proto.ParamMPCb\006pr"
-      "oto3"
+      "\n\023tracking_data.proto\022\026simple_ackermann_"
+      "proto\"U\n\005State\022\t\n\001x\030\001 \001(\001\022\t\n\001y\030\002 \001(\001\022\r\n\005"
+      "theta\030\003 \001(\001\022\t\n\001v\030\004 \001(\001\022\r\n\005omega\030\005 \001(\001\022\r\n"
+      "\005kappa\030\006 \001(\001\"8\n\rControlSignal\022\t\n\001v\030\001 \001(\001"
+      "\022\r\n\005omega\030\002 \001(\001\022\r\n\005kappa\030\003 \001(\001\"\363\001\n\010Param"
+      "MPC\022\017\n\007horizon\030\001 \001(\r\022\020\n\010interval\030\002 \001(\001\022\021"
+      "\n\tstate_dim\030\003 \001(\r\022\021\n\tinput_dim\030\004 \001(\r\022\023\n\013"
+      "speed_limit\030\005 \001(\001\022\021\n\tacc_limit\030\006 \001(\001\022\037\n\027"
+      "front_wheel_angle_limit\030\007 \001(\001\022$\n\034front_w"
+      "heel_angle_rate_limit\030\010 \001(\001\022\023\n\013track_wid"
+      "th\030\t \001(\001\022\032\n\022dist_front_to_rear\030\n \001(\001\"\220\002\n"
+      "\014TrackingData\022\016\n\006length\030\001 \001(\r\022\021\n\ttimesta"
+      "mp\030\002 \003(\t\0225\n\016reference_data\030\003 \003(\0132\035.simpl"
+      "e_ackermann_proto.State\0222\n\013actual_data\030\004"
+      " \003(\0132\035.simple_ackermann_proto.State\022=\n\016c"
+      "ontrol_signal\030\005 \003(\0132%.simple_ackermann_p"
+      "roto.ControlSignal\0223\n\tmpc_param\030\006 \001(\0132 ."
+      "simple_ackermann_proto.ParamMPCb\006proto3"
   };
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
-      descriptor, 724);
+      descriptor, 719);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "tracking_data.proto", &protobuf_RegisterTypes);
 }
@@ -234,7 +233,7 @@ struct StaticDescriptorInitializer {
   }
 } static_descriptor_initializer;
 }  // namespace protobuf_tracking_5fdata_2eproto
-namespace willand_ackermann_proto {
+namespace simple_ackermann_proto {
 
 // ===================================================================
 
@@ -254,7 +253,7 @@ State::State()
   ::google::protobuf::internal::InitSCC(
       &protobuf_tracking_5fdata_2eproto::scc_info_State.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(constructor:simple_ackermann_proto.State)
 }
 State::State(const State& from)
   : ::google::protobuf::Message(),
@@ -263,7 +262,7 @@ State::State(const State& from)
   ::memcpy(&x_, &from.x_,
     static_cast<size_t>(reinterpret_cast<char*>(&kappa_) -
     reinterpret_cast<char*>(&x_)) + sizeof(kappa_));
-  // @@protoc_insertion_point(copy_constructor:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(copy_constructor:simple_ackermann_proto.State)
 }
 
 void State::SharedCtor() {
@@ -273,7 +272,7 @@ void State::SharedCtor() {
 }
 
 State::~State() {
-  // @@protoc_insertion_point(destructor:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(destructor:simple_ackermann_proto.State)
   SharedDtor();
 }
 
@@ -295,7 +294,7 @@ const State& State::default_instance() {
 
 
 void State::Clear() {
-// @@protoc_insertion_point(message_clear_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(message_clear_start:simple_ackermann_proto.State)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -310,7 +309,7 @@ bool State::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(parse_start:simple_ackermann_proto.State)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -412,17 +411,17 @@ bool State::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(parse_success:simple_ackermann_proto.State)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(parse_failure:simple_ackermann_proto.State)
   return false;
 #undef DO_
 }
 
 void State::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(serialize_start:simple_ackermann_proto.State)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -460,13 +459,13 @@ void State::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(serialize_end:simple_ackermann_proto.State)
 }
 
 ::google::protobuf::uint8* State::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(serialize_to_array_start:simple_ackermann_proto.State)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -504,12 +503,12 @@ void State::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(serialize_to_array_end:simple_ackermann_proto.State)
   return target;
 }
 
 size_t State::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(message_byte_size_start:simple_ackermann_proto.State)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -553,22 +552,22 @@ size_t State::ByteSizeLong() const {
 }
 
 void State::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(generalized_merge_from_start:simple_ackermann_proto.State)
   GOOGLE_DCHECK_NE(&from, this);
   const State* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const State>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:simple_ackermann_proto.State)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:willand_ackermann_proto.State)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:simple_ackermann_proto.State)
     MergeFrom(*source);
   }
 }
 
 void State::MergeFrom(const State& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(class_specific_merge_from_start:simple_ackermann_proto.State)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -595,14 +594,14 @@ void State::MergeFrom(const State& from) {
 }
 
 void State::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(generalized_copy_from_start:simple_ackermann_proto.State)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void State::CopyFrom(const State& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:willand_ackermann_proto.State)
+// @@protoc_insertion_point(class_specific_copy_from_start:simple_ackermann_proto.State)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -648,7 +647,7 @@ ControlSignal::ControlSignal()
   ::google::protobuf::internal::InitSCC(
       &protobuf_tracking_5fdata_2eproto::scc_info_ControlSignal.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(constructor:simple_ackermann_proto.ControlSignal)
 }
 ControlSignal::ControlSignal(const ControlSignal& from)
   : ::google::protobuf::Message(),
@@ -657,7 +656,7 @@ ControlSignal::ControlSignal(const ControlSignal& from)
   ::memcpy(&v_, &from.v_,
     static_cast<size_t>(reinterpret_cast<char*>(&kappa_) -
     reinterpret_cast<char*>(&v_)) + sizeof(kappa_));
-  // @@protoc_insertion_point(copy_constructor:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(copy_constructor:simple_ackermann_proto.ControlSignal)
 }
 
 void ControlSignal::SharedCtor() {
@@ -667,7 +666,7 @@ void ControlSignal::SharedCtor() {
 }
 
 ControlSignal::~ControlSignal() {
-  // @@protoc_insertion_point(destructor:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(destructor:simple_ackermann_proto.ControlSignal)
   SharedDtor();
 }
 
@@ -689,7 +688,7 @@ const ControlSignal& ControlSignal::default_instance() {
 
 
 void ControlSignal::Clear() {
-// @@protoc_insertion_point(message_clear_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(message_clear_start:simple_ackermann_proto.ControlSignal)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -704,7 +703,7 @@ bool ControlSignal::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(parse_start:simple_ackermann_proto.ControlSignal)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -764,17 +763,17 @@ bool ControlSignal::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(parse_success:simple_ackermann_proto.ControlSignal)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(parse_failure:simple_ackermann_proto.ControlSignal)
   return false;
 #undef DO_
 }
 
 void ControlSignal::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(serialize_start:simple_ackermann_proto.ControlSignal)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -797,13 +796,13 @@ void ControlSignal::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(serialize_end:simple_ackermann_proto.ControlSignal)
 }
 
 ::google::protobuf::uint8* ControlSignal::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(serialize_to_array_start:simple_ackermann_proto.ControlSignal)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -826,12 +825,12 @@ void ControlSignal::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(serialize_to_array_end:simple_ackermann_proto.ControlSignal)
   return target;
 }
 
 size_t ControlSignal::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(message_byte_size_start:simple_ackermann_proto.ControlSignal)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -860,22 +859,22 @@ size_t ControlSignal::ByteSizeLong() const {
 }
 
 void ControlSignal::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(generalized_merge_from_start:simple_ackermann_proto.ControlSignal)
   GOOGLE_DCHECK_NE(&from, this);
   const ControlSignal* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const ControlSignal>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:simple_ackermann_proto.ControlSignal)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:willand_ackermann_proto.ControlSignal)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:simple_ackermann_proto.ControlSignal)
     MergeFrom(*source);
   }
 }
 
 void ControlSignal::MergeFrom(const ControlSignal& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(class_specific_merge_from_start:simple_ackermann_proto.ControlSignal)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -893,14 +892,14 @@ void ControlSignal::MergeFrom(const ControlSignal& from) {
 }
 
 void ControlSignal::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(generalized_copy_from_start:simple_ackermann_proto.ControlSignal)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void ControlSignal::CopyFrom(const ControlSignal& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:willand_ackermann_proto.ControlSignal)
+// @@protoc_insertion_point(class_specific_copy_from_start:simple_ackermann_proto.ControlSignal)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -950,7 +949,7 @@ ParamMPC::ParamMPC()
   ::google::protobuf::internal::InitSCC(
       &protobuf_tracking_5fdata_2eproto::scc_info_ParamMPC.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(constructor:simple_ackermann_proto.ParamMPC)
 }
 ParamMPC::ParamMPC(const ParamMPC& from)
   : ::google::protobuf::Message(),
@@ -959,7 +958,7 @@ ParamMPC::ParamMPC(const ParamMPC& from)
   ::memcpy(&interval_, &from.interval_,
     static_cast<size_t>(reinterpret_cast<char*>(&input_dim_) -
     reinterpret_cast<char*>(&interval_)) + sizeof(input_dim_));
-  // @@protoc_insertion_point(copy_constructor:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(copy_constructor:simple_ackermann_proto.ParamMPC)
 }
 
 void ParamMPC::SharedCtor() {
@@ -969,7 +968,7 @@ void ParamMPC::SharedCtor() {
 }
 
 ParamMPC::~ParamMPC() {
-  // @@protoc_insertion_point(destructor:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(destructor:simple_ackermann_proto.ParamMPC)
   SharedDtor();
 }
 
@@ -991,7 +990,7 @@ const ParamMPC& ParamMPC::default_instance() {
 
 
 void ParamMPC::Clear() {
-// @@protoc_insertion_point(message_clear_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(message_clear_start:simple_ackermann_proto.ParamMPC)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1006,7 +1005,7 @@ bool ParamMPC::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(parse_start:simple_ackermann_proto.ParamMPC)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1164,17 +1163,17 @@ bool ParamMPC::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(parse_success:simple_ackermann_proto.ParamMPC)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(parse_failure:simple_ackermann_proto.ParamMPC)
   return false;
 #undef DO_
 }
 
 void ParamMPC::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(serialize_start:simple_ackermann_proto.ParamMPC)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1232,13 +1231,13 @@ void ParamMPC::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(serialize_end:simple_ackermann_proto.ParamMPC)
 }
 
 ::google::protobuf::uint8* ParamMPC::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(serialize_to_array_start:simple_ackermann_proto.ParamMPC)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1296,12 +1295,12 @@ void ParamMPC::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(serialize_to_array_end:simple_ackermann_proto.ParamMPC)
   return target;
 }
 
 size_t ParamMPC::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(message_byte_size_start:simple_ackermann_proto.ParamMPC)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1371,22 +1370,22 @@ size_t ParamMPC::ByteSizeLong() const {
 }
 
 void ParamMPC::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(generalized_merge_from_start:simple_ackermann_proto.ParamMPC)
   GOOGLE_DCHECK_NE(&from, this);
   const ParamMPC* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const ParamMPC>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:simple_ackermann_proto.ParamMPC)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:willand_ackermann_proto.ParamMPC)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:simple_ackermann_proto.ParamMPC)
     MergeFrom(*source);
   }
 }
 
 void ParamMPC::MergeFrom(const ParamMPC& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(class_specific_merge_from_start:simple_ackermann_proto.ParamMPC)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1425,14 +1424,14 @@ void ParamMPC::MergeFrom(const ParamMPC& from) {
 }
 
 void ParamMPC::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(generalized_copy_from_start:simple_ackermann_proto.ParamMPC)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void ParamMPC::CopyFrom(const ParamMPC& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:willand_ackermann_proto.ParamMPC)
+// @@protoc_insertion_point(class_specific_copy_from_start:simple_ackermann_proto.ParamMPC)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1470,8 +1469,8 @@ void ParamMPC::InternalSwap(ParamMPC* other) {
 // ===================================================================
 
 void TrackingData::InitAsDefaultInstance() {
-  ::willand_ackermann_proto::_TrackingData_default_instance_._instance.get_mutable()->mpc_param_ = const_cast< ::willand_ackermann_proto::ParamMPC*>(
-      ::willand_ackermann_proto::ParamMPC::internal_default_instance());
+  ::simple_ackermann_proto::_TrackingData_default_instance_._instance.get_mutable()->mpc_param_ = const_cast< ::simple_ackermann_proto::ParamMPC*>(
+      ::simple_ackermann_proto::ParamMPC::internal_default_instance());
 }
 #if !defined(_MSC_VER) || _MSC_VER >= 1900
 const int TrackingData::kLengthFieldNumber;
@@ -1487,7 +1486,7 @@ TrackingData::TrackingData()
   ::google::protobuf::internal::InitSCC(
       &protobuf_tracking_5fdata_2eproto::scc_info_TrackingData.base);
   SharedCtor();
-  // @@protoc_insertion_point(constructor:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(constructor:simple_ackermann_proto.TrackingData)
 }
 TrackingData::TrackingData(const TrackingData& from)
   : ::google::protobuf::Message(),
@@ -1498,12 +1497,12 @@ TrackingData::TrackingData(const TrackingData& from)
       control_signal_(from.control_signal_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   if (from.has_mpc_param()) {
-    mpc_param_ = new ::willand_ackermann_proto::ParamMPC(*from.mpc_param_);
+    mpc_param_ = new ::simple_ackermann_proto::ParamMPC(*from.mpc_param_);
   } else {
     mpc_param_ = NULL;
   }
   length_ = from.length_;
-  // @@protoc_insertion_point(copy_constructor:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(copy_constructor:simple_ackermann_proto.TrackingData)
 }
 
 void TrackingData::SharedCtor() {
@@ -1513,7 +1512,7 @@ void TrackingData::SharedCtor() {
 }
 
 TrackingData::~TrackingData() {
-  // @@protoc_insertion_point(destructor:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(destructor:simple_ackermann_proto.TrackingData)
   SharedDtor();
 }
 
@@ -1536,7 +1535,7 @@ const TrackingData& TrackingData::default_instance() {
 
 
 void TrackingData::Clear() {
-// @@protoc_insertion_point(message_clear_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(message_clear_start:simple_ackermann_proto.TrackingData)
   ::google::protobuf::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
@@ -1557,7 +1556,7 @@ bool TrackingData::MergePartialFromCodedStream(
     ::google::protobuf::io::CodedInputStream* input) {
 #define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
   ::google::protobuf::uint32 tag;
-  // @@protoc_insertion_point(parse_start:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(parse_start:simple_ackermann_proto.TrackingData)
   for (;;) {
     ::std::pair<::google::protobuf::uint32, bool> p = input->ReadTagWithCutoffNoLastTag(127u);
     tag = p.first;
@@ -1587,14 +1586,14 @@ bool TrackingData::MergePartialFromCodedStream(
             this->timestamp(this->timestamp_size() - 1).data(),
             static_cast<int>(this->timestamp(this->timestamp_size() - 1).length()),
             ::google::protobuf::internal::WireFormatLite::PARSE,
-            "willand_ackermann_proto.TrackingData.timestamp"));
+            "simple_ackermann_proto.TrackingData.timestamp"));
         } else {
           goto handle_unusual;
         }
         break;
       }
 
-      // repeated .willand_ackermann_proto.State reference_data = 3;
+      // repeated .simple_ackermann_proto.State reference_data = 3;
       case 3: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(26u /* 26 & 0xFF */)) {
@@ -1606,7 +1605,7 @@ bool TrackingData::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .willand_ackermann_proto.State actual_data = 4;
+      // repeated .simple_ackermann_proto.State actual_data = 4;
       case 4: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(34u /* 34 & 0xFF */)) {
@@ -1618,7 +1617,7 @@ bool TrackingData::MergePartialFromCodedStream(
         break;
       }
 
-      // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+      // repeated .simple_ackermann_proto.ControlSignal control_signal = 5;
       case 5: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(42u /* 42 & 0xFF */)) {
@@ -1630,7 +1629,7 @@ bool TrackingData::MergePartialFromCodedStream(
         break;
       }
 
-      // .willand_ackermann_proto.ParamMPC mpc_param = 6;
+      // .simple_ackermann_proto.ParamMPC mpc_param = 6;
       case 6: {
         if (static_cast< ::google::protobuf::uint8>(tag) ==
             static_cast< ::google::protobuf::uint8>(50u /* 50 & 0xFF */)) {
@@ -1654,17 +1653,17 @@ bool TrackingData::MergePartialFromCodedStream(
     }
   }
 success:
-  // @@protoc_insertion_point(parse_success:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(parse_success:simple_ackermann_proto.TrackingData)
   return true;
 failure:
-  // @@protoc_insertion_point(parse_failure:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(parse_failure:simple_ackermann_proto.TrackingData)
   return false;
 #undef DO_
 }
 
 void TrackingData::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // @@protoc_insertion_point(serialize_start:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(serialize_start:simple_ackermann_proto.TrackingData)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1678,12 +1677,12 @@ void TrackingData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp(i).data(), static_cast<int>(this->timestamp(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "willand_ackermann_proto.TrackingData.timestamp");
+      "simple_ackermann_proto.TrackingData.timestamp");
     ::google::protobuf::internal::WireFormatLite::WriteString(
       2, this->timestamp(i), output);
   }
 
-  // repeated .willand_ackermann_proto.State reference_data = 3;
+  // repeated .simple_ackermann_proto.State reference_data = 3;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->reference_data_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -1692,7 +1691,7 @@ void TrackingData::SerializeWithCachedSizes(
       output);
   }
 
-  // repeated .willand_ackermann_proto.State actual_data = 4;
+  // repeated .simple_ackermann_proto.State actual_data = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->actual_data_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -1701,7 +1700,7 @@ void TrackingData::SerializeWithCachedSizes(
       output);
   }
 
-  // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+  // repeated .simple_ackermann_proto.ControlSignal control_signal = 5;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->control_signal_size()); i < n; i++) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
@@ -1710,7 +1709,7 @@ void TrackingData::SerializeWithCachedSizes(
       output);
   }
 
-  // .willand_ackermann_proto.ParamMPC mpc_param = 6;
+  // .simple_ackermann_proto.ParamMPC mpc_param = 6;
   if (this->has_mpc_param()) {
     ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       6, this->_internal_mpc_param(), output);
@@ -1720,13 +1719,13 @@ void TrackingData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), output);
   }
-  // @@protoc_insertion_point(serialize_end:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(serialize_end:simple_ackermann_proto.TrackingData)
 }
 
 ::google::protobuf::uint8* TrackingData::InternalSerializeWithCachedSizesToArray(
     bool deterministic, ::google::protobuf::uint8* target) const {
   (void)deterministic; // Unused
-  // @@protoc_insertion_point(serialize_to_array_start:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(serialize_to_array_start:simple_ackermann_proto.TrackingData)
   ::google::protobuf::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
@@ -1740,12 +1739,12 @@ void TrackingData::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
       this->timestamp(i).data(), static_cast<int>(this->timestamp(i).length()),
       ::google::protobuf::internal::WireFormatLite::SERIALIZE,
-      "willand_ackermann_proto.TrackingData.timestamp");
+      "simple_ackermann_proto.TrackingData.timestamp");
     target = ::google::protobuf::internal::WireFormatLite::
       WriteStringToArray(2, this->timestamp(i), target);
   }
 
-  // repeated .willand_ackermann_proto.State reference_data = 3;
+  // repeated .simple_ackermann_proto.State reference_data = 3;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->reference_data_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -1753,7 +1752,7 @@ void TrackingData::SerializeWithCachedSizes(
         3, this->reference_data(static_cast<int>(i)), deterministic, target);
   }
 
-  // repeated .willand_ackermann_proto.State actual_data = 4;
+  // repeated .simple_ackermann_proto.State actual_data = 4;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->actual_data_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -1761,7 +1760,7 @@ void TrackingData::SerializeWithCachedSizes(
         4, this->actual_data(static_cast<int>(i)), deterministic, target);
   }
 
-  // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+  // repeated .simple_ackermann_proto.ControlSignal control_signal = 5;
   for (unsigned int i = 0,
       n = static_cast<unsigned int>(this->control_signal_size()); i < n; i++) {
     target = ::google::protobuf::internal::WireFormatLite::
@@ -1769,7 +1768,7 @@ void TrackingData::SerializeWithCachedSizes(
         5, this->control_signal(static_cast<int>(i)), deterministic, target);
   }
 
-  // .willand_ackermann_proto.ParamMPC mpc_param = 6;
+  // .simple_ackermann_proto.ParamMPC mpc_param = 6;
   if (this->has_mpc_param()) {
     target = ::google::protobuf::internal::WireFormatLite::
       InternalWriteMessageToArray(
@@ -1780,12 +1779,12 @@ void TrackingData::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         (::google::protobuf::internal::GetProto3PreserveUnknownsDefault()   ? _internal_metadata_.unknown_fields()   : _internal_metadata_.default_instance()), target);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(serialize_to_array_end:simple_ackermann_proto.TrackingData)
   return target;
 }
 
 size_t TrackingData::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(message_byte_size_start:simple_ackermann_proto.TrackingData)
   size_t total_size = 0;
 
   if ((_internal_metadata_.have_unknown_fields() &&  ::google::protobuf::internal::GetProto3PreserveUnknownsDefault())) {
@@ -1801,7 +1800,7 @@ size_t TrackingData::ByteSizeLong() const {
       this->timestamp(i));
   }
 
-  // repeated .willand_ackermann_proto.State reference_data = 3;
+  // repeated .simple_ackermann_proto.State reference_data = 3;
   {
     unsigned int count = static_cast<unsigned int>(this->reference_data_size());
     total_size += 1UL * count;
@@ -1812,7 +1811,7 @@ size_t TrackingData::ByteSizeLong() const {
     }
   }
 
-  // repeated .willand_ackermann_proto.State actual_data = 4;
+  // repeated .simple_ackermann_proto.State actual_data = 4;
   {
     unsigned int count = static_cast<unsigned int>(this->actual_data_size());
     total_size += 1UL * count;
@@ -1823,7 +1822,7 @@ size_t TrackingData::ByteSizeLong() const {
     }
   }
 
-  // repeated .willand_ackermann_proto.ControlSignal control_signal = 5;
+  // repeated .simple_ackermann_proto.ControlSignal control_signal = 5;
   {
     unsigned int count = static_cast<unsigned int>(this->control_signal_size());
     total_size += 1UL * count;
@@ -1834,7 +1833,7 @@ size_t TrackingData::ByteSizeLong() const {
     }
   }
 
-  // .willand_ackermann_proto.ParamMPC mpc_param = 6;
+  // .simple_ackermann_proto.ParamMPC mpc_param = 6;
   if (this->has_mpc_param()) {
     total_size += 1 +
       ::google::protobuf::internal::WireFormatLite::MessageSize(
@@ -1854,22 +1853,22 @@ size_t TrackingData::ByteSizeLong() const {
 }
 
 void TrackingData::MergeFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(generalized_merge_from_start:simple_ackermann_proto.TrackingData)
   GOOGLE_DCHECK_NE(&from, this);
   const TrackingData* source =
       ::google::protobuf::internal::DynamicCastToGenerated<const TrackingData>(
           &from);
   if (source == NULL) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:simple_ackermann_proto.TrackingData)
     ::google::protobuf::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:willand_ackermann_proto.TrackingData)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:simple_ackermann_proto.TrackingData)
     MergeFrom(*source);
   }
 }
 
 void TrackingData::MergeFrom(const TrackingData& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(class_specific_merge_from_start:simple_ackermann_proto.TrackingData)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::google::protobuf::uint32 cached_has_bits = 0;
@@ -1880,7 +1879,7 @@ void TrackingData::MergeFrom(const TrackingData& from) {
   actual_data_.MergeFrom(from.actual_data_);
   control_signal_.MergeFrom(from.control_signal_);
   if (from.has_mpc_param()) {
-    mutable_mpc_param()->::willand_ackermann_proto::ParamMPC::MergeFrom(from.mpc_param());
+    mutable_mpc_param()->::simple_ackermann_proto::ParamMPC::MergeFrom(from.mpc_param());
   }
   if (from.length() != 0) {
     set_length(from.length());
@@ -1888,14 +1887,14 @@ void TrackingData::MergeFrom(const TrackingData& from) {
 }
 
 void TrackingData::CopyFrom(const ::google::protobuf::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(generalized_copy_from_start:simple_ackermann_proto.TrackingData)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 void TrackingData::CopyFrom(const TrackingData& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:willand_ackermann_proto.TrackingData)
+// @@protoc_insertion_point(class_specific_copy_from_start:simple_ackermann_proto.TrackingData)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
@@ -1927,20 +1926,20 @@ void TrackingData::InternalSwap(TrackingData* other) {
 
 
 // @@protoc_insertion_point(namespace_scope)
-}  // namespace willand_ackermann_proto
+}  // namespace simple_ackermann_proto
 namespace google {
 namespace protobuf {
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::willand_ackermann_proto::State* Arena::CreateMaybeMessage< ::willand_ackermann_proto::State >(Arena* arena) {
-  return Arena::CreateInternal< ::willand_ackermann_proto::State >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::simple_ackermann_proto::State* Arena::CreateMaybeMessage< ::simple_ackermann_proto::State >(Arena* arena) {
+  return Arena::CreateInternal< ::simple_ackermann_proto::State >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::willand_ackermann_proto::ControlSignal* Arena::CreateMaybeMessage< ::willand_ackermann_proto::ControlSignal >(Arena* arena) {
-  return Arena::CreateInternal< ::willand_ackermann_proto::ControlSignal >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::simple_ackermann_proto::ControlSignal* Arena::CreateMaybeMessage< ::simple_ackermann_proto::ControlSignal >(Arena* arena) {
+  return Arena::CreateInternal< ::simple_ackermann_proto::ControlSignal >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::willand_ackermann_proto::ParamMPC* Arena::CreateMaybeMessage< ::willand_ackermann_proto::ParamMPC >(Arena* arena) {
-  return Arena::CreateInternal< ::willand_ackermann_proto::ParamMPC >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::simple_ackermann_proto::ParamMPC* Arena::CreateMaybeMessage< ::simple_ackermann_proto::ParamMPC >(Arena* arena) {
+  return Arena::CreateInternal< ::simple_ackermann_proto::ParamMPC >(arena);
 }
-template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::willand_ackermann_proto::TrackingData* Arena::CreateMaybeMessage< ::willand_ackermann_proto::TrackingData >(Arena* arena) {
-  return Arena::CreateInternal< ::willand_ackermann_proto::TrackingData >(arena);
+template<> GOOGLE_PROTOBUF_ATTRIBUTE_NOINLINE ::simple_ackermann_proto::TrackingData* Arena::CreateMaybeMessage< ::simple_ackermann_proto::TrackingData >(Arena* arena) {
+  return Arena::CreateInternal< ::simple_ackermann_proto::TrackingData >(arena);
 }
 }  // namespace protobuf
 }  // namespace google

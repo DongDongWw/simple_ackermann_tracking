@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace willand_ackermann {
+namespace simple_ackermann {
 
 TrackerParam::TrackerParam(int horizon, double interval, int state_size,
                            int input_size, double speed_limit, double acc_limit,
@@ -786,4 +786,4 @@ SolveStatus TrajectoryTracker::posterioriCheck(const DVector &solution) {
   return SolveStatus::SUCCESS;
 }
 
-};  // namespace willand_ackermann
+};  // namespace simple_ackermann

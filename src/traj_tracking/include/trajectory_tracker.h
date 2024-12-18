@@ -9,7 +9,7 @@
 #include "OsqpEigen/OsqpEigen.h"
 
 #define kEps 2.333e-33
-namespace willand_ackermann {
+namespace simple_ackermann {
 enum class SolveStatus {
   SUCCESS = 0x00000000,
   // solver inner error
@@ -212,4 +212,4 @@ class TrajectoryTracker {
                                     Vector2d &refer_input);
 };
 
-}  // namespace willand_ackermann
+}  // namespace simple_ackermann

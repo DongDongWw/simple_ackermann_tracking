@@ -9,7 +9,7 @@
 #include "geometry_msgs/Pose2D.h"
 #include "ros/ros.h"
 
-namespace willand_ackermann {
+namespace simple_ackermann {
 
 class PathGenerator {
  public:
@@ -172,4 +172,4 @@ class PathGenerator {
     return (low + high) / 2.0;
   }
 };
-};  // namespace willand_ackermann
+};  // namespace simple_ackermann

@@ -11,7 +11,7 @@
 #include "tracking_server.h"
 #include "trajectory_tracker.h"
 
-using namespace willand_ackermann;
+using namespace simple_ackermann;
 
 int main(int argc, char** argv) {
   ros::init(argc, argv, "traj_tracking");

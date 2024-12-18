@@ -11,7 +11,7 @@
 #include <limits>
 #include <linux/limits.h>
 #include <memory>
-using namespace willand_ackermann;
+using namespace simple_ackermann;
 
 int main() {
   const int horizon = 20;                                   // duration = 8 secs
