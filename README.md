@@ -12,9 +12,9 @@ git clone https://github.com/DongDongWw/simple_ackermann_tracking.git
 git submodule update --init --recursive
 
 # Check dependencies
-rosdep check --from-paths src --ignore-src --rosdistro noetic
+rosdep check --from-paths src --ignore-src --rosdistro melodic
 # Install dependencies
-rosdep install --from-paths src --ignore-src --rosdistro noetic -y
+rosdep install --from-paths src --ignore-src --rosdistro melodic -y
 
 # ros build proj
 catkin_make -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
